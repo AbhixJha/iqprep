@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Session Replay</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.page{padding:2.5rem 0}
+.replay-container{max-width:780px;margin:0 auto}
+.session-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:2rem}
+.session-item{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);cursor:pointer;transition:var(--t)}
+.session-item:hover,.session-item.selected{border-color:var(--border-v);background:var(--violet-soft)}
+.s-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.replay-player{display:none}
+.rp-header{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.rp-controls{display:flex;align-items:center;gap:.6rem}
+.rp-btn{width:36px;height:36px;border-radius:50%;background:var(--dark-4);border:1px solid var(--border);color:var(--white-3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:var(--t)}
+.rp-btn:hover{background:var(--dark-3);color:var(--white);border-color:rgba(255,255,255,.15)}
+.rp-btn.active{background:var(--grad-v);border-color:transparent;color:white;box-shadow:0 0 16px var(--violet-glow)}
+.rp-progress-wrap{flex:1;max-width:300px}
+.rp-progress{height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;cursor:pointer}
+.rp-progress-fill{height:100%;background:var(--grad-v);border-radius:2px;transition:width .3s ease}
+.rp-step-label{font-size:.65rem;color:var(--white-3);margin-top:4px;text-align:center}
+.qa-replay{animation:fadeUp .4s ease}
+.rq-num{font-family:var(--font-mono);font-size:.65rem;color:var(--violet-bright);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4rem}
+.rq-text{font-size:1rem;font-weight:500;line-height:1.7;margin-bottom:.75rem}
+.rq-section{margin-bottom:.85rem}
+.rq-section-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem;display:flex;align-items:center;gap:5px}
+.rq-section-body{background:var(--dark-4);border-radius:var(--r-sm);padding:.75rem;font-size:.82rem;color:var(--white-2);line-height:1.7;border:1px solid var(--border)}
+.score-chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:.88rem;font-weight:500;padding:2px 10px;border-radius:20px;margin-bottom:.5rem}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<nav class="nav">
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="interview.html">Practice</a></li>
+    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="resume.html">Resume</a></li>
+    <li><a href="daily-challenge.html">🔥 Daily</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="replay.html" class="on">Replay</a></li>
+    <li><a href="analytics.html">Analytics</a></li>
+    <li><a href="profile.html">Profile</a></li>
+  </ul>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+</nav>
+<div class="pw"><div class="w page">
+  <div style="margin-bottom:1.75rem stag">
+    <div class="lbl">Review & Learn</div>
+    <div class="h1" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:.3rem;letter-spacing:-.025em">Session <span style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Replay</span></div>
+    <div style="color:var(--white-3);font-size:.82rem;margin-top:.3rem">Replay any past session step by step — question by question</div>
+  </div>
+
+  <div class="replay-container">
+
+    <!-- Session Selector -->
+    <div id="session-selector">
+      <div class="lbl" style="margin-bottom:.75rem">Select a Session to Replay</div>
+      <div id="session-list" class="session-list">
+        <div style="text-align:center;padding:2rem"><div class="dots-ai"><span></span><span></span><span></span></div></div>
+      </div>
+    </div>
+
+    <!-- Replay Player -->
+    <div class="replay-player" id="replay-player">
+      <!-- Header Controls -->
+      <div class="rp-header">
+        <div>
+          <div style="font-family:var(--font-head);font-size:.95rem;font-weight:800" id="rp-title">Session Replay</div>
+          <div style="font-size:.68rem;color:var(--white-3);margin-top:2px" id="rp-meta"></div>
+        </div>
+        <div class="rp-controls">
+          <button class="rp-btn" onclick="prevStep()" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
+          <button class="rp-btn active" id="rp-play-btn" onclick="toggleAuto()" title="Auto play"><i class="fa-solid fa-play" id="rp-play-icon"></i></button>
+          <button class="rp-btn" onclick="nextStep()" title="Next"><i class="fa-solid fa-forward-step"></i></button>
+        </div>
+        <div class="rp-progress-wrap">
+          <div class="rp-progress" onclick="seekProgress(event)">
+            <div class="rp-progress-fill" id="rp-progress" style="width:0%"></div>
+          </div>
+          <div class="rp-step-label" id="rp-step-label">Q1 of —</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="closeReplay()"><i class="fa-solid fa-xmark"></i> Close</button>
+      </div>
+
+      <!-- Q&A Card -->
+      <div class="card" style="padding:1.75rem" id="rp-qa-card">
+        <div class="qa-replay" id="qa-content"></div>
+      </div>
+
+      <!-- Navigation -->
+      <div style="display:flex;justify-content:space-between;margin-top:1rem">
+        <button class="btn btn-ghost btn-sm" onclick="prevStep()"><i class="fa-solid fa-arrow-left"></i> Previous</button>
+        <button class="btn btn-v btn-sm" id="rp-next-btn" onclick="nextStep()">Next <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+  </div>
+</div></div>
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/jarvis.js"></script>
+<script>
+if(!getToken()) window.location.href='login.html';
+const user=S.get('iq3_user');
+document.getElementById('nav-av').textContent=getInitial();
+document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+
+const cm={technical:['💻','var(--violet-dim)','Technical'],hr:['🤝','var(--blue-dim)','HR'],aptitude:['🧮','var(--teal-dim)','Aptitude'],mixed:['🎯','var(--pink-dim)','Mixed']};
+
+let currentSession=null;
+let currentStep=0;
+let autoInterval=null;
+let isAutoPlaying=false;
+
+async function loadSessions(){
+  try{
+    const sessions=await Sessions.getAll();
+    const list=document.getElementById('session-list');
+    if(!sessions.length){
+      list.innerHTML=`<div class="empty-s"><div class="empty-ic">📼</div><h3>No sessions yet</h3><p>Complete an interview to replay it here!</p><a href="interview.html" class="btn btn-v btn-sm" style="margin-top:.5rem">Start Now</a></div>`;
+      return;
+    }
+    list.innerHTML=sessions.slice(0,10).map(s=>{
+      const[ic,bg,label]=cm[s.category]||cm.mixed;
+      const d=new Date(s.createdAt||s.date);
+      return `<div class="session-item" onclick="loadReplay(${s.id},this)">
+        <div class="s-ic" style="background:${bg}">${ic}</div>
+        <div style="flex:1">
+          <div style="font-size:.85rem;font-weight:600">${label} Interview</div>
+          <div style="font-size:.7rem;color:var(--white-3)">${s.totalQuestions} questions · ${d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</div>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:1rem;color:${scoreColor(s.score)}">${s.score}/10</div>
+        <div style="font-size:.72rem;color:var(--violet-bright)">▶ Replay</div>
+      </div>`;
+    }).join('');
+  }catch(err){
+    console.error(err);
+  }
+}
+
+async function loadReplay(id,el){
+  document.querySelectorAll('.session-item').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+  try{
+    const session=await Sessions.getById(id);
+    if(!session.answers||!session.answers.length){
+      toast('No data','This session has no question details stored.','w');
+      return;
+    }
+    currentSession=session;
+    currentStep=0;
+    document.getElementById('session-selector').style.display='none';
+    document.getElementById('replay-player').style.display='block';
+    const[ic,bg,label]=cm[session.category]||cm.mixed;
+    document.getElementById('rp-title').textContent=label+' Interview Replay';
+    document.getElementById('rp-meta').textContent=`${session.totalQuestions} questions · Score: ${session.score}/10 · ${session.difficulty}`;
+    renderStep();
+  }catch(err){
+    toast('Error','Could not load session details.','e');
+  }
+}
+
+function renderStep(){
+  const qa=currentSession.answers[currentStep];
+  const total=currentSession.answers.length;
+  const sc=parseFloat(qa.score||0);
+  const c=scoreColor(sc);
+
+  document.getElementById('rp-progress').style.width=`${((currentStep+1)/total)*100}%`;
+  document.getElementById('rp-step-label').textContent=`Q${currentStep+1} of ${total}`;
+  document.getElementById('rp-next-btn').innerHTML=currentStep>=total-1?'Finish <i class="fa-solid fa-flag-checkered"></i>':'Next <i class="fa-solid fa-arrow-right"></i>';
+
+  const content=document.getElementById('qa-content');
+  content.style.animation='none';
+  setTimeout(()=>{content.style.animation='fadeUp .4s ease';},10);
+
+  if(qa.skipped){
+    content.innerHTML=`
+      <div class="rq-num">QUESTION ${String(currentStep+1).padStart(2,'0')}</div>
+      <div class="rq-text">${qa.question}</div>
+      <div style="background:var(--red-dim);border:1px solid rgba(248,113,113,.2);border-radius:var(--r-md);padding:.75rem;font-size:.82rem;color:var(--red);text-align:center">
+        <i class="fa-solid fa-forward"></i> This question was skipped
+      </div>`;
+    return;
+  }
+
+  content.innerHTML=`
+    <div class="rq-num">QUESTION ${String(currentStep+1).padStart(2,'0')}</div>
+    <div class="rq-text">${qa.question}</div>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.85rem">
+      ${(qa.tags||'').split(',').filter(Boolean).map(t=>`<span class="badge bv">${t}</span>`).join('')}
+      <div class="score-chip" style="background:${c}18;color:${c};border:1px solid ${c}33">
+        <i class="fa-solid fa-star" style="font-size:.6rem"></i> ${sc}/10
+      </div>
+    </div>
+    <div class="rq-section">
+      <div class="rq-section-label" style="color:var(--white-3)"><i class="fa-solid fa-user"></i> Your Answer</div>
+      <div class="rq-section-body">${qa.userAnswer||'No answer provided'}</div>
+    </div>
+    <div class="rq-section">
+      <div class="rq-section-label" style="color:var(--violet-bright)"><i class="fa-solid fa-robot"></i> AI Feedback</div>
+      <div class="rq-section-body">${qa.aiFeedback||'—'}</div>
+    </div>
+    ${qa.betterAnswer?`
+    <div class="rq-section">
+      <div class="rq-section-label" style="color:var(--green)"><i class="fa-solid fa-lightbulb"></i> Better Answer</div>
+      <div class="rq-section-body" style="background:var(--violet-soft);border-color:var(--border-v)">${qa.betterAnswer}</div>
+    </div>`:''}
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:.5rem">
+      <div style="background:var(--dark-4);border-radius:var(--r-sm);padding:.6rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.9rem;color:var(--violet-bright)">${qa.accuracyScore||sc}/10</div><div style="font-size:.58rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Accuracy</div></div>
+      <div style="background:var(--dark-4);border-radius:var(--r-sm);padding:.6rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.9rem;color:var(--teal)">${qa.clarityScore||sc}/10</div><div style="font-size:.58rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Clarity</div></div>
+      <div style="background:var(--dark-4);border-radius:var(--r-sm);padding:.6rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.9rem;color:var(--pink)">${qa.completenessScore||sc}/10</div><div style="font-size:.58rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Complete</div></div>
+    </div>`;
+}
+
+function nextStep(){
+  if(currentStep>=currentSession.answers.length-1){
+    toast('Replay complete!','You reviewed all questions 🎉','s');
+    closeReplay();
+    return;
+  }
+  currentStep++;
+  renderStep();
+}
+
+function prevStep(){
+  if(currentStep>0){currentStep--;renderStep();}
+}
+
+function toggleAuto(){
+  if(isAutoPlaying){
+    clearInterval(autoInterval);
+    isAutoPlaying=false;
+    document.getElementById('rp-play-icon').className='fa-solid fa-play';
+  }else{
+    isAutoPlaying=true;
+    document.getElementById('rp-play-icon').className='fa-solid fa-pause';
+    autoInterval=setInterval(()=>{
+      if(currentStep>=currentSession.answers.length-1){
+        clearInterval(autoInterval);
+        isAutoPlaying=false;
+        document.getElementById('rp-play-icon').className='fa-solid fa-play';
+        return;
+      }
+      currentStep++;renderStep();
+    },5000);
+  }
+}
+
+function seekProgress(e){
+  const bar=e.currentTarget;
+  const pct=e.offsetX/bar.offsetWidth;
+  const step=Math.floor(pct*currentSession.answers.length);
+  currentStep=Math.min(step,currentSession.answers.length-1);
+  renderStep();
+}
+
+function closeReplay(){
+  clearInterval(autoInterval);
+  isAutoPlaying=false;
+  document.getElementById('replay-player').style.display='none';
+  document.getElementById('session-selector').style.display='block';
+  document.getElementById('rp-play-icon').className='fa-solid fa-play';
+}
+
+loadSessions();
+</script>
+</body>
+</html>

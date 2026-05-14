@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Practice</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.page{padding:2.5rem 0}
+.setup{max-width:700px;margin:0 auto;animation:fadeUp .5s var(--ease)}
+.setup-hero{text-align:center;margin-bottom:2.25rem}
+.setup-hero .display{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:.4rem}
+.setup-hero p{color:var(--white-3);font-size:.85rem}
+.cfg{padding:1.75rem}
+.sec{margin-bottom:1.5rem}
+.sec:last-child{margin-bottom:0}
+.sec-lbl{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--white-3);margin-bottom:.75rem;display:flex;align-items:center;gap:7px}
+.sec-lbl i{color:var(--violet-bright)}
+.opt-g{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.opt{background:var(--dark-4);border:2px solid var(--border);border-radius:var(--r-md);padding:.85rem 1rem;cursor:pointer;transition:var(--t) var(--spring);text-align:left;font-family:var(--font-body);color:var(--white);display:flex;align-items:center;gap:.7rem}
+.opt:hover{border-color:rgba(124,92,252,.25);background:var(--violet-soft)}
+.opt.on{border-color:var(--violet);background:var(--violet-dim);box-shadow:0 0 0 1px var(--violet)}
+.opt-em{font-size:1.25rem;flex-shrink:0}
+.opt-name{font-size:.83rem;font-weight:700;font-family:var(--font-head)}
+.opt-desc{font-size:.68rem;color:var(--white-3);margin-top:1px}
+.diff-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem}
+.dopt{background:var(--dark-4);border:2px solid var(--border);border-radius:var(--r-md);padding:.65rem;cursor:pointer;transition:var(--t) var(--spring);font-family:var(--font-body);font-size:.8rem;font-weight:700;text-align:center;color:var(--white-3)}
+.dopt[data-d="easy"].on{border-color:var(--green);color:var(--green);background:var(--green-dim)}
+.dopt[data-d="medium"].on{border-color:var(--amber);color:var(--amber);background:var(--amber-dim)}
+.dopt[data-d="hard"].on{border-color:var(--red);color:var(--red);background:var(--red-dim)}
+.qty-g{display:flex;gap:.5rem;flex-wrap:wrap}
+.qopt{flex:1;min-width:45px;background:var(--dark-4);border:2px solid var(--border);border-radius:var(--r-sm);padding:.6rem;cursor:pointer;transition:var(--t) var(--spring);font-family:var(--font-mono);font-weight:500;font-size:.88rem;text-align:center;color:var(--white-3)}
+.qopt.on{border-color:var(--violet);color:var(--violet-bright);background:var(--violet-dim)}
+.pers-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem}
+.popt{background:var(--dark-4);border:2px solid var(--border);border-radius:var(--r-md);padding:.75rem;cursor:pointer;transition:var(--t);text-align:center}
+.popt.on{border-color:var(--pink);background:var(--pink-dim)}
+.popt-em{font-size:1.2rem;display:block;margin-bottom:.3rem}
+.popt-n{font-size:.75rem;font-weight:700}
+.popt-d{font-size:.62rem;color:var(--white-3);margin-top:1px}
+.setup-cta{text-align:center;margin-top:2rem}
+.setup-cta p{font-size:.72rem;color:var(--white-3);margin-top:.55rem}
+.iv-s{display:none;max-width:820px;margin:0 auto;padding:2rem 0}
+.iv-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;flex-wrap:wrap;gap:.65rem}
+.iv-meta{display:flex;align-items:center;gap:.65rem}
+.qpt{font-size:.78rem;color:var(--white-3)}
+.qpt strong{color:var(--white);font-family:var(--font-mono);font-size:.92rem}
+.iv-ctl{display:flex;align-items:center;gap:.55rem}
+.q-card{margin-bottom:.9rem}
+.q-num{font-family:var(--font-mono);font-size:.65rem;color:var(--violet-bright);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
+.q-text{font-size:1rem;font-weight:500;line-height:1.7}
+.q-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.ans-tb{display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem}
+.ans-lbl{font-size:.65rem;font-weight:700;color:var(--white-3);text-transform:uppercase;letter-spacing:.1em;flex:1;display:flex;align-items:center;gap:6px}
+.ans-lbl i{color:var(--violet-bright)}
+.mic-b{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--dark-4);color:var(--white-3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.72rem;transition:var(--t) var(--spring)}
+.mic-b.on{border-color:var(--red);color:var(--red);background:var(--red-dim)}
+.char-c{font-size:.68rem;color:var(--white-3);font-family:var(--font-mono)}
+.ans-acts{display:flex;gap:.55rem;justify-content:flex-end;margin-top:.6rem}
+.ai-wait{display:none;padding:2rem;text-align:center}
+.ai-wait.show{display:block}
+.ai-wait p{font-size:.78rem;color:var(--white-3);margin-top:.6rem}
+.fb-s{display:none;max-width:780px;margin:0 auto}
+.fb-card{padding:1.6rem}
+.fb-h{display:flex;align-items:center;gap:1.1rem;margin-bottom:1.1rem;flex-wrap:wrap}
+.fb-sc-circle{width:84px;height:84px;border-radius:50%;border:2.5px solid var(--violet);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:1.9rem;font-weight:500;flex-shrink:0}
+.fb-verd{font-family:var(--font-head);font-size:1.3rem;font-weight:800;margin-bottom:.2rem;letter-spacing:-.02em}
+.fb-q{font-size:.78rem;color:var(--white-3);margin-bottom:.45rem}
+.fb-body{margin:.9rem 0}
+.fb-body-lbl{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--white-3);margin-bottom:.45rem}
+.fb-txt{font-size:.85rem;line-height:1.8;color:var(--white-2)}
+.fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:.9rem}
+.fb-box{background:var(--dark-4);border-radius:var(--r-md);padding:.9rem;border:1px solid var(--border)}
+.fb-box-t{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;display:flex;align-items:center;gap:5px}
+.fb-pt{font-size:.78rem;color:var(--white-2);margin-bottom:.35rem;display:flex;align-items:flex-start;gap:5px;line-height:1.55}
+.fb-pt i{font-size:.62rem;margin-top:3px;flex-shrink:0}
+.better-ans{margin-top:.9rem;background:var(--violet-soft);border:1px solid var(--border-v);border-radius:var(--r-md);padding:.9rem}
+.better-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--violet-bright);margin-bottom:.4rem;display:flex;align-items:center;gap:5px}
+.better-txt{font-size:.78rem;color:var(--white-2);line-height:1.7}
+.skill-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:.9rem}
+.sks{background:var(--dark-4);border-radius:var(--r-sm);padding:.75rem;text-align:center;border:1px solid var(--border)}
+.sks-n{font-family:var(--font-mono);font-size:1.2rem;font-weight:500}
+.sks-l{font-size:.62rem;color:var(--white-3);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+.fb-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.1rem;flex-wrap:wrap;gap:.55rem}
+.end-s{display:none;text-align:center;padding:3.5rem 1rem;max-width:600px;margin:0 auto}
+.end-ring{width:145px;height:145px;border-radius:50%;margin:1.5rem auto;border:3px solid transparent;background:linear-gradient(var(--dark),var(--dark)) padding-box,var(--grad-v) border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 50px rgba(124,92,252,.15)}
+.end-n{font-family:var(--font-mono);font-size:2.7rem;font-weight:500;line-height:1}
+.end-l{font-size:.6rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.1em}
+.end-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;max-width:420px;margin:1.35rem auto}
+.est{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);padding:.9rem}
+.est-n{font-family:var(--font-mono);font-size:1.3rem;font-weight:500}
+.est-l{font-size:.65rem;color:var(--white-3);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+.end-acts{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.35rem}
+#editor-container {display:none; height:260px; width:100%; border-radius:6px; border:1px solid var(--border); margin-top:8px;}
+.ide-toolbar {display:none; flex-direction:column; gap:8px; margin-top:8px; background:var(--dark-4); padding:10px 12px; border-radius:var(--r-md); border:1px solid var(--border);}
+.ide-toolbar-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;width:100%}
+.ide-toolbar select {background:var(--dark-1); color:var(--white); border:1px solid var(--border); border-radius:4px; padding:4px 8px; font-size:.72rem;}
+.ide-run-group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ide-mini {flex:1; min-width:120px; font-size:.68rem; background:var(--dark-3); border:1px solid var(--border); border-radius:6px; padding:6px 8px; color:var(--white-2);}
+.ide-console-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+@media(max-width:700px){.ide-console-wrap{grid-template-columns:1fr}}
+.ide-console{background:var(--dark-2);border:1px solid var(--border);border-radius:6px;padding:8px;min-height:72px;max-height:120px;overflow:auto;font-family:var(--font-mono);font-size:.65rem;line-height:1.45;white-space:pre-wrap;color:var(--teal)}
+.ide-console.err{color:var(--red)}
+.ide-console-title{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--white-3);margin-bottom:4px}
+@media(max-width:640px){.opt-g{grid-template-columns:1fr}.fb-grid{grid-template-columns:1fr}.skill-scores{grid-template-columns:1fr 1fr}.end-stats{grid-template-columns:1fr 1fr}.pers-g{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<nav class="nav">
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="interview.html" class="on">Practice</a></li>
+    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="analytics.html">Analytics</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+    <li><a href="profile.html">Profile</a></li>
+  </ul>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+</nav>
+<div class="pw"><div class="w page">
+
+<div class="setup" id="s-setup">
+  <div class="setup-hero">
+    <div class="display">Configure your <em>session</em></div>
+    <p>AI generates fresh questions every session — never repeats!</p>
+  </div>
+  <div class="card cfg">
+    <div class="sec">
+      <div class="sec-lbl"><i class="fa-solid fa-layer-group"></i> Category</div>
+      <div class="opt-g">
+        <button class="opt on" data-cat="technical" onclick="selCat(this)"><span class="opt-em">💻</span><div><div class="opt-name">Technical</div><div class="opt-desc">DSA · Java · System Design</div></div></button>
+        <button class="opt" data-cat="hr" onclick="selCat(this)"><span class="opt-em">🤝</span><div><div class="opt-name">HR Round</div><div class="opt-desc">Behavioral · Leadership</div></div></button>
+        <button class="opt" data-cat="aptitude" onclick="selCat(this)"><span class="opt-em">🧮</span><div><div class="opt-name">Aptitude</div><div class="opt-desc">Logical · Quantitative</div></div></button>
+        <button class="opt" data-cat="mixed" onclick="selCat(this)"><span class="opt-em">🎯</span><div><div class="opt-name">Full Mock</div><div class="opt-desc">All Categories</div></div></button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="sec">
+      <div class="sec-lbl"><i class="fa-solid fa-gauge-high"></i> Difficulty</div>
+      <div class="diff-g">
+        <button class="dopt" data-d="easy" onclick="selDiff(this)">🟢 Easy</button>
+        <button class="dopt on" data-d="medium" onclick="selDiff(this)">🟡 Medium</button>
+        <button class="dopt" data-d="hard" onclick="selDiff(this)">🔴 Hard</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="sec">
+      <div class="sec-lbl"><i class="fa-solid fa-list-ol"></i> Questions</div>
+      <div class="qty-g">
+        <button class="qopt" data-q="5" onclick="selQty(this)">5</button>
+        <button class="qopt on" data-q="10" onclick="selQty(this)">10</button>
+        <button class="qopt" data-q="15" onclick="selQty(this)">15</button>
+        <button class="qopt" data-q="20" onclick="selQty(this)">20</button>
+        <button class="qopt" data-q="25" onclick="selQty(this)">25</button>
+        <button class="qopt" data-q="30" onclick="selQty(this)">30</button>
+        <button class="qopt" data-q="40" onclick="selQty(this)">40</button>
+        <button class="qopt" data-q="50" onclick="selQty(this)">50</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="sec">
+      <div class="sec-lbl"><i class="fa-solid fa-robot"></i> AI Personality</div>
+      <div class="pers-g">
+        <div class="popt on" data-p="friendly" onclick="selPers(this)"><span class="popt-em">😊</span><div class="popt-n">Friendly</div><div class="popt-d">Encouraging</div></div>
+        <div class="popt" data-p="strict" onclick="selPers(this)"><span class="popt-em">🧐</span><div class="popt-n">Strict</div><div class="popt-d">Demanding</div></div>
+        <div class="popt" data-p="neutral" onclick="selPers(this)"><span class="popt-em">😐</span><div class="popt-n">Neutral</div><div class="popt-d">Balanced</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="setup-cta">
+    <button class="btn btn-v btn-xl" id="start-btn" onclick="startSess()">
+      <i class="fa-solid fa-rocket"></i> Begin Session
+    </button>
+    <p>Groq AI · Unique questions · Real evaluation · Score tracking</p>
+  </div>
+</div>
+
+<div class="iv-s" id="s-iv">
+  <div class="iv-h">
+    <div class="iv-meta">
+      <div class="qpt">Question <strong id="q-cur">1</strong> of <strong id="q-tot">10</strong></div>
+      <span class="badge bv" id="cat-b">Technical</span>
+      <span class="badge diff-medium" id="diff-b">Medium</span>
+    </div>
+    <div class="iv-ctl">
+      <div class="timer-d" id="timer">03:00</div>
+      <button class="btn btn-ghost btn-sm" onclick="skipQ()"><i class="fa-solid fa-forward"></i> Skip</button>
+    </div>
+  </div>
+  <div class="prog" style="margin-bottom:1.35rem"><div class="prog-f" id="prog-b" style="width:0%"></div></div>
+  <div class="card q-card" id="q-card">
+    <div class="q-num" id="q-num">QUESTION 01</div>
+    <div class="q-text" id="q-text">Loading...</div>
+    <div class="q-tags" id="q-tags"></div>
+  </div>
+  <div class="ai-wait" id="ai-wait"><div class="dots-ai"><span></span><span></span><span></span></div><p>AI is evaluating your answer...</p></div>
+  <div class="card" id="ans-card">
+    <div class="ans-tb">
+      <div class="ans-lbl"><i class="fa-solid fa-pen-nib"></i> Your Answer</div>
+      <button class="btn btn-ghost btn-sm" onclick="toggleIde()" style="height:28px;font-size:.65rem;padding:0 8px"><i class="fa-solid fa-code"></i> IDE</button>
+      <button class="mic-b" id="mic-b" onclick="toggleMic()"><i class="fa-solid fa-microphone"></i></button>
+      <div class="char-c" id="char-c">0/1000</div>
+    </div>
+    <textarea class="fi ni" id="ans-in" placeholder="Type your answer here, or tap the mic to speak..." rows="4" oninput="updChar()" style="pointer-events:all;position:relative;z-index:2"></textarea>
+    
+    <div class="ide-toolbar" id="ide-toolbar">
+      <div class="ide-toolbar-row">
+        <div style="font-size:0.75rem; font-weight:700;"><i class="fa-solid fa-terminal" style="color:var(--violet-bright)"></i> Code workspace</div>
+        <div class="ide-run-group">
+          <select id="ide-lang" onchange="changeLang()">
+            <option value="java">Java</option>
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="c_cpp">C++</option>
+          </select>
+          <button type="button" class="btn btn-ghost btn-sm" id="ide-run-btn" onclick="runIdeCode(false)" style="height:28px;font-size:.65rem;padding:0 10px"><i class="fa-solid fa-play"></i> Run</button>
+          <button type="button" class="btn btn-v btn-sm" id="ide-test-btn" onclick="runIdeCode(true)" style="height:28px;font-size:.65rem;padding:0 10px"><i class="fa-solid fa-flask"></i> Test</button>
+        </div>
+      </div>
+      <div class="ide-toolbar-row">
+        <input type="text" class="ide-mini" id="ide-stdin" placeholder="stdin (optional)" autocomplete="off"/>
+        <input type="text" class="ide-mini" id="ide-expected" placeholder="Expected stdout (for Test)" autocomplete="off"/>
+      </div>
+      <div id="editor-container"></div>
+      <div class="ide-console-wrap">
+        <div>
+          <div class="ide-console-title">Output</div>
+          <div class="ide-console" id="ide-out">Run your code to see output here.</div>
+        </div>
+        <div>
+          <div class="ide-console-title">Errors / compile</div>
+          <div class="ide-console err" id="ide-err"></div>
+        </div>
+      </div>
+      <div style="font-size:.62rem;color:var(--white-3)" id="ide-run-meta"></div>
+    </div>
+
+    <div class="ans-acts">
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('ans-in').value='';updChar()"><i class="fa-solid fa-eraser"></i> Clear</button>
+      <button class="btn btn-v" onclick="submitAns()"><i class="fa-solid fa-paper-plane"></i> Submit Answer</button>
+    </div>
+  </div>
+</div>
+
+<div class="fb-s" id="s-fb">
+  <div class="card fb-card">
+    <div class="fb-h">
+      <div class="fb-sc-circle" id="fb-sc">7</div>
+      <div>
+        <div class="fb-verd" id="fb-v">Good Answer!</div>
+        <div class="fb-q" id="fb-q"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem" id="fb-tags"></div>
+      </div>
+    </div>
+    <div class="skill-scores">
+      <div class="sks"><div class="sks-n" id="sk-acc" style="color:var(--violet-bright)">—</div><div class="sks-l">Accuracy</div></div>
+      <div class="sks"><div class="sks-n" id="sk-cl" style="color:var(--teal)">—</div><div class="sks-l">Clarity</div></div>
+      <div class="sks"><div class="sks-n" id="sk-co" style="color:var(--pink)">—</div><div class="sks-l">Completeness</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="fb-body"><div class="fb-body-lbl">AI Feedback</div><div class="fb-txt" id="fb-txt"></div></div>
+    <div class="fb-grid">
+      <div class="fb-box"><div class="fb-box-t" style="color:var(--green)"><i class="fa-solid fa-circle-check"></i> Strengths</div><div id="fb-str"></div></div>
+      <div class="fb-box"><div class="fb-box-t" style="color:var(--red)"><i class="fa-solid fa-circle-exclamation"></i> Improve</div><div id="fb-imp"></div></div>
+    </div>
+    <div class="better-ans"><div class="better-title"><i class="fa-solid fa-lightbulb"></i> Better Answer Example</div><div class="better-txt" id="fb-better"></div></div>
+    <div class="fb-nav">
+      <button class="btn btn-ghost btn-sm" onclick="revAns()"><i class="fa-solid fa-eye"></i> Review Answer</button>
+      <button class="btn btn-v" id="nxt-btn" onclick="nextQ()">Next Question <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="end-s" id="s-end">
+  <div class="lbl" style="justify-content:center">Session Complete</div>
+  <div class="display" style="font-size:clamp(1.5rem,3vw,2.2rem);margin-top:.4rem">Your <em>Results</em></div>
+  <div class="end-ring"><div class="end-n" id="end-n">0</div><div class="end-l">/ 10</div></div>
+  <div style="color:var(--white-3);font-size:.88rem" id="end-verd"></div>
+  <div class="end-stats">
+    <div class="est"><div class="est-n" id="e-q">0</div><div class="est-l">Questions</div></div>
+    <div class="est"><div class="est-n" id="e-t">—</div><div class="est-l">Avg Time</div></div>
+    <div class="est"><div class="est-n" id="e-b">—</div><div class="est-l">Best Score</div></div>
+  </div>
+  <div class="end-acts">
+    <button class="btn btn-ghost" onclick="location.href='history.html'"><i class="fa-solid fa-clock-rotate-left"></i> History</button>
+    <button class="btn btn-ghost" onclick="location.href='dashboard.html'"><i class="fa-solid fa-house"></i> Dashboard</button>
+    <button class="btn btn-v" onclick="restart()"><i class="fa-solid fa-rotate-right"></i> Practice Again</button>
+  </div>
+</div>
+
+</div></div>
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/speech-recognition-enhanced.js"></script>
+<script src="../js/jarvis.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
+<script>
+if(!getToken()) window.location.href='login.html';
+const user=S.get('iq3_user');
+document.getElementById('nav-av').textContent=getInitial();
+document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+
+let cfg={cat:'technical',diff:'medium',qty:10,pers:'friendly'};
+let sess={qs:[],ans:[],scores:[],idx:0,start:null,qaData:[]};
+let tmr=null,recogEnhanced=null;
+let ideLastRunOk=null;
+
+function selCat(b){document.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));b.classList.add('on');cfg.cat=b.dataset.cat}
+function selDiff(b){document.querySelectorAll('.dopt').forEach(x=>x.classList.remove('on'));b.classList.add('on');cfg.diff=b.dataset.d}
+function selQty(b){document.querySelectorAll('.qopt').forEach(x=>x.classList.remove('on'));b.classList.add('on');cfg.qty=parseInt(b.dataset.q)}
+function selPers(b){document.querySelectorAll('.popt').forEach(x=>x.classList.remove('on'));b.classList.add('on');cfg.pers=b.dataset.p}
+
+const QB={
+  technical:{
+    easy:[{q:"What is the difference between an array and a linked list?",tags:["DSA"]},{q:"Explain OOP and its four pillars.",tags:["OOP","Java"]},{q:"What is a constructor in Java?",tags:["Java"]},{q:"Difference between == and .equals() in Java?",tags:["Java"]},{q:"Explain Stack vs Queue.",tags:["DSA"]}],
+    medium:[{q:"Explain polymorphism with a real-world example.",tags:["OOP","Java"]},{q:"HashMap vs HashTable in Java?",tags:["Java","Collections"]},{q:"Explain Big O notation and binary search complexity.",tags:["DSA","Algorithms"]},{q:"What is multithreading in Java? Explain thread lifecycle.",tags:["Java","Concurrency"]},{q:"REST vs GraphQL?",tags:["API","Backend"]},{q:"What is a deadlock? How to prevent it?",tags:["Java","OS"]},{q:"Explain database indexing.",tags:["Database","SQL"]},{q:"Explain Singleton design pattern.",tags:["Design Patterns"]}],
+    hard:[{q:"Design a URL shortener like bit.ly.",tags:["System Design"]},{q:"Explain CAP theorem.",tags:["Distributed Systems"]},{q:"Design a rate limiter.",tags:["System Design"]},{q:"Microservices vs Monolith?",tags:["Architecture"]}]
+  },
+  hr:{
+    easy:[{q:"Tell me about yourself.",tags:["Introduction"]},{q:"Why are you interested in this role?",tags:["Motivation"]},{q:"What are your strengths and weaknesses?",tags:["Self-Awareness"]}],
+    medium:[{q:"Describe a challenging situation you overcame.",tags:["Problem Solving"]},{q:"Tell me about a difficult team member experience.",tags:["Teamwork"]},{q:"Where do you see yourself in 5 years?",tags:["Career Goals"]},{q:"Describe handling a tight deadline.",tags:["Time Management"]},{q:"Tell me about a time you showed leadership.",tags:["Leadership"]}],
+    hard:[{q:"You disagree with your manager's decision. How do you handle it?",tags:["Conflict"]},{q:"Assigned to a project with unclear requirements?",tags:["Ambiguity"]}]
+  },
+  aptitude:{
+    easy:[{q:"Train travels 60km in 45 min. Speed in km/h?",tags:["Speed","Math"]},{q:"Next in series: 2, 6, 12, 20, 30, ?",tags:["Series"]},{q:"5 workers build a wall in 10 days. 10 workers?",tags:["Work","Math"]}],
+    medium:[{q:"Bought at ₹1200, sold at 25% profit. Selling price?",tags:["Profit & Loss"]},{q:"100 people: 60 Hindi, 40 English, 20 both. Neither?",tags:["Set Theory"]},{q:"If MANGO=OCPIQ, how is APPLE coded?",tags:["Logical"]},{q:"Two pipes fill tank in 12 and 16 hours. Together?",tags:["Pipes"]}],
+    hard:[{q:"A+B in 15 days, B+C in 20, C+A in 12. All three together?",tags:["Work & Time"]}]
+  },
+  mixed:{medium:[{q:"Explain REST API. Design one for social media.",tags:["Technical"]},{q:"Project you're most proud of?",tags:["HR"]},{q:"Car at 80km/h for 2.5 hours. Distance?",tags:["Aptitude"]},{q:"Synchronous vs asynchronous programming?",tags:["Technical"]},{q:"Time you learned a new technology quickly?",tags:["HR"]},{q:"Explain database normalization.",tags:["Technical"]},{q:"50 students: 60% Math, 70% English. At least both?",tags:["Aptitude"]},{q:"What motivates you in a team?",tags:["HR"]}]}
+};
+
+function getQsLocal(){
+  const pool=QB[cfg.cat]?.[cfg.diff]||QB[cfg.cat]?.medium||QB.mixed.medium;
+  let r=[];
+  while(r.length<cfg.qty)r=[...r,...pool.sort(()=>Math.random()-.5)];
+  return r.slice(0,cfg.qty);
+}
+
+async function getQsFromAI(){
+  try{
+    const token=localStorage.getItem('iq3_token');
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>{controller.abort();toast('Using backup questions','AI took too long','w')},12000);
+    const base=window.IQPREP_API_BASE||'http://127.0.0.1:8080/api';
+    const res = await fetch(`${base}/questions/generate?category=${cfg.cat}&difficulty=${cfg.diff}&count=${cfg.qty}`,{headers:{'Authorization':`Bearer ${token}`},signal:controller.signal});
+    clearTimeout(timeout);
+    if(res.status===401){window.location.href='login.html';throw new Error('Unauthorized');}
+    if(res.status===429){toast('Too many requests','Please wait a minute and try again.','w');throw new Error('Rate limited');}
+    if(res.status===401){window.location.href='login.html';throw new Error('Unauthorized');}
+    if(res.status===429){toast('Too many requests','Please wait a minute and try again.','w');throw new Error('Rate limited');}
+    if(!res.ok) throw new Error('AI failed');
+    const data=await res.json();
+    toast('Questions ready!',`${data.length} AI questions loaded 🤖`,'s',2000);
+    return data.map(q=>({q:q.question||q.q,tags:q.tags||[]}));
+  }catch(err){
+    console.warn('Using local questions:',err.message);
+    return getQsLocal();
+  }
+}
+
+async function startSess(){
+  const btn=document.getElementById('start-btn');
+  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> AI is generating questions...';
+  btn.disabled=true;
+  sess.qs=await getQsFromAI();
+  sess.ans=[];sess.scores=[];sess.idx=0;sess.start=Date.now();sess.qaData=[];
+  btn.innerHTML='<i class="fa-solid fa-rocket"></i> Begin Session';
+  btn.disabled=false;
+  document.getElementById('s-setup').style.display='none';
+  document.getElementById('s-iv').style.display='block';
+  document.getElementById('q-tot').textContent=sess.qs.length;
+  const cl={technical:'Technical',hr:'HR Round',aptitude:'Aptitude',mixed:'Full Mock'};
+  document.getElementById('cat-b').textContent=cl[cfg.cat];
+  const db=document.getElementById('diff-b');
+  db.textContent=cfg.diff.charAt(0).toUpperCase()+cfg.diff.slice(1);
+  db.className='badge diff-'+cfg.diff;
+  loadQ();
+  toast('Session started!',`${sess.qs.length} questions loaded 🚀`,'i');
+}
+
+function loadQ(){
+  const q=sess.qs[sess.idx];const n=sess.idx+1;
+  document.getElementById('q-cur').textContent=n;
+  document.getElementById('q-num').textContent=`QUESTION ${String(n).padStart(2,'0')}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('prog-b').style.width=`${(n/sess.qs.length)*100}%`;
+  document.getElementById('ans-in').value='';
+  document.getElementById('char-c').textContent='0/1000';
+  ideLastRunOk=null;
+  document.getElementById('q-tags').innerHTML=(q.tags||[]).map(t=>`<span class="badge bv">${t}</span>`).join('');
+  if(tmr)tmr.stop();
+  const secs=cfg.diff==='easy'?120:cfg.diff==='medium'?180:240;
+  tmr=new ITimer(document.getElementById('timer'),secs,()=>{toast("Time's up!","Moving on.",'w');submitAns();});
+  tmr.start();
+}
+
+function updChar(){const l=document.getElementById('ans-in').value.length;document.getElementById('char-c').textContent=`${l}/1000`;}
+
+function skipQ(){
+  sess.ans.push('[Skipped]');sess.scores.push(0);
+  sess.qaData.push({question:sess.qs[sess.idx].q,userAnswer:'[Skipped]',aiFeedback:'Skipped',betterAnswer:'',score:0,accuracyScore:0,clarityScore:0,completenessScore:0,tags:(sess.qs[sess.idx].tags||[]).join(','),skipped:true});
+  advance();toast('Skipped','','w');
+}
+
+async function submitAns(){
+  let ans=document.getElementById('ans-in').value.trim();
+  if(ideMode && editor){
+    const code=editor.getValue().trim();
+    if(code) ans += "\n\n```" + document.getElementById('ide-lang').value + "\n" + code + "\n```";
+  }
+  if(!ans){toast('Empty answer','Write something first.','w');return}
+  if(tmr)tmr.stop();
+  document.getElementById('ans-card').style.display='none';
+  document.getElementById('ai-wait').classList.add('show');
+  document.getElementById('q-card').style.opacity='.4';
+  sess.ans.push(ans);
+  let r;
+  try{
+    const token=localStorage.getItem('iq3_token');
+    const base=window.IQPREP_API_BASE||'http://localhost:8080/api';
+    const evalRes=await fetch(`${base}/evaluate`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({question:sess.qs[sess.idx].q,answer:ans,category:cfg.cat,difficulty:cfg.diff,personality:cfg.pers})});
+    if(evalRes.status===401){window.location.href='login.html';throw new Error('Unauthorized');}
+    if(evalRes.status===429){toast('Too many requests','Wait before submitting again.','w');throw new Error('Rate limited');}
+    if(!evalRes.ok){throw new Error('evaluate HTTP '+evalRes.status);}
+    r=await evalRes.json();
+    r.strengths=r.strengths?r.strengths.split(', '):['Answer submitted'];
+    r.improvements=r.improvements?r.improvements.split(', '):['Keep practicing'];
+    r.skills={accuracy:r.accuracyScore||r.score,clarity:r.clarityScore||r.score,completeness:r.completenessScore||r.score};
+  }catch(err){
+    r={score:5,feedback:'AI evaluation unavailable.',strengths:['Answer submitted'],improvements:['Try again'],betterAnswer:'',skills:{accuracy:5,clarity:5,completeness:5}};
+  }
+  sess.scores.push(r.score);
+  sess.qaData.push({question:sess.qs[sess.idx].q,userAnswer:ans,aiFeedback:r.feedback,betterAnswer:r.betterAnswer||'',score:r.score,accuracyScore:r.skills?.accuracy||r.score,clarityScore:r.skills?.clarity||r.score,completenessScore:r.skills?.completeness||r.score,tags:(sess.qs[sess.idx].tags||[]).join(','),skipped:false});
+  showFb(sess.qs[sess.idx],ans,r);
+}
+
+function showFb(q,ans,r){
+  document.getElementById('ai-wait').classList.remove('show');
+  document.getElementById('s-iv').style.display='none';
+  document.getElementById('s-fb').style.display='block';
+  const sc=document.getElementById('fb-sc');
+  sc.textContent=r.score;sc.style.borderColor=scoreColor(r.score);sc.style.color=scoreColor(r.score);
+  document.getElementById('fb-v').textContent=scoreLabel(r.score)+'!';
+  document.getElementById('fb-q').textContent=q.q.substring(0,80)+'...';
+  document.getElementById('fb-tags').innerHTML=(q.tags||[]).map(t=>`<span class="badge bv">${t}</span>`).join('');
+  document.getElementById('sk-acc').textContent=(r.skills?.accuracy||r.score)+'/10';
+  document.getElementById('sk-cl').textContent=(r.skills?.clarity||r.score)+'/10';
+  document.getElementById('sk-co').textContent=(r.skills?.completeness||r.score)+'/10';
+  typeText(document.getElementById('fb-txt'),r.feedback,13);
+  document.getElementById('fb-str').innerHTML=(Array.isArray(r.strengths)?r.strengths:[r.strengths]).map(s=>`<div class="fb-pt"><i class="fa-solid fa-check" style="color:var(--green)"></i>${s}</div>`).join('');
+  document.getElementById('fb-imp').innerHTML=(Array.isArray(r.improvements)?r.improvements:[r.improvements]).map(s=>`<div class="fb-pt"><i class="fa-solid fa-arrow-right" style="color:var(--red)"></i>${s}</div>`).join('');
+  document.getElementById('fb-better').textContent=r.betterAnswer||'Complete more sessions for better examples.';
+  const isLast=sess.idx>=sess.qs.length-1;
+  document.getElementById('nxt-btn').innerHTML=isLast?'<i class="fa-solid fa-flag-checkered"></i> View Results':'Next Question <i class="fa-solid fa-arrow-right"></i>';
+  toast(scoreLabel(r.score)+'! '+scoreEmoji(r.score),`Score: ${r.score}/10`,r.score>=7?'s':r.score>=5?'i':'w');
+}
+
+function revAns(){toast('Your answer',sess.ans[sess.idx]?.substring(0,120)+'...','i',5000)}
+
+function nextQ(){
+  if(sess.idx>=sess.qs.length-1){endSess();return}
+  sess.idx++;
+  document.getElementById('s-fb').style.display='none';
+  document.getElementById('s-iv').style.display='block';
+  document.getElementById('ans-card').style.display='block';
+  document.getElementById('q-card').style.opacity='1';
+  loadQ();
+}
+
+function advance(){
+  if(sess.idx>=sess.qs.length-1){endSess();return}
+  sess.idx++;loadQ();
+}
+
+async function endSess(){
+  if(tmr)tmr.stop();
+  const avg=sess.scores.length?(sess.scores.reduce((a,b)=>a+b,0)/sess.scores.length).toFixed(1):'0';
+  const best=sess.scores.length?Math.max(...sess.scores):0;
+  const timeTaken=Math.round((Date.now()-sess.start)/1000);
+  try{
+    await Sessions.save({category:cfg.cat,difficulty:cfg.diff,personality:cfg.pers,totalQuestions:sess.qs.length,score:parseFloat(avg),bestScore:best,timeTaken:timeTaken,weakTopics:[],answers:sess.qaData});
+    toast('Session saved! 🎉',`Score: ${avg}/10`,'s',5000);
+  }catch(err){
+    S.push('iq3_history',{id:Date.now(),category:cfg.cat,difficulty:cfg.diff,questions:sess.qs.length,score:parseFloat(avg),date:new Date().toISOString()});
+    toast('Saved locally',`Score: ${avg}/10`,'i',5000);
+  }
+  document.getElementById('s-fb').style.display='none';
+  document.getElementById('s-iv').style.display='none';
+  document.getElementById('s-end').style.display='block';
+  document.getElementById('end-n').textContent=avg;
+  document.getElementById('end-n').style.color=scoreColor(parseFloat(avg));
+  document.getElementById('end-verd').textContent=`${scoreLabel(parseFloat(avg))} performance — ${avg}/10`;
+  document.getElementById('e-q').textContent=sess.qs.length;
+  document.getElementById('e-b').textContent=best+'/10';
+  document.getElementById('e-t').textContent=Math.round(timeTaken/sess.qs.length)+'s';
+}
+
+function restart(){document.getElementById('s-end').style.display='none';document.getElementById('s-setup').style.display='block'}
+
+let _practiceMicPrime=null;
+
+async function toggleMic(){
+  const b=document.getElementById('mic-b');
+  if(!('webkitSpeechRecognition'in window)&&!('SpeechRecognition'in window)){toast('Not supported','Try Chrome browser.','w');return}
+  if(recogEnhanced){recogEnhanced.stop();recogEnhanced=null;b.classList.remove('on');return}
+  if(typeof createEnhancedRecognition!=='function'){toast('Speech module missing','Reload the page.','e');return;}
+  if(!_practiceMicPrime){
+    try{
+      _practiceMicPrime=await navigator.mediaDevices.getUserMedia({
+        audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}
+      });
+    }catch(e){
+      console.warn('Mic prime',e);
+      toast('Microphone','Allow the microphone for clearer speech capture.','w',4000);
+    }
+  }
+  const ta=document.getElementById('ans-in');
+  recogEnhanced=createEnhancedRecognition({
+    lang:(navigator.language&&navigator.language.startsWith('en'))?navigator.language:'en-US',
+    primeAudioStream:_practiceMicPrime,
+    onTranscript:function(acc,interim){
+      ta.value=(acc||'')+(interim||'');
+      updChar();
+    },
+    onStart:function(){b.classList.add('on');toast('Listening…','Speak naturally; soft speech is OK.','i',2200);},
+    onError:function(err){
+      if(err==='not-allowed'){b.classList.remove('on');toast('Mic blocked','Allow microphone for this site.','e',5000);}
+      else if(err!=='no-speech'&&err!=='aborted')console.warn('Speech',err);
+    },
+    onEnd:function(){b.classList.remove('on');recogEnhanced=null;}
+  });
+  if(!recogEnhanced){toast('Not supported','Try Chrome or Edge.','w');return;}
+  recogEnhanced.start(Date.now());
+}
+
+const IDE_DEFAULTS={
+  java:'public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello IQPrep");\n  }\n}',
+  python:'print("Hello IQPrep")',
+  javascript:'console.log("Hello IQPrep");',
+  c_cpp:'#include <iostream>\nusing namespace std;\nint main() {\n  cout << "Hello IQPrep" << endl;\n  return 0;\n}'
+};
+
+function pistonLang(){
+  const v=document.getElementById('ide-lang').value;
+  return v==='c_cpp'?'cpp':v;
+}
+
+async function runIdeCode(isTest){
+  if(!editor){toast('Open IDE','Toggle IDE first.','w');return;}
+  const src=editor.getValue().trim();
+  if(!src){toast('Empty editor','Add code before running.','w');return;}
+  const btn=document.getElementById('ide-run-btn');
+  const btnTest=document.getElementById('ide-test-btn');
+  const spin='<i class="fa-solid fa-spinner fa-spin"></i>';
+  if(btn){btn.disabled=true;btn.innerHTML=spin;}
+  if(btnTest){btnTest.disabled=true;btnTest.innerHTML=spin;}
+  const out=document.getElementById('ide-out');
+  const errEl=document.getElementById('ide-err');
+  const meta=document.getElementById('ide-run-meta');
+  out.textContent='Running…';
+  errEl.textContent='';
+  if(meta)meta.textContent='';
+  ideLastRunOk=false;
+  let expected=document.getElementById('ide-expected').value||'';
+  if(isTest && !expected.trim()){
+    toast('Test needs expected output','Fill expected stdout or use Run.','w');
+    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-play"></i> Run';}
+    if(btnTest){btnTest.disabled=false;btnTest.innerHTML='<i class="fa-solid fa-flask"></i> Test';}
+    out.textContent='';
+    return;
+  }
+  if(!isTest)expected='';
+  try{
+    const res=await CodeAPI.run({language:pistonLang(),source:src,stdin:document.getElementById('ide-stdin').value||'',expectedOutput:expected});
+    out.textContent=res.stdout||'(no stdout)';
+    let errTxt=(res.compileStderr||'')+(res.compileStdout&&res.compileExitCode!==0?'\n'+res.compileStdout:'');
+    if(res.stderr)errTxt+=(errTxt?'\n':'')+res.stderr;
+    errEl.textContent=errTxt.trim()||'(none)';
+    ideLastRunOk=!!res.success;
+    if(meta){
+      meta.textContent=(res.success?'✓ ':'✗ ')+(res.message||'');
+      meta.style.color=res.success?'var(--green)':'var(--red)';
+    }
+  }catch(e){
+    out.textContent='';
+    errEl.textContent=String(e.message||e);
+    ideLastRunOk=false;
+  }
+  if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-play"></i> Run';}
+  if(btnTest){btnTest.disabled=false;btnTest.innerHTML='<i class="fa-solid fa-flask"></i> Test';}
+}
+
+let ideMode = false;
+let editor = null;
+function toggleIde() {
+  ideMode = !ideMode;
+  document.getElementById('ide-toolbar').style.display = ideMode ? 'flex' : 'none';
+  document.getElementById('editor-container').style.display = ideMode ? 'block' : 'none';
+  if(ideMode && !editor) {
+    editor = ace.edit("editor-container");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/java");
+    editor.setOptions({fontSize: "14px", showPrintMargin: false, tabSize: 2, useSoftTabs: true});
+    const lang=document.getElementById('ide-lang').value;
+    editor.setValue(IDE_DEFAULTS[lang]||IDE_DEFAULTS.java,-1);
+    ideLastRunOk=null;
+  }
+  if(editor) requestAnimationFrame(() => { try { editor.resize(); } catch(e) {} });
+}
+function changeLang() {
+  if(!editor)return;
+  const raw=document.getElementById('ide-lang').value;
+  const modeMap={java:'java',python:'python',javascript:'javascript',c_cpp:'c_cpp'};
+  editor.session.setMode('ace/mode/'+(modeMap[raw]||raw));
+  const lang=document.getElementById('ide-lang').value;
+  if(!editor.getValue().trim())editor.setValue(IDE_DEFAULTS[lang]||'',-1);
+  ideLastRunOk=null;
+  requestAnimationFrame(() => { try { editor.resize(); } catch(e) {} });
+}
+
+const p=new URLSearchParams(window.location.search);
+if(p.get('cat')){cfg.cat=p.get('cat');document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('on',b.dataset.cat===cfg.cat))}
+</script>
+</body>
+</html>

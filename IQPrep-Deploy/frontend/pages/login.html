@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Sign In</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.auth-page{min-height:100vh;display:flex;align-items:stretch}
+.auth-left{flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:3.5rem;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--dark-2),var(--dark));border-right:1px solid var(--border)}
+.al-top-line{position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-v)}
+.al-glow{position:absolute;width:380px;height:380px;background:rgba(124,92,252,.06);border-radius:50%;filter:blur(80px);top:-80px;right:-80px;pointer-events:none}
+.auth-right{width:460px;flex-shrink:0;background:var(--dark-2);display:flex;flex-direction:column;justify-content:center;padding:3rem;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-mark{width:40px;height:40px;background:var(--grad-v);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:white;box-shadow:0 0 20px var(--violet-glow)}
+.brand-n{font-family:var(--font-head);font-size:1.2rem;font-weight:900;color:var(--white);letter-spacing:-.02em}
+.hero-block{margin:2.5rem 0}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--violet-dim);border:1px solid var(--border-v);border-radius:var(--r-full);padding:4px 12px;font-size:.65rem;font-weight:700;color:var(--violet-bright);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.1rem}
+.hero-h{font-family:var(--font-head);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;margin-bottom:.85rem}
+.hero-h em{font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-p{color:var(--white-2);font-size:.86rem;line-height:1.8;max-width:340px;margin-bottom:2rem}
+.feats{display:flex;flex-direction:column;gap:.6rem}
+.feat{display:flex;align-items:center;gap:.8rem;font-size:.8rem;color:var(--white-2)}
+.feat-dot{width:27px;height:27px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.68rem;flex-shrink:0}
+.ctrs{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:2.5rem}
+.ctr{background:var(--white-5);border:1px solid var(--border);border-radius:var(--r-md);padding:.8rem;text-align:center}
+.ctr-n{font-family:var(--font-mono);font-size:1.35rem;font-weight:500;background:var(--grad-v);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.ctr-l{font-size:.62rem;color:var(--white-3);margin-top:3px;text-transform:uppercase;letter-spacing:.07em}
+.fh{margin-bottom:1.5rem}
+.fh h2{font-family:var(--font-head);font-size:1.6rem;font-weight:900;letter-spacing:-.025em;margin-bottom:.2rem}
+.fh p{color:var(--white-3);font-size:.82rem}
+.btn-auth{width:100%;padding:12px;border-radius:var(--r-md);background:var(--grad-v);color:white;font-family:var(--font-body);font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:var(--t) var(--spring);box-shadow:var(--shadow-v);letter-spacing:.01em;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-auth:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,92,252,.45)}
+.btn-auth:active{transform:scale(.98)}
+.btn-auth:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.sep{display:flex;align-items:center;gap:.75rem;margin:.9rem 0;color:var(--white-3);font-size:.7rem}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--border)}
+.socials{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.6rem}
+.btn-soc{background:var(--white-5);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px;color:var(--white-3);font-family:var(--font-body);font-size:.77rem;font-weight:500;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:var(--t);width:100%}
+.btn-soc:hover{background:var(--white-4);border-color:rgba(255,255,255,.12);color:var(--white)}
+.btn-soc.google:hover{border-color:rgba(234,67,53,.4);color:#ea4335}
+.btn-soc.github:hover{border-color:rgba(255,255,255,.3);color:white}
+.btn-soc:disabled{opacity:.5;cursor:not-allowed}
+.switch-link{text-align:center;margin-top:1.1rem;font-size:.78rem;color:var(--white-3)}
+.switch-link a{color:var(--violet-bright);text-decoration:none;font-weight:600}
+.tabs{display:flex;gap:.4rem;margin-bottom:1.2rem;background:var(--dark-3);border-radius:var(--r-md);padding:4px}
+.tab{flex:1;padding:7px;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;background:none;border:none;color:var(--white-3);font-family:var(--font-body);transition:var(--t)}
+.tab.on{background:var(--grad-v);color:white;box-shadow:0 2px 12px rgba(124,92,252,.3)}
+.otp-inputs{display:flex;gap:.5rem;justify-content:center;margin:.75rem 0}
+.otp-input{width:48px;height:52px;background:var(--dark-3);border:2px solid var(--border);border-radius:var(--r-md);text-align:center;font-family:var(--font-mono);font-size:1.3rem;font-weight:700;color:var(--white);outline:none;transition:var(--t)}
+.otp-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,92,252,.1)}
+.otp-input.filled{border-color:var(--violet);background:var(--violet-dim)}
+.forgot{font-size:.73rem;color:var(--white-3);text-decoration:none;float:right;margin-top:-6px;margin-bottom:.85rem;display:block;transition:var(--t)}
+.forgot:hover{color:var(--violet-bright)}
+.provider-badge{display:inline-flex;align-items:center;gap:5px;font-size:.65rem;padding:2px 8px;border-radius:20px;font-weight:600}
+.provider-badge.google{background:rgba(234,67,53,.1);color:#ea4335;border:1px solid rgba(234,67,53,.2)}
+.provider-badge.github{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15)}
+@media(max-width:860px){.auth-left{display:none}.auth-right{width:100%}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<div class="auth-page">
+  <div class="auth-left">
+    <div class="al-top-line"></div><div class="al-glow"></div>
+    <a href="../index.html" class="brand"><div class="brand-mark"><i class="fa-solid fa-brain"></i></div><div class="brand-n">IQPrep</div></a>
+    <div class="hero-block stag">
+      <div class="hero-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Interview Platform</div>
+      <div class="hero-h">Master every<br><em>interview</em><br>with AI.</div>
+      <p class="hero-p">Practice real questions, get honest AI feedback and land your dream role with complete confidence.</p>
+      <div class="feats">
+        <div class="feat"><div class="feat-dot" style="background:var(--violet-dim);color:var(--violet-bright)"><i class="fa-solid fa-robot"></i></div>Real-time AI scoring & feedback</div>
+        <div class="feat"><div class="feat-dot" style="background:var(--teal-dim);color:var(--teal)"><i class="fa-solid fa-microphone"></i></div>Voice + video interview modes</div>
+        <div class="feat"><div class="feat-dot" style="background:var(--green-dim);color:var(--green)"><i class="fa-solid fa-chart-line"></i></div>Progress tracking & analytics</div>
+        <div class="feat"><div class="feat-dot" style="background:var(--amber-dim);color:var(--amber)"><i class="fa-solid fa-fire"></i></div>Daily streaks & achievements</div>
+      </div>
+    </div>
+    <div class="ctrs stag">
+      <div class="ctr"><div class="ctr-n">50K+</div><div class="ctr-l">Questions</div></div>
+      <div class="ctr"><div class="ctr-n">98%</div><div class="ctr-l">Satisfied</div></div>
+      <div class="ctr"><div class="ctr-n">4.9★</div><div class="ctr-l">Rating</div></div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="fh"><h2>Welcome back.</h2><p>Sign in to continue your journey</p></div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab on" onclick="switchTab('password',this)">🔑 Password</button>
+      <button class="tab" onclick="switchTab('otp',this)">📱 OTP Login</button>
+    </div>
+
+    <!-- ══ PASSWORD LOGIN ══ -->
+    <div id="tab-password">
+      <div class="fg">
+        <label>Email</label>
+        <div class="iw"><i class="ic fa-regular fa-envelope"></i><input class="fi" type="email" id="email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')login()"></div>
+      </div>
+      <div class="fg">
+        <label>Password</label>
+        <div class="iw"><i class="ic fa-solid fa-lock"></i>
+          <input class="fi" type="password" id="pass" placeholder="Your password" onkeydown="if(event.key==='Enter')login()">
+          <button onclick="togglePw('pass',this)" style="background:none;border:none;color:var(--white-3);cursor:pointer;padding:0 12px;font-size:.8rem;position:absolute;right:0;top:50%;transform:translateY(-50%)"><i class="fa-solid fa-eye"></i></button>
+        </div>
+      </div>
+      <a href="#" class="forgot" onclick="showForgotPassword(event)">Forgot password?</a>
+      <button class="btn-auth" id="login-btn" onclick="login()">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+      </button>
+      <div class="sep">or continue with</div>
+      <div class="socials">
+        <button class="btn-soc google" id="google-btn" onclick="loginWithGoogle()">
+          <i class="fa-brands fa-google"></i> Google
+        </button>
+        <button class="btn-soc github" id="github-btn" onclick="loginWithGitHub()">
+          <i class="fa-brands fa-github"></i> GitHub
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ OTP LOGIN ══ -->
+    <div id="tab-otp" style="display:none">
+
+      <!-- Step 1: Enter email/phone -->
+      <div id="otp-step-1">
+        <div class="fg">
+          <label>Email or Phone</label>
+          <div class="iw">
+            <i class="ic fa-regular fa-envelope"></i>
+            <input class="fi" type="text" id="otp-contact" placeholder="Email or +91XXXXXXXXXX" onkeydown="if(event.key==='Enter')sendOTP()">
+          </div>
+        </div>
+        <button class="btn-auth" id="otp-send-btn" onclick="sendOTP()">
+          <i class="fa-solid fa-paper-plane"></i> Send OTP
+        </button>
+      </div>
+
+      <!-- Step 2: Enter OTP -->
+      <div id="otp-step-2" style="display:none">
+        <div style="text-align:center;margin-bottom:1rem">
+          <div style="font-size:.82rem;color:var(--white-3)">OTP sent to <span id="otp-sent-to" style="color:var(--violet-bright);font-weight:600"></span></div>
+          <div style="font-size:.72rem;color:var(--white-3);margin-top:.3rem">Enter the 6-digit code below</div>
+          <div style="font-size:.7rem;color:var(--white-3);margin-top:.5rem">
+            Expires in: <span id="otp-timer" style="color:var(--amber);font-family:var(--font-mono);font-weight:700">10:00</span>
+          </div>
+        </div>
+        <div class="otp-inputs">
+          <input class="otp-input" type="text" maxlength="1" inputmode="numeric" id="otp1" oninput="otpNext(this,'otp2')" onkeydown="otpBack(event,this,'')">
+          <input class="otp-input" type="text" maxlength="1" inputmode="numeric" id="otp2" oninput="otpNext(this,'otp3')" onkeydown="otpBack(event,this,'otp1')">
+          <input class="otp-input" type="text" maxlength="1" inputmode="numeric" id="otp3" oninput="otpNext(this,'otp4')" onkeydown="otpBack(event,this,'otp2')">
+          <input class="otp-input" type="text" maxlength="1" inputmode="numeric" id="otp4" oninput="otpNext(this,'otp5')" onkeydown="otpBack(event,this,'otp3')">
+          <input class="otp-input" type="text" maxlength="1" inputmode="numeric" id="otp5" oninput="otpNext(this,'otp6')" onkeydown="otpBack(event,this,'otp4')">
+          <input class="otp-input" type="text" maxlength="1" inputmode="numeric" id="otp6" oninput="otpNext(this,'')" onkeydown="otpBack(event,this,'otp5')">
+        </div>
+        <button class="btn-auth" id="otp-verify-btn" onclick="verifyOTP()">
+          <i class="fa-solid fa-check"></i> Verify & Sign In
+        </button>
+        <div style="text-align:center;margin-top:.75rem;display:flex;align-items:center;justify-content:center;gap:.75rem">
+          <button onclick="resetOTP()" style="background:none;border:none;color:var(--white-3);font-size:.75rem;cursor:pointer;font-family:inherit">← Change</button>
+          <span style="color:var(--border);font-size:.8rem">|</span>
+          <button id="resend-btn" onclick="sendOTP(true)" style="background:none;border:none;color:var(--violet-bright);font-size:.75rem;cursor:pointer;font-family:inherit">Resend OTP</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="switch-link">Don't have an account? <a href="register.html">Create one</a></div>
+  </div>
+</div>
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/api.js"></script>
+<script>
+if(getToken()&&S.get('iq3_user')) window.location.href='dashboard.html';
+
+// ── Tab switching ────────────────────────────────────
+function switchTab(tab, btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('tab-password').style.display = tab==='password' ? 'block' : 'none';
+  document.getElementById('tab-otp').style.display      = tab==='otp'      ? 'block' : 'none';
+}
+
+// ── Show/hide password ───────────────────────────────
+function togglePw(id, btn){
+  const inp = document.getElementById(id);
+  const isHidden = inp.type === 'password';
+  inp.type = isHidden ? 'text' : 'password';
+  btn.innerHTML = isHidden ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
+}
+
+// ── Password Login ───────────────────────────────────
+async function login(){
+  const email = document.getElementById('email').value.trim();
+  const pass  = document.getElementById('pass').value;
+  if(!email||!pass){ toast('Missing fields','Fill in all fields.','w'); return; }
+
+  const btn = document.getElementById('login-btn');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
+  btn.disabled = true;
+
+  try{
+    await Auth.login({email, password: pass});
+    toast('Welcome back! 👋','Login successful!','s');
+    setTimeout(()=>window.location.href='dashboard.html', 900);
+  }catch(err){
+    toast('Login failed', err.message, 'e');
+    btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In';
+    btn.disabled = false;
+  }
+}
+
+// ── Google OAuth ─────────────────────────────────────
+async function loginWithGoogle(){
+  const btn = document.getElementById('google-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting...';
+
+  try{
+    const data = await apiFetch('/auth/oauth/google/url');
+    localStorage.setItem('iq3_oauth_provider','google');
+    window.location.href = data.url;
+  }catch(err){
+    toast('Google OAuth not configured', 'Add Google credentials to application.properties', 'w', 6000);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-brands fa-google"></i> Google';
+  }
+}
+
+// ── GitHub OAuth ─────────────────────────────────────
+async function loginWithGitHub(){
+  const btn = document.getElementById('github-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting...';
+
+  try{
+    const data = await apiFetch('/auth/oauth/github/url');
+    localStorage.setItem('iq3_oauth_provider','github');
+    window.location.href = data.url;
+  }catch(err){
+    toast('GitHub OAuth not configured', 'Add GitHub credentials to application.properties', 'w', 6000);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-brands fa-github"></i> GitHub';
+  }
+}
+
+// ── OTP Logic ────────────────────────────────────────
+let otpContact = '';
+let otpTimerInterval = null;
+
+function otpNext(el, nextId){
+  el.classList.toggle('filled', el.value.length > 0);
+  if(el.value.length===1 && nextId) document.getElementById(nextId).focus();
+  const allFilled = ['otp1','otp2','otp3','otp4','otp5','otp6'].every(id=>document.getElementById(id).value);
+  if(allFilled) setTimeout(verifyOTP, 300);
+}
+
+function otpBack(e, el, prevId){
+  el.classList.toggle('filled', el.value.length > 0);
+  if(e.key==='Backspace' && !el.value && prevId) document.getElementById(prevId).focus();
+}
+
+function startOtpTimer(){
+  clearInterval(otpTimerInterval);
+  let secs = 600; // 10 minutes
+  const el = document.getElementById('otp-timer');
+  otpTimerInterval = setInterval(()=>{
+    secs--;
+    const m = String(Math.floor(secs/60)).padStart(2,'0');
+    const s = String(secs%60).padStart(2,'0');
+    el.textContent = `${m}:${s}`;
+    if(secs<=60) el.style.color = 'var(--red)';
+    if(secs<=0){
+      clearInterval(otpTimerInterval);
+      el.textContent = 'Expired';
+      toast("OTP expired","Please request a new OTP.",'w');
+    }
+  },1000);
+}
+
+function resetOTP(){
+  clearInterval(otpTimerInterval);
+  document.getElementById('otp-step-1').style.display='block';
+  document.getElementById('otp-step-2').style.display='none';
+  ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.value='';el.classList.remove('filled');
+  });
+  document.getElementById('otp-timer').style.color='var(--amber)';
+}
+
+async function sendOTP(isResend = false){
+  otpContact = document.getElementById('otp-contact').value.trim();
+  if(!otpContact){ toast('Required','Enter your email or phone number.','w'); return; }
+
+  const btn = document.getElementById('otp-send-btn');
+  const resendBtn = document.getElementById('resend-btn');
+  if(btn) { btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Sending...'; btn.disabled=true; }
+  if(resendBtn) { resendBtn.textContent='Sending...'; resendBtn.disabled=true; }
+
+  try{
+    const data = await apiFetch('/auth/otp/send',{
+      method:'POST',
+      body: JSON.stringify({ contact: otpContact })
+    });
+
+    document.getElementById('otp-step-1').style.display='none';
+    document.getElementById('otp-step-2').style.display='block';
+    document.getElementById('otp-sent-to').textContent = otpContact;
+
+    // Show OTP in toast for dev (devOtp comes from backend in dev mode)
+    if(data.devOtp){
+      toast('OTP Sent! 📧', `Dev OTP: ${data.devOtp}`, 's', 15000);
+    }else{
+      toast('OTP Sent! 📧', `Check your ${otpContact.includes('@')?'email':'phone'}`, 's');
+    }
+
+    startOtpTimer();
+    ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach(id=>{
+      const el=document.getElementById(id);el.value='';el.classList.remove('filled');
+    });
+    document.getElementById('otp-timer').style.color='var(--amber)';
+    document.getElementById('otp1').focus();
+
+  }catch(err){
+    toast('Failed to send OTP', err.message, 'e');
+  }finally{
+    if(btn){ btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Send OTP'; btn.disabled=false; }
+    if(resendBtn){ resendBtn.textContent='Resend OTP'; resendBtn.disabled=false; }
+  }
+}
+
+async function verifyOTP(){
+  const entered = ['otp1','otp2','otp3','otp4','otp5','otp6'].map(id=>document.getElementById(id).value).join('');
+  if(entered.length<6){ toast('Incomplete','Enter all 6 digits.','w'); return; }
+
+  const btn = document.getElementById('otp-verify-btn');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+  btn.disabled = true;
+
+  try{
+    const data = await apiFetch('/auth/otp/verify',{
+      method:'POST',
+      body: JSON.stringify({ contact: otpContact, otp: entered })
+    });
+
+    // Store token + user same as password login
+    setToken(data.token);
+    S.set('iq3_user',{
+      id:            data.id,
+      firstName:     data.firstName,
+      lastName:      data.lastName,
+      email:         data.email,
+      roles:         data.roles,
+      targetRole:    data.targetRole,
+      totalSessions: data.totalSessions,
+      averageScore:  data.averageScore
+    });
+
+    clearInterval(otpTimerInterval);
+    toast('✅ Verified!','Logging you in...','s');
+    setTimeout(()=>window.location.href='dashboard.html',900);
+
+  }catch(err){
+    toast('Wrong OTP', err.message||'Invalid or expired code.', 'e');
+    ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach(id=>{
+      const el=document.getElementById(id);el.value='';el.classList.remove('filled');
+    });
+    document.getElementById('otp1').focus();
+    btn.innerHTML='<i class="fa-solid fa-check"></i> Verify & Sign In';
+    btn.disabled=false;
+  }
+}
+
+// ── Forgot Password (basic modal) ───────────────────
+function showForgotPassword(e){
+  e.preventDefault();
+  const email=document.getElementById('email').value.trim();
+  const entered=prompt('Enter your registered email to reset password:',email||'');
+  if(!entered) return;
+  toast('Reset link sent!','Check your email for a password reset link (coming soon).','i',5000);
+}
+</script>
+</body>
+</html>

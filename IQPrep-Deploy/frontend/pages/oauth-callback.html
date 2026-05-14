@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Signing you in...</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body{min-height:100vh;display:flex;align-items:center;justify-content:center}
+.cb-box{text-align:center;padding:3rem;max-width:420px;width:100%}
+.cb-logo{width:72px;height:72px;border-radius:20px;background:var(--grad-v);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:white;margin:0 auto 1.5rem;box-shadow:0 0 40px var(--violet-glow);animation:logoPulse 2s ease infinite}
+@keyframes logoPulse{0%,100%{box-shadow:0 0 40px var(--violet-glow)}50%{box-shadow:0 0 70px var(--violet-glow)}}
+.cb-title{font-family:var(--font-head);font-size:1.5rem;font-weight:900;letter-spacing:-.025em;margin-bottom:.4rem}
+.cb-sub{color:var(--white-3);font-size:.85rem;margin-bottom:1.5rem}
+.cb-status{font-size:.8rem;color:var(--violet-bright);font-family:var(--font-mono);margin-top:.75rem}
+.cb-error{color:var(--red);font-size:.82rem;margin-top:.75rem;background:var(--red-dim);border:1px solid rgba(248,113,113,.2);border-radius:var(--r-sm);padding:.65rem;display:none;text-align:left;line-height:1.6}
+.cb-back{display:none;margin-top:1.25rem;font-size:.78rem;color:var(--violet-bright);cursor:pointer;background:none;border:1px solid var(--border-v);border-radius:var(--r-full);padding:6px 16px;font-family:var(--font-body);transition:var(--t)}
+.cb-back:hover{background:var(--violet-dim)}
+.cb-debug{margin-top:1rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.75rem;font-size:.72rem;color:rgba(255,255,255,.4);font-family:monospace;text-align:left;display:none;word-break:break-all}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<div class="cb-box">
+  <div class="cb-logo"><i class="fa-solid fa-brain"></i></div>
+  <div class="cb-title">Signing you in...</div>
+  <div class="cb-sub">Please wait while we connect your account</div>
+  <div class="dots-ai" style="justify-content:center"><span></span><span></span><span></span></div>
+  <div class="cb-status" id="cb-status">Reading authorization code...</div>
+  <div class="cb-error" id="cb-error"></div>
+  <div class="cb-debug" id="cb-debug"></div>
+  <button class="cb-back" id="cb-back" onclick="window.location.href='login.html'">
+    <i class="fa-solid fa-arrow-left"></i> Back to Login
+  </button>
+</div>
+<script src="../js/utils.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/api.js"></script>
+<script>
+// ── Read URL params ───────────────────────────────────────────
+const params   = new URLSearchParams(window.location.search);
+const code     = params.get('code');
+const errParam = params.get('error');
+const provider = localStorage.getItem('iq3_oauth_provider') || 'google';
+
+function setStatus(msg){ document.getElementById('cb-status').textContent = msg; }
+
+function showError(msg, debugInfo){
+  setStatus('Authentication failed');
+  const el = document.getElementById('cb-error');
+  el.innerHTML = msg;
+  el.style.display = 'block';
+  document.getElementById('cb-back').style.display = 'inline-block';
+  if(debugInfo){
+    const dbg = document.getElementById('cb-debug');
+    dbg.textContent = debugInfo;
+    dbg.style.display = 'block';
+  }
+}
+
+function debug(msg){ console.log('[OAuth]', msg); }
+
+async function handleCallback(){
+  debug('Provider: ' + provider);
+  debug('Code present: ' + !!code);
+  debug('Error param: ' + errParam);
+
+  // ── Error from provider ──────────────────────────────────
+  if(errParam){
+    showError(
+      '❌ OAuth was cancelled or denied by ' + provider + '.<br><br>' +
+      'Reason: <code>' + errParam + '</code><br><br>' +
+      'Click "Back to Login" and try again.',
+      'error_param=' + errParam
+    );
+    return;
+  }
+
+  // ── No code received ─────────────────────────────────────
+  if(!code){
+    // Check if this page was opened directly (not from OAuth redirect)
+    showError(
+      '❌ No authorization code found in URL.<br><br>' +
+      'This usually means:<br>' +
+      '• The OAuth redirect URI is wrong in Google/GitHub console<br>' +
+      '• You opened this page directly instead of clicking the button<br><br>' +
+      'Expected redirect URI: <code>http://127.0.0.1:3000/IQPrep-Deploy/frontend/pages/oauth-callback.html</code>',
+      'URL: ' + window.location.href
+    );
+    return;
+  }
+
+  setStatus('Connecting to backend...');
+  debug('Code: ' + code.substring(0,10) + '...');
+
+  // ── Send code to backend ──────────────────────────────────
+  try{
+    const endpoint = provider === 'github'
+      ? '/auth/oauth/github/callback'
+      : '/auth/oauth/google/callback';
+
+    debug('Calling: ' + endpoint);
+    setStatus('Verifying with ' + (provider === 'github' ? 'GitHub' : 'Google') + '...');
+
+    const data = await apiFetch(endpoint, {
+      method: 'POST',
+      body:   JSON.stringify({ code })
+    });
+
+    debug('Got token: ' + !!data.token);
+
+    // ── Save user exactly like normal login ───────────────
+    setToken(data.token);
+    S.set('iq3_user', {
+      id:            data.id,
+      firstName:     data.firstName,
+      lastName:      data.lastName,
+      email:         data.email,
+      roles:         data.roles,
+      targetRole:    data.targetRole,
+      totalSessions: data.totalSessions,
+      averageScore:  data.averageScore
+    });
+
+    localStorage.removeItem('iq3_oauth_provider');
+    setStatus('✅ Logged in as ' + data.firstName + '! Redirecting...');
+    setTimeout(() => window.location.href = 'dashboard.html', 1000);
+
+  } catch(err){
+    debug('Error: ' + err.message);
+
+    let friendlyMsg = '❌ Login failed.<br><br>';
+
+    if(err.message && err.message.includes('503')){
+      friendlyMsg +=
+        '<strong>OAuth not configured yet.</strong><br>' +
+        'Add your Google/GitHub credentials to <code>application.properties</code>.<br>' +
+        'See the setup guide for steps.';
+    } else if(err.message && err.message.includes('404')){
+      friendlyMsg +=
+        '<strong>Backend endpoint not found.</strong><br>' +
+        'Make sure the backend is running on port 8080 and<br>' +
+        'OAuth2Controller.java is in your controller folder.';
+    } else if(err.message && err.message.toLowerCase().includes('network') || err.message.includes('fetch')){
+      friendlyMsg +=
+        '<strong>Cannot reach backend.</strong><br>' +
+        'Is Spring Boot running on port 8080?<br>' +
+        'Check your terminal for errors.';
+    } else {
+      friendlyMsg += (err.message || 'Unknown error. Check browser console (F12).');
+    }
+
+    showError(friendlyMsg, 'Error: ' + err.message + '\nProvider: ' + provider + '\nCode: ' + (code || 'none').substring(0,15));
+  }
+}
+
+handleCallback();
+</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — History</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.page{padding:2.5rem 0}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.ms-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:1.6rem}
+.ms{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-lg);padding:1rem 1.2rem;text-align:center}
+.ms-n{font-family:var(--font-mono);font-size:1.45rem;font-weight:500}
+.ms-l{font-size:.65rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.07em;margin-top:4px}
+.sf{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.sw{position:relative;flex:1;min-width:190px}
+.sw i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--white-3);font-size:.76rem}
+.si{width:100%;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-full);padding:8px 13px 8px 35px;font-family:var(--font-body);font-size:.8rem;color:var(--white);outline:none;transition:var(--t)}
+.si:focus{border-color:var(--border-v)}.si::placeholder{color:var(--white-3)}
+.fb_{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-full);padding:6px 13px;font-size:.75rem;font-weight:600;color:var(--white-3);cursor:pointer;transition:var(--t);font-family:var(--font-body)}
+.fb_:hover,.fb_.on{border-color:var(--border-v);color:var(--violet-bright);background:var(--violet-soft)}
+.ss_{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-full);padding:6px 12px;font-size:.75rem;color:var(--white-3);outline:none;cursor:pointer;font-family:var(--font-body)}
+.hl{display:flex;flex-direction:column;gap:.45rem}
+.hi{display:flex;align-items:center;gap:.9rem;padding:.82rem 1rem;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);transition:var(--t);cursor:pointer}
+.hi:hover{border-color:rgba(255,255,255,.09);transform:translateX(3px)}
+.h-ic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.h-inf{flex:1}
+.h-t{font-size:.84rem;font-weight:600;margin-bottom:1px}
+.h-m{font-size:.68rem;color:var(--white-3);display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
+.h-sc{font-family:var(--font-mono);font-size:1.05rem;font-weight:500;text-align:right}
+.h-sb{width:55px;height:2.5px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:.3rem;overflow:hidden;margin-left:auto}
+.h-sf{height:100%;border-radius:2px}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem}
+.modal{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--r-xl);width:100%;max-width:720px;max-height:85vh;overflow-y:auto}
+.modal-h{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.6rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--dark-2);z-index:2}
+.modal-title{font-family:var(--font-head);font-size:1.1rem;font-weight:800}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--dark-4);border:1px solid var(--border);color:var(--white-3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:var(--t)}
+.modal-close:hover{background:var(--dark-3);color:var(--white)}
+.modal-body{padding:1.4rem 1.6rem}
+.modal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1.2rem}
+.mstat{background:var(--dark-3);border-radius:var(--r-sm);padding:.65rem;text-align:center}
+.mstat-n{font-family:var(--font-mono);font-size:1.1rem;font-weight:500}
+.mstat-l{font-size:.6rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.qa-item{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;margin-bottom:.65rem}
+.qa-q{font-size:.85rem;font-weight:600;margin-bottom:.5rem;line-height:1.5}
+.qa-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--white-3);margin-bottom:.25rem}
+.qa-ans{font-size:.78rem;color:var(--white-2);line-height:1.65;background:var(--dark-4);border-radius:var(--r-sm);padding:.6rem .75rem;margin-bottom:.5rem}
+.qa-fb{font-size:.75rem;color:var(--white-2);line-height:1.65}
+.qa-score-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:.5rem}
+.qa-sc{background:var(--dark-4);border-radius:6px;padding:.4rem;text-align:center}
+.qa-sc-n{font-family:var(--font-mono);font-size:.85rem;font-weight:500}
+.qa-sc-l{font-size:.55rem;color:var(--white-3);text-transform:uppercase}
+.skipped-badge{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:6px;padding:.4rem .6rem;font-size:.72rem;color:var(--red);text-align:center}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<nav class="nav">
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="interview.html">Practice</a></li>
+    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="history.html" class="on">History</a></li>
+    <li><a href="analytics.html">Analytics</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+    <li><a href="profile.html">Profile</a></li>
+  </ul>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+</nav>
+<div class="pw"><div class="w page">
+  <div class="ph">
+    <div><div class="lbl">Your Journey</div><div class="h1" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:.3rem;letter-spacing:-.025em">Session <span style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">History</span></div></div>
+    <a href="interview.html" class="btn btn-v btn-sm"><i class="fa-solid fa-plus"></i> New Session</a>
+  </div>
+  <div class="ms-g stag">
+    <div class="ms"><div class="ms-n" id="mt">0</div><div class="ms-l">Total Sessions</div></div>
+    <div class="ms"><div class="ms-n" id="ma" style="color:var(--violet-bright)">—</div><div class="ms-l">Average Score</div></div>
+    <div class="ms"><div class="ms-n" id="mb" style="color:var(--green)">—</div><div class="ms-l">Best Score</div></div>
+  </div>
+  <div class="sf">
+    <div class="sw"><i class="fa-solid fa-magnifying-glass"></i><input class="si" id="srch" placeholder="Search sessions..." oninput="render()"></div>
+    <button class="fb_ on" data-f="all" onclick="setF(this)">All</button>
+    <button class="fb_" data-f="technical" onclick="setF(this)">💻 Technical</button>
+    <button class="fb_" data-f="hr" onclick="setF(this)">🤝 HR</button>
+    <button class="fb_" data-f="aptitude" onclick="setF(this)">🧮 Aptitude</button>
+    <button class="fb_" data-f="mixed" onclick="setF(this)">🎯 Mixed</button>
+    <select class="ss_" id="srt" onchange="render()">
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+      <option value="high">Highest Score</option>
+      <option value="low">Lowest Score</option>
+    </select>
+  </div>
+  <div class="hl" id="hl"></div>
+</div></div>
+
+<div class="modal-bg" id="modal" style="display:none" onclick="closeModal(event)">
+  <div class="modal" id="modal-inner">
+    <div class="modal-h">
+      <div class="modal-title" id="modal-title">Session Details</div>
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <div style="text-align:center;padding:3rem"><div class="dots-ai"><span></span><span></span><span></span></div><p style="color:var(--white-3);margin-top:1rem">Loading...</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/jarvis.js"></script>
+<script>
+if(!getToken()) window.location.href='login.html';
+const user=S.get('iq3_user');
+document.getElementById('nav-av').textContent=getInitial();
+document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+
+const cm={technical:['💻','var(--violet-dim)','Technical Interview'],hr:['🤝','var(--blue-dim)','HR Round'],aptitude:['🧮','var(--teal-dim)','Aptitude Test'],mixed:['🎯','var(--pink-dim)','Full Mock Interview']};
+let allSessions=[];let curF='all';
+
+function setF(b){document.querySelectorAll('.fb_').forEach(x=>x.classList.remove('on'));b.classList.add('on');curF=b.dataset.f;render();}
+
+function render(){
+  const q=document.getElementById('srch').value.toLowerCase();
+  const srt=document.getElementById('srt').value;
+  let items=allSessions.filter(h=>(curF==='all'||h.category===curF)&&(!q||h.category.includes(q)||h.difficulty?.includes(q)));
+  if(srt==='oldest')items.sort((a,b)=>new Date(a.createdAt||a.date)-new Date(b.createdAt||b.date));
+  else if(srt==='high')items.sort((a,b)=>b.score-a.score);
+  else if(srt==='low')items.sort((a,b)=>a.score-b.score);
+  const el=document.getElementById('hl');
+  if(!items.length){el.innerHTML=`<div class="empty-s"><div class="empty-ic">🔍</div><h3>No sessions found</h3><p>Try a different filter or start a new session.</p><a href="interview.html" class="btn btn-v btn-sm" style="margin-top:.5rem">Start Session</a></div>`;return}
+  el.innerHTML=items.map(s=>{
+    const[ic,bg,label]=cm[s.category]||cm.mixed;
+    const sc=parseFloat(s.score);const c=scoreColor(sc);
+    const d=new Date(s.createdAt||s.date);
+    const mins=s.timeTaken?Math.round(s.timeTaken/60)+'m':'—';
+    return `<div class="hi" onclick="openSession(${s.id})">
+      <div class="h-ic" style="background:${bg}">${ic}</div>
+      <div class="h-inf">
+        <div class="h-t">${label}</div>
+        <div class="h-m"><span>${s.totalQuestions||s.questions} questions</span><span>·</span><span>${d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</span><span>·</span><span>${mins}</span><span class="badge diff-${s.difficulty||'medium'}">${s.difficulty||'medium'}</span></div>
+      </div>
+      <div>
+        <div class="h-sc" style="color:${c}">${sc}/10</div>
+        <div class="h-sb"><div class="h-sf" style="width:${sc*10}%;background:${c}"></div></div>
+        <div style="font-size:.62rem;color:var(--white-3);text-align:right;margin-top:3px">View details →</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function openSession(id){
+  document.getElementById('modal').style.display='flex';
+  document.getElementById('modal-body').innerHTML=`<div style="text-align:center;padding:3rem"><div class="dots-ai"><span></span><span></span><span></span></div><p style="color:var(--white-3);margin-top:1rem">Loading session details...</p></div>`;
+  try{
+    const s=await Sessions.getById(id);
+    const[ic,bg,label]=cm[s.category]||cm.mixed;
+    const mins=s.timeTaken?Math.round(s.timeTaken/60)+'m':'—';
+    document.getElementById('modal-title').innerHTML=`${ic} ${label} — ${s.score}/10`;
+    let qaHtml='';
+    if(s.answers&&s.answers.length>0){
+      s.answers.forEach((qa,i)=>{
+        const sc=parseFloat(qa.score||0);const c=scoreColor(sc);
+        if(qa.skipped){
+          qaHtml+=`<div class="qa-item"><div class="qa-q">Q${i+1}. ${qa.question}</div><div class="skipped-badge"><i class="fa-solid fa-forward"></i> Skipped</div></div>`;
+        }else{
+          qaHtml+=`<div class="qa-item">
+            <div class="qa-q">Q${i+1}. ${qa.question}</div>
+            <div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.5rem">${(qa.tags||'').split(',').filter(Boolean).map(t=>`<span class="badge bv">${t}</span>`).join('')}<span class="badge" style="background:${c}22;color:${c};border:1px solid ${c}44">Score: ${sc}/10</span></div>
+            <div class="qa-label">Your Answer</div>
+            <div class="qa-ans">${qa.userAnswer||'No answer'}</div>
+            <div class="qa-label">AI Feedback</div>
+            <div class="qa-fb">${qa.aiFeedback||'—'}</div>
+            ${qa.betterAnswer?`<div class="qa-label" style="margin-top:.5rem;color:var(--violet-bright)">Better Answer</div><div class="qa-fb" style="background:var(--violet-soft);border-radius:var(--r-sm);padding:.6rem .75rem;border:1px solid var(--border-v)">${qa.betterAnswer}</div>`:''}
+            <div class="qa-score-row">
+              <div class="qa-sc"><div class="qa-sc-n" style="color:var(--violet-bright)">${qa.accuracyScore||sc}/10</div><div class="qa-sc-l">Accuracy</div></div>
+              <div class="qa-sc"><div class="qa-sc-n" style="color:var(--teal)">${qa.clarityScore||sc}/10</div><div class="qa-sc-l">Clarity</div></div>
+              <div class="qa-sc"><div class="qa-sc-n" style="color:var(--pink)">${qa.completenessScore||sc}/10</div><div class="qa-sc-l">Complete</div></div>
+            </div>
+          </div>`;
+        }
+      });
+    }else{qaHtml='<p style="color:var(--white-3);text-align:center;padding:2rem">No question details available.</p>';}
+    document.getElementById('modal-body').innerHTML=`
+      <div class="modal-stats">
+        <div class="mstat"><div class="mstat-n" style="color:${scoreColor(s.score)}">${s.score}/10</div><div class="mstat-l">Score</div></div>
+        <div class="mstat"><div class="mstat-n">${s.totalQuestions}</div><div class="mstat-l">Questions</div></div>
+        <div class="mstat"><div class="mstat-n">${mins}</div><div class="mstat-l">Time</div></div>
+        <div class="mstat"><div class="mstat-n" style="text-transform:capitalize">${s.difficulty}</div><div class="mstat-l">Difficulty</div></div>
+      </div>
+      <div style="margin-bottom:.85rem"><div class="lbl">Question & Answer Review</div></div>
+      ${qaHtml}`;
+  }catch(err){
+    document.getElementById('modal-body').innerHTML=`<div style="text-align:center;padding:3rem;color:var(--white-3)"><i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;margin-bottom:1rem;color:var(--red)"></i><p>Could not load session details.</p></div>`;
+  }
+}
+
+function closeModal(e){if(!e||e.target===document.getElementById('modal'))document.getElementById('modal').style.display='none';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modal').style.display='none';});
+
+async function loadHistory(){
+  try{allSessions=await Sessions.getAll();}
+  catch(err){allSessions=S.get('iq3_history')||[];}
+  document.getElementById('mt').textContent=allSessions.length;
+  if(allSessions.length){
+    const avg=(allSessions.reduce((a,s)=>a+s.score,0)/allSessions.length).toFixed(1);
+    const best=Math.max(...allSessions.map(s=>s.score)).toFixed(1);
+    document.getElementById('ma').textContent=avg+'/10';
+    document.getElementById('mb').textContent=best+'/10';
+  }
+  render();
+}
+loadHistory();
+</script>
+</body>
+</html>
