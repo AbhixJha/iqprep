@@ -268,7 +268,7 @@ const JARVIS = {
         ? `Sessions: ${user.totalSessions || 0}, Avg Score: ${user.averageScore || 0}/10, Target Role: ${user.targetRole || 'Developer'}`
         : '';
 
-      const res = await fetch('http://localhost:8080/api/jarvis/chat', {
+      const res = await fetch('https://iqprep-backend.onrender.com/api/jarvis/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 const API_BASE = (typeof window !== 'undefined' && window.IQPREP_API_BASE
   ? String(window.IQPREP_API_BASE)
-  : 'http://127.0.0.1:8080/api'
+  : 'https://iqprep-backend.onrender.com/api'
 ).replace(/\/$/, '');
 
 if (typeof window !== 'undefined') {

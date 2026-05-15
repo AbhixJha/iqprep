@@ -251,7 +251,7 @@ async function analyzeResume(){
     if(currentFile && currentFile.type==='application/pdf') {
       const formData = new FormData();
       formData.append('file', currentFile);
-      const base = (typeof window !== 'undefined' && window.IQPREP_API_BASE) || 'http://127.0.0.1:8080/api';
+      const base = (typeof window !== 'undefined' && window.IQPREP_API_BASE) || 'https://iqprep-backend.onrender.com/api';
       const res = await fetch(`${base}/resume/analyze/file`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${getToken()}` },

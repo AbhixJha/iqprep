@@ -346,7 +346,7 @@ async function getQsFromAI(){
     const token=localStorage.getItem('iq3_token');
     const controller=new AbortController();
     const timeout=setTimeout(()=>{controller.abort();toast('Using backup questions','AI took too long','w')},12000);
-    const base=window.IQPREP_API_BASE||'http://127.0.0.1:8080/api';
+    const base=window.IQPREP_API_BASE||'https://iqprep-backend.onrender.com/api';
     const res = await fetch(`${base}/questions/generate?category=${cfg.cat}&difficulty=${cfg.diff}&count=${cfg.qty}`,{headers:{'Authorization':`Bearer ${token}`},signal:controller.signal});
     clearTimeout(timeout);
     if(res.status===401){window.location.href='login.html';throw new Error('Unauthorized');}
@@ -422,7 +422,7 @@ async function submitAns(){
   let r;
   try{
     const token=localStorage.getItem('iq3_token');
-    const base=window.IQPREP_API_BASE||'http://localhost:8080/api';
+    const base=window.IQPREP_API_BASE||'https://iqprep-backend.onrender.com/api';
     const evalRes=await fetch(`${base}/evaluate`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({question:sess.qs[sess.idx].q,answer:ans,category:cfg.cat,difficulty:cfg.diff,personality:cfg.pers})});
     if(evalRes.status===401){window.location.href='login.html';throw new Error('Unauthorized');}
     if(evalRes.status===429){toast('Too many requests','Wait before submitting again.','w');throw new Error('Rate limited');}

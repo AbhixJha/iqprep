@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = 'https://iqprep-backend.onrender.com/api';
 
 const getToken = () => localStorage.getItem('iq3_token');
 const setToken = (t) => localStorage.setItem('iq3_token', t);

@@ -513,7 +513,7 @@ async function startVideoInterview(){
 
   try{
     const token=getToken();
-    const base=window.IQPREP_API_BASE||'http://127.0.0.1:8080/api';
+    const base=window.IQPREP_API_BASE||'https://iqprep-backend.onrender.com/api';
     const controller=new AbortController();
     const timeoutId=setTimeout(()=>controller.abort(),12000); // 12s timeout
     const res=await fetch(`${base}/questions/generate?category=${cfg.cat}&difficulty=${cfg.diff}&count=${cfg.qty}`,{
@@ -799,7 +799,7 @@ async function submitVoiceAnswer(){
     const metricsPayload = `WPM: ${wpm} (${behaviorNote}) | Filler Words Used: ${fillerCount}`;
 
     const token=getToken();
-    const base=window.IQPREP_API_BASE||'http://127.0.0.1:8080/api';
+    const base=window.IQPREP_API_BASE||'https://iqprep-backend.onrender.com/api';
     const evalRes=await fetch(`${base}/evaluate`,{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},

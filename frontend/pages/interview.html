@@ -316,7 +316,7 @@ async function getQsFromAI(){
     const token=localStorage.getItem('iq3_token');
     const controller=new AbortController();
     const timeout=setTimeout(()=>{controller.abort();toast('Using backup questions','AI took too long','w')},12000);
-    const res=await fetch(`http://localhost:8080/api/questions/generate?category=${cfg.cat}&difficulty=${cfg.diff}&count=${cfg.qty}`,{headers:{'Authorization':`Bearer ${token}`},signal:controller.signal});
+    const res=await fetch(`https://iqprep-backend.onrender.com/api/questions/generate?category=${cfg.cat}&difficulty=${cfg.diff}&count=${cfg.qty}`,{headers:{'Authorization':`Bearer ${token}`},signal:controller.signal});
     clearTimeout(timeout);
     if(!res.ok) throw new Error('AI failed');
     const data=await res.json();
@@ -386,7 +386,7 @@ async function submitAns(){
   let r;
   try{
     const token=localStorage.getItem('iq3_token');
-    const evalRes=await fetch('http://localhost:8080/api/evaluate',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({question:sess.qs[sess.idx].q,answer:ans,category:cfg.cat,difficulty:cfg.diff,personality:cfg.pers})});
+    const evalRes=await fetch('https://iqprep-backend.onrender.com/api/evaluate',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({question:sess.qs[sess.idx].q,answer:ans,category:cfg.cat,difficulty:cfg.diff,personality:cfg.pers})});
     r=await evalRes.json();
     r.strengths=r.strengths?r.strengths.split(', '):['Answer submitted'];
     r.improvements=r.improvements?r.improvements.split(', '):['Keep practicing'];

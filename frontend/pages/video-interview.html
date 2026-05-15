@@ -450,7 +450,7 @@ async function startVideoInterview(){
 
   try{
     const token=getToken();
-    const res=await fetch(`http://localhost:8080/api/questions/generate?category=${cfg.cat}&difficulty=${cfg.diff}&count=${cfg.qty}`,{headers:{'Authorization':`Bearer ${token}`}});
+    const res=await fetch(`https://iqprep-backend.onrender.com/api/questions/generate?category=${cfg.cat}&difficulty=${cfg.diff}&count=${cfg.qty}`,{headers:{'Authorization':`Bearer ${token}`}});
     if(res.ok){
       const data=await res.json();
       sess.qs=data.map(q=>({q:q.question||q.q,tags:q.tags||[]}));
@@ -630,7 +630,7 @@ async function submitVoiceAnswer(){
     const metricsPayload = `WPM: ${wpm} (${behaviorNote}) | Filler Words Used: ${fillerCount}`;
 
     const token=getToken();
-    const evalRes=await fetch('http://localhost:8080/api/evaluate',{
+    const evalRes=await fetch('https://iqprep-backend.onrender.com/api/evaluate',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
       body:JSON.stringify({
