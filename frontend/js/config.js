@@ -1,1 +1,0 @@
-window.IQPREP_API_BASE = "https://iqprep-backend.onrender.com/api";
