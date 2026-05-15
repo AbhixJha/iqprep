@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Create Account</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.auth-page{min-height:100vh;display:flex;align-items:stretch}
+.auth-left{flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:3.5rem;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--dark-2),var(--dark));border-right:1px solid var(--border)}
+.al-top-line{position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-v)}
+.al-glow{position:absolute;width:380px;height:380px;background:rgba(124,92,252,.06);border-radius:50%;filter:blur(80px);top:-80px;right:-80px;pointer-events:none}
+.auth-right{width:500px;flex-shrink:0;background:var(--dark-2);display:flex;flex-direction:column;justify-content:center;padding:2.5rem;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-mark{width:40px;height:40px;background:var(--grad-v);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:white;box-shadow:0 0 20px var(--violet-glow)}
+.brand-n{font-family:var(--font-head);font-size:1.2rem;font-weight:900;color:var(--white)}
+.brand-p{font-family:var(--font-head);font-size:clamp(2rem,4vw,3rem);font-weight:900;line-height:1.1;letter-spacing:-.035em;margin:2rem 0 1rem}
+.brand-p em{font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.brand-sub{color:var(--white-2);font-size:.86rem;line-height:1.75;max-width:320px;margin-bottom:2rem}
+.perks{display:flex;flex-direction:column;gap:.55rem}
+.perk{display:flex;align-items:center;gap:.7rem;font-size:.78rem;color:var(--white-2)}
+.pk{width:22px;height:22px;border-radius:6px;background:var(--violet-dim);border:1px solid var(--border-v);display:flex;align-items:center;justify-content:center;font-size:.62rem;color:var(--violet-bright);flex-shrink:0}
+.fh{margin-bottom:1.4rem}
+.fh h2{font-family:var(--font-head);font-size:1.5rem;font-weight:900;letter-spacing:-.025em;margin-bottom:.2rem}
+.fh p{color:var(--white-3);font-size:.8rem}
+.tabs{display:flex;gap:.4rem;margin-bottom:1.2rem;background:var(--dark-3);border-radius:var(--r-md);padding:4px}
+.tab{flex:1;padding:7px;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;background:none;border:none;color:var(--white-3);font-family:var(--font-body);transition:var(--t)}
+.tab.on{background:var(--grad-v);color:white;box-shadow:0 2px 12px rgba(124,92,252,.3)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.roles-g{display:grid;grid-template-columns:1fr 1fr;gap:.38rem;margin-top:.2rem}
+.chip{background:var(--dark-4);border:1px solid var(--border);border-radius:8px;padding:7px 10px;cursor:pointer;transition:var(--t);font-size:.73rem;font-weight:600;color:var(--white-3);display:flex;align-items:center;gap:6px;user-select:none}
+.chip:hover{border-color:var(--border-v);color:var(--white)}
+.chip.on{border-color:var(--violet);color:var(--violet-bright);background:var(--violet-dim)}
+.sbar{display:flex;gap:3px;margin-top:5px}
+.seg{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.06);transition:.3s}
+.pw-rules{display:flex;flex-direction:column;gap:3px;margin-top:.4rem}
+.pw-rule{font-size:.68rem;display:flex;align-items:center;gap:5px;transition:.2s}
+.pw-rule.ok{color:var(--green)}
+.pw-rule.fail{color:rgba(255,255,255,.3)}
+.pw-rule i{font-size:.6rem}
+.btn-auth{width:100%;padding:12px;border-radius:var(--r-md);background:var(--grad-v);color:white;font-family:var(--font-body);font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:var(--t) var(--spring);box-shadow:var(--shadow-v);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-auth:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,92,252,.45)}
+.btn-auth:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.sep{display:flex;align-items:center;gap:.75rem;margin:.75rem 0;color:var(--white-3);font-size:.7rem}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--border)}
+.socials{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.5rem}
+.btn-soc{background:var(--white-5);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px;color:var(--white-3);font-family:var(--font-body);font-size:.77rem;font-weight:500;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:var(--t)}
+.btn-soc:hover{background:var(--white-4);border-color:rgba(255,255,255,.12);color:var(--white)}
+.btn-soc.google:hover{border-color:rgba(234,67,53,.4);color:#ea4335}
+.btn-soc.github:hover{border-color:rgba(255,255,255,.3);color:white}
+.switch-link{text-align:center;margin-top:1rem;font-size:.78rem;color:var(--white-3)}
+.switch-link a{color:var(--violet-bright);text-decoration:none;font-weight:600}
+@media(max-width:860px){.auth-left{display:none}.auth-right{width:100%}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<div class="auth-page">
+  <div class="auth-left">
+    <div class="al-top-line"></div><div class="al-glow"></div>
+    <a href="../index.html" class="brand"><div class="brand-mark"><i class="fa-solid fa-brain"></i></div><div class="brand-n">IQPrep</div></a>
+    <div class="stag">
+      <div class="brand-p">Your<br><em>career</em><br>starts here.</div>
+      <p class="brand-sub">Join thousands of students using AI to practice smarter and land better jobs.</p>
+      <div class="perks">
+        <div class="perk"><div class="pk"><i class="fa-solid fa-check"></i></div>Free to use — no credit card</div>
+        <div class="perk"><div class="pk"><i class="fa-solid fa-check"></i></div>Unlimited practice sessions</div>
+        <div class="perk"><div class="pk"><i class="fa-solid fa-check"></i></div>Real-time AI feedback on every answer</div>
+        <div class="perk"><div class="pk"><i class="fa-solid fa-check"></i></div>Video interview with camera + voice</div>
+        <div class="perk"><div class="pk"><i class="fa-solid fa-check"></i></div>Resume analyzer + daily challenges</div>
+      </div>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="auth-right">
+    <div class="fh"><h2>Create account.</h2><p>Start your journey today</p></div>
+
+    <div class="row2">
+      <div class="fg"><label>First Name</label><div class="iw"><i class="ic fa-regular fa-user"></i><input class="fi" type="text" id="r-fn" placeholder="Rahul"></div></div>
+      <div class="fg"><label>Last Name</label><input class="fi ni" type="text" id="r-ln" placeholder="Sharma"></div>
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Email</label><div class="iw"><i class="ic fa-regular fa-envelope"></i><input class="fi" type="email" id="r-em" placeholder="you@example.com"></div></div>
+      <div class="fg"><label>Phone</label><div class="iw"><i class="ic fa-solid fa-phone"></i><input class="fi" type="tel" id="r-ph" placeholder="+91XXXXXXXXXX"></div></div>
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <div class="iw"><i class="ic fa-solid fa-lock"></i><input class="fi" type="password" id="r-pw" placeholder="Min 8 chars, 1 uppercase, 1 special" oninput="chkPw(this.value)"></div>
+      <div class="sbar"><div class="seg" id="pw1"></div><div class="seg" id="pw2"></div><div class="seg" id="pw3"></div><div class="seg" id="pw4"></div></div>
+      <div class="pw-rules">
+        <div class="pw-rule fail" id="rule-len"><i class="fa-solid fa-circle-xmark"></i> At least 8 characters</div>
+        <div class="pw-rule fail" id="rule-upper"><i class="fa-solid fa-circle-xmark"></i> At least 1 uppercase letter (A-Z)</div>
+        <div class="pw-rule fail" id="rule-special"><i class="fa-solid fa-circle-xmark"></i> At least 1 special character (!@#$%^&*)</div>
+        <div class="pw-rule fail" id="rule-num"><i class="fa-solid fa-circle-xmark"></i> At least 1 number (0-9)</div>
+      </div>
+    </div>
+    <div class="fg" style="margin-bottom:1.3rem">
+      <label>Target Role(s) <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--white-3);font-size:.62rem">— pick multiple</span></label>
+      <div class="roles-g">
+        <div class="chip" onclick="togR(this,'Java Backend')"><i class="fa-brands fa-java"></i>Java Backend</div>
+        <div class="chip" onclick="togR(this,'Full Stack Dev')"><i class="fa-solid fa-layer-group"></i>Full Stack Dev</div>
+        <div class="chip" onclick="togR(this,'Frontend Dev')"><i class="fa-solid fa-code"></i>Frontend Dev</div>
+        <div class="chip" onclick="togR(this,'Data Scientist')"><i class="fa-solid fa-brain"></i>Data Scientist</div>
+        <div class="chip" onclick="togR(this,'DevOps Engineer')"><i class="fa-solid fa-gears"></i>DevOps Engineer</div>
+        <div class="chip" onclick="togR(this,'Android Dev')"><i class="fa-brands fa-android"></i>Android Dev</div>
+        <div class="chip" onclick="togR(this,'Cloud Engineer')"><i class="fa-solid fa-cloud"></i>Cloud Engineer</div>
+        <div class="chip" onclick="togR(this,'SDE Fresher')"><i class="fa-solid fa-rocket"></i>SDE Fresher</div>
+      </div>
+    </div>
+    <button class="btn-auth" id="reg-btn" onclick="register()">
+      <i class="fa-solid fa-rocket"></i> Create Account
+    </button>
+    <div class="sep">or sign up with</div>
+    <div class="socials">
+  <button class="btn-soc google" id="reg-google-btn" onclick="registerWithGoogle()"><i class="fa-brands fa-google"></i> Google</button>
+  <button class="btn-soc github" id="reg-github-btn" onclick="registerWithGitHub()"><i class="fa-brands fa-github"></i> GitHub</button>
+</div>
+    <div class="switch-link">Already have an account? <a href="login.html">Sign in</a></div>
+  </div>
+</div>
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script>
+if(getToken()&&S.get('iq3_user')) window.location.href='dashboard.html';
+
+const roles=new Set();
+
+function togR(el,r){el.classList.toggle('on');roles.has(r)?roles.delete(r):roles.add(r);}
+
+function setRule(id,ok){
+  const el=document.getElementById(id);
+  el.className='pw-rule '+(ok?'ok':'fail');
+  el.querySelector('i').className='fa-solid '+(ok?'fa-circle-check':'fa-circle-xmark');
+}
+
+function chkPw(v){
+  const hasLen=v.length>=8;
+  const hasUpper=/[A-Z]/.test(v);
+  const hasSpecial=/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v);
+  const hasNum=/[0-9]/.test(v);
+
+  setRule('rule-len',hasLen);
+  setRule('rule-upper',hasUpper);
+  setRule('rule-special',hasSpecial);
+  setRule('rule-num',hasNum);
+
+  let s=0;
+  if(hasLen)s++;
+  if(hasUpper)s++;
+  if(hasSpecial)s++;
+  if(hasNum)s++;
+
+  const colors=['','var(--red)','var(--amber)','var(--blue)','var(--green)'];
+  for(let i=1;i<=4;i++)document.getElementById('pw'+i).style.background=i<=s?colors[s]:'rgba(255,255,255,.06)';
+}
+
+function validatePassword(v){
+  if(v.length<8)return'Password must be at least 8 characters!';
+  if(!/[A-Z]/.test(v))return'Password must contain at least 1 uppercase letter!';
+  if(!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v))return'Password must contain at least 1 special character (!@#$% etc)!';
+  if(!/[0-9]/.test(v))return'Password must contain at least 1 number!';
+  return null;
+}
+
+async function register(){
+  const fn=document.getElementById('r-fn').value.trim();
+  const ln=document.getElementById('r-ln').value.trim();
+  const em=document.getElementById('r-em').value.trim();
+  const ph=document.getElementById('r-ph').value.trim();
+  const pw=document.getElementById('r-pw').value;
+
+  if(!fn||!em||!pw){toast('Missing fields','Fill all required fields.','w');return}
+
+  const pwError=validatePassword(pw);
+  if(pwError){toast('Weak password',pwError,'w');return}
+
+  if(roles.size===0){toast('Select a role','Pick at least one target role.','w');return}
+
+  const btn=document.getElementById('reg-btn');
+  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Creating...';
+  btn.disabled=true;
+
+  try{
+    await Auth.register({
+      firstName:fn,lastName:ln,email:em,phone:ph,password:pw,
+      roles:[...roles].join(','),targetRole:[...roles][0]
+    });
+    toast('Account created!',`Welcome, ${fn}!`,'s');
+    setTimeout(()=>window.location.href='dashboard.html',900);
+  }catch(err){
+    toast('Registration failed',err.message,'e');
+    btn.innerHTML='<i class="fa-solid fa-rocket"></i> Create Account';
+    btn.disabled=false;
+  }
+}
+async function registerWithGoogle(){
+  const btn = document.getElementById('reg-google-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting...';
+  try{
+    const data = await apiFetch('/auth/oauth/google/url');
+    localStorage.setItem('iq3_oauth_provider','google');
+    window.location.href = data.url;
+  }catch(err){
+    toast('Google OAuth not configured','Add Google credentials to application.properties','w',6000);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-brands fa-google"></i> Google';
+  }
+}
+async function registerWithGitHub(){
+  const btn = document.getElementById('reg-github-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting...';
+  try{
+    const data = await apiFetch('/auth/oauth/github/url');
+    localStorage.setItem('iq3_oauth_provider','github');
+    window.location.href = data.url;
+  }catch(err){
+    toast('GitHub OAuth not configured','Add GitHub credentials to application.properties','w',6000);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-brands fa-github"></i> GitHub';
+  }
+}
+</script>
+</body>
+</html>

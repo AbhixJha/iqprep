@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Analytics</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+.page{padding:2.5rem 0}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.stats-g{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1.75rem}
+.sc{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.1rem 1.35rem;transition:var(--t);position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;top:-25px;right:-25px;width:85px;height:85px;border-radius:50%;filter:blur(28px);opacity:.07;pointer-events:none}
+.sc:nth-child(1)::after{background:var(--violet)}.sc:nth-child(2)::after{background:var(--green)}.sc:nth-child(3)::after{background:var(--pink)}.sc:nth-child(4)::after{background:var(--amber)}
+.sc:hover{transform:translateY(-2px)}
+.sc-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.8rem;margin-bottom:.75rem}
+.sc-n{font-family:var(--font-mono);font-size:1.75rem;font-weight:500;line-height:1}
+.sc-l{font-size:.68rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.07em;margin-top:4px}
+.sc-ch{font-size:.67rem;font-weight:600;margin-top:5px;display:flex;align-items:center;gap:3px}
+.charts-g{display:grid;grid-template-columns:2fr 1fr;gap:1.1rem;margin-bottom:1.75rem}
+.chart-card{padding:1.4rem}
+.ch-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.ch-title{font-size:.88rem;font-weight:700;font-family:var(--font-head)}
+.ch-wrap{height:220px}
+.ch-wrap-sm{height:200px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-bottom:1.75rem}
+.bar-item{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.bar-label{font-size:.75rem;color:var(--white-2);width:80px;flex-shrink:0;text-transform:capitalize}
+.bar-track{flex:1;height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width 1s var(--ease)}
+.bar-val{font-size:.72rem;font-family:var(--font-mono);color:var(--white-3);width:35px;text-align:right}
+.week-g{display:flex;align-items:flex-end;gap:.45rem;height:80px;margin-top:.5rem}
+.week-bar{flex:1;border-radius:4px 4px 0 0;background:var(--violet-dim);border:1px solid var(--border-v);transition:height .6s var(--ease);min-height:4px;position:relative;cursor:pointer}
+.week-bar:hover{background:var(--violet)}
+.week-bar::after{content:attr(data-label);position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:.55rem;color:var(--white-3);white-space:nowrap}
+.week-bar.has-data{background:linear-gradient(180deg,var(--violet),var(--violet-dim))}
+.insight-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.75rem}
+.insight{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;display:flex;align-items:flex-start;gap:.75rem;transition:var(--t)}
+.insight:hover{border-color:rgba(255,255,255,.09)}
+.ins-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
+.ins-t{font-size:.8rem;font-weight:600;margin-bottom:.2rem;font-family:var(--font-head)}
+.ins-d{font-size:.72rem;color:var(--white-3);line-height:1.55}
+@media(max-width:1100px){.stats-g{grid-template-columns:repeat(2,1fr)}.charts-g{grid-template-columns:1fr}.row2{grid-template-columns:1fr}.insight-g{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.insight-g{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<nav class="nav">
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="interview.html">Practice</a></li>
+    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="analytics.html" class="on">Analytics</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+    <li><a href="profile.html">Profile</a></li>
+  </ul>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+</nav>
+<div class="pw"><div class="w page">
+  <div class="ph stag">
+    <div><div class="lbl">Performance Intelligence</div><div class="h1" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:.3rem;letter-spacing:-.025em">Your <span style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Analytics</span></div></div>
+    <a href="interview.html" class="btn btn-v btn-sm"><i class="fa-solid fa-plus"></i> New Session</a>
+  </div>
+  <div id="loading" style="text-align:center;padding:4rem"><div class="dots-ai"><span></span><span></span><span></span></div><p style="color:var(--white-3);margin-top:1rem;font-size:.85rem">Loading your analytics...</p></div>
+  <div id="empty" style="display:none;text-align:center;padding:4rem 2rem;color:var(--white-3)"><div style="font-size:3rem;opacity:.3;margin-bottom:1rem">📊</div><h3 style="font-family:var(--font-head);font-size:1.2rem;margin-bottom:.5rem">No data yet!</h3><p style="margin-bottom:1.5rem">Complete at least one interview session to see your analytics.</p><a href="interview.html" class="btn btn-v">Start Your First Session</a></div>
+  <div id="analytics-content" style="display:none">
+    <div class="stats-g stag">
+      <div class="sc"><div class="sc-ic" style="background:var(--violet-dim);color:var(--violet-bright)"><i class="fa-solid fa-microphone-lines"></i></div><div class="sc-n" id="a-total">0</div><div class="sc-l">Total Sessions</div><div class="sc-ch" style="color:var(--violet-bright)"><i class="fa-solid fa-arrow-trend-up"></i> All time</div></div>
+      <div class="sc"><div class="sc-ic" style="background:var(--green-dim);color:var(--green)"><i class="fa-solid fa-star"></i></div><div class="sc-n" id="a-avg" style="color:var(--green)">0</div><div class="sc-l">Average Score</div><div class="sc-ch" id="a-avg-ch" style="color:var(--white-3)">out of 10</div></div>
+      <div class="sc"><div class="sc-ic" style="background:var(--pink-dim);color:var(--pink)"><i class="fa-solid fa-trophy"></i></div><div class="sc-n" id="a-best" style="color:var(--pink)">0</div><div class="sc-l">Best Score</div><div class="sc-ch" style="color:var(--pink)"><i class="fa-solid fa-crown"></i> Personal best</div></div>
+      <div class="sc"><div class="sc-ic" style="background:var(--amber-dim);color:var(--amber)"><i class="fa-solid fa-chart-line"></i></div><div class="sc-n" id="a-improve" style="color:var(--amber)">0</div><div class="sc-l">Improvement</div><div class="sc-ch" id="a-improve-ch" style="color:var(--amber)"><i class="fa-solid fa-arrow-trend-up"></i> vs early sessions</div></div>
+    </div>
+    <div class="charts-g">
+      <div class="card chart-card">
+        <div class="ch-h"><div class="ch-title">Score Progression</div><span class="badge bv" id="prog-badge">Last 10 sessions</span></div>
+        <div class="ch-wrap"><canvas id="prog-chart"></canvas></div>
+      </div>
+      <div class="card chart-card">
+        <div class="ch-h"><div class="ch-title">Category Distribution</div><span class="badge bv">All time</span></div>
+        <div class="ch-wrap-sm"><canvas id="cat-chart"></canvas></div>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="card chart-card"><div class="ch-h"><div class="ch-title">Performance by Category</div></div><div id="cat-bars"></div></div>
+      <div class="card chart-card"><div class="ch-h"><div class="ch-title">Sessions by Difficulty</div></div><div id="diff-bars"></div></div>
+    </div>
+    <div class="card chart-card" style="margin-bottom:1.75rem">
+      <div class="ch-h"><div class="ch-title">Weekly Activity</div><span class="badge bv">Last 7 days</span></div>
+      <div class="week-g" id="week-bars"></div>
+      <div style="height:20px"></div>
+    </div>
+    <div style="margin-bottom:.85rem"><div class="lbl">AI Insights</div></div>
+    <div class="insight-g stag" id="insights"></div>
+  </div>
+</div></div>
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/jarvis.js"></script>
+<script>
+if(!getToken()) window.location.href='login.html';
+const user=S.get('iq3_user');
+document.getElementById('nav-av').textContent=getInitial();
+document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+Chart.defaults.color='rgba(100,110,140,.6)';Chart.defaults.borderColor='rgba(255,255,255,.05)';Chart.defaults.font.family="'Satoshi',sans-serif";
+const catColors={technical:'#9d7fff',hr:'#60a5fa',aptitude:'#2dd4bf',mixed:'#f472b6'};
+const catLabels={technical:'Technical',hr:'HR Round',aptitude:'Aptitude',mixed:'Mixed'};
+const diffColors={easy:'#34d399',medium:'#fbbf24',hard:'#f87171'};
+
+async function loadAnalytics(){
+  try{
+    const data=await apiFetch('/analytics');
+    document.getElementById('loading').style.display='none';
+    if(!data.totalSessions||data.totalSessions===0){document.getElementById('empty').style.display='block';return}
+    document.getElementById('analytics-content').style.display='block';
+    document.getElementById('a-total').textContent=data.totalSessions;
+    document.getElementById('a-avg').textContent=data.averageScore+'/10';
+    document.getElementById('a-avg').style.color=scoreColor(data.averageScore);
+    document.getElementById('a-avg-ch').textContent=scoreLabel(data.averageScore);
+    document.getElementById('a-avg-ch').style.color=scoreColor(data.averageScore);
+    document.getElementById('a-best').textContent=data.bestScore+'/10';
+    const imp=data.improvementRate;
+    document.getElementById('a-improve').textContent=(imp>=0?'+':'')+imp;
+    document.getElementById('a-improve').style.color=imp>=0?'var(--green)':'var(--red)';
+    document.getElementById('a-improve-ch').innerHTML=imp>=0?'<i class="fa-solid fa-arrow-trend-up"></i> Improving!':'<i class="fa-solid fa-arrow-trend-down"></i> Keep practicing';
+    const prog=data.progression||[];
+    document.getElementById('prog-badge').textContent=`Last ${prog.length} sessions`;
+    const progCtx=document.getElementById('prog-chart').getContext('2d');
+    const g=progCtx.createLinearGradient(0,0,0,220);g.addColorStop(0,'rgba(124,92,252,.3)');g.addColorStop(1,'rgba(124,92,252,0)');
+    new Chart(progCtx,{type:'line',data:{labels:prog.map((_,i)=>`S${i+1}`),datasets:[{data:prog.map(s=>s.score),borderColor:'#9d7fff',backgroundColor:g,borderWidth:2.5,pointBackgroundColor:prog.map(s=>scoreColor(s.score)),pointRadius:5,tension:.4,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Score: ${c.raw}/10`}}},scales:{y:{min:0,max:10,ticks:{stepSize:2}}}}});
+    const catData=data.categoryBreakdown||{};
+    new Chart(document.getElementById('cat-chart').getContext('2d'),{type:'doughnut',data:{labels:Object.keys(catData).map(k=>catLabels[k]||k),datasets:[{data:Object.values(catData),backgroundColor:Object.keys(catData).map(k=>catColors[k]||'#9d7fff'),borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:12,font:{size:11}}}}}});
+    const catAvg=data.categoryAverages||{};
+    const catBarsEl=document.getElementById('cat-bars');
+    if(Object.keys(catAvg).length===0){catBarsEl.innerHTML='<p style="color:var(--white-3);font-size:.78rem">No data yet</p>';}
+    else{Object.entries(catAvg).forEach(([cat,avg])=>{const c=catColors[cat]||'#9d7fff';catBarsEl.innerHTML+=`<div class="bar-item"><div class="bar-label">${catLabels[cat]||cat}</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:${c}" data-w="${avg*10}"></div></div><div class="bar-val" style="color:${c}">${parseFloat(avg).toFixed(1)}</div></div>`});}
+    const diffData=data.difficultyBreakdown||{};const total=Object.values(diffData).reduce((a,b)=>a+b,0)||1;
+    const diffBarsEl=document.getElementById('diff-bars');
+    if(Object.keys(diffData).length===0){diffBarsEl.innerHTML='<p style="color:var(--white-3);font-size:.78rem">No data yet</p>';}
+    else{['easy','medium','hard'].forEach(d=>{if(diffData[d]){const pct=Math.round((diffData[d]/total)*100);const c=diffColors[d];diffBarsEl.innerHTML+=`<div class="bar-item"><div class="bar-label">${d}</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:${c}" data-w="${pct}"></div></div><div class="bar-val" style="color:${c}">${diffData[d]}</div></div>`}});}
+    setTimeout(()=>document.querySelectorAll('.bar-fill').forEach(el=>el.style.width=el.dataset.w+'%'),300);
+    const week=data.weekActivity||{};const maxA=Math.max(...Object.values(week),1);
+    const weekEl=document.getElementById('week-bars');
+    Object.entries(week).forEach(([date,count])=>{const h=Math.max((count/maxA)*100,4);const d=new Date(date);const label=d.toLocaleDateString('en-IN',{weekday:'short'});weekEl.innerHTML+=`<div class="week-bar ${count>0?'has-data':''}" style="height:${h}%" data-label="${label}" title="${count} session(s) on ${date}"></div>`;});
+    const insights=generateInsights(data);
+    const insEl=document.getElementById('insights');
+    insights.forEach(ins=>{insEl.innerHTML+=`<div class="insight"><div class="ins-ic" style="background:${ins.bg};color:${ins.color}">${ins.icon}</div><div><div class="ins-t">${ins.title}</div><div class="ins-d">${ins.desc}</div></div></div>`;});
+  }catch(err){
+    console.error(err);
+    document.getElementById('loading').style.display='none';
+    document.getElementById('empty').style.display='block';
+  }
+}
+
+function generateInsights(data){
+  const insights=[];const avg=data.averageScore||0;const total=data.totalSessions||0;const imp=data.improvementRate||0;const catAvg=data.categoryAverages||{};const catCount=data.categoryBreakdown||{};
+  if(avg>=8)insights.push({icon:'🏆',bg:'var(--amber-dim)',color:'var(--amber)',title:'Outstanding Performance',desc:`Your average of ${avg}/10 is exceptional! You're in the top tier.`});
+  else if(avg>=6)insights.push({icon:'📈',bg:'var(--green-dim)',color:'var(--green)',title:'Strong Performance',desc:`Averaging ${avg}/10 is solid. Focus on hard questions to push to 8+.`});
+  else insights.push({icon:'💪',bg:'var(--violet-dim)',color:'var(--violet-bright)',title:'Keep Practicing',desc:`You're averaging ${avg}/10. Consistency is key — practice daily!`});
+  if(imp>0)insights.push({icon:'🚀',bg:'var(--teal-dim)',color:'var(--teal)',title:'You Are Improving!',desc:`Score improved by +${imp} points vs early sessions. Great progress!`});
+  else if(total>=3)insights.push({icon:'🎯',bg:'var(--pink-dim)',color:'var(--pink)',title:'Stay Consistent',desc:'Try harder difficulty levels to challenge yourself more.'});
+  if(Object.keys(catAvg).length>1){const weakCat=Object.entries(catAvg).sort((a,b)=>a[1]-b[1])[0];insights.push({icon:'⚠️',bg:'var(--red-dim)',color:'var(--red)',title:`Weak Area: ${catLabels[weakCat[0]]||weakCat[0]}`,desc:`Your ${catLabels[weakCat[0]]||weakCat[0]} average is ${parseFloat(weakCat[1]).toFixed(1)}/10. Practice this more!`});}
+  if(Object.keys(catAvg).length>1){const strongCat=Object.entries(catAvg).sort((a,b)=>b[1]-a[1])[0];insights.push({icon:'⭐',bg:'var(--violet-dim)',color:'var(--violet-bright)',title:`Strongest: ${catLabels[strongCat[0]]||strongCat[0]}`,desc:`You excel at ${catLabels[strongCat[0]]||strongCat[0]} with ${parseFloat(strongCat[1]).toFixed(1)}/10 average!`});}
+  if(total>=10)insights.push({icon:'🔥',bg:'var(--amber-dim)',color:'var(--amber)',title:'Dedicated Practitioner',desc:`${total} sessions completed! Your dedication will pay off.`});
+  else insights.push({icon:'📚',bg:'var(--blue-dim)',color:'var(--blue)',title:'Build Your Streak',desc:`${total} sessions done. Aim for 10+ to see significant improvement!`});
+  const catKeys=Object.keys(catCount);
+  if(catKeys.length<3)insights.push({icon:'🎭',bg:'var(--teal-dim)',color:'var(--teal)',title:'Explore More Categories',desc:'Try all 4 categories for complete interview preparation!'});
+  else insights.push({icon:'🌟',bg:'var(--green-dim)',color:'var(--green)',title:'Well-Rounded Preparation',desc:'Great job exploring multiple categories! Keep it up.'});
+  return insights.slice(0,6);
+}
+loadAnalytics();
+</script>
+</body>
+</html>

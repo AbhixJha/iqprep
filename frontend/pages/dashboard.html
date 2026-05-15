@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Dashboard</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+.page{padding:2.5rem 0}
+.dash-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2.25rem;flex-wrap:wrap;gap:1rem}
+.greet{font-family:var(--font-head);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;line-height:1.15;letter-spacing:-.03em}
+.greet em{font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.greet-sub{color:var(--white-3);font-size:.83rem;margin-top:.3rem}
+.stats-g{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1.75rem}
+.sc{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.1rem 1.35rem;transition:var(--t);position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;top:-25px;right:-25px;width:85px;height:85px;border-radius:50%;filter:blur(28px);opacity:.07;pointer-events:none}
+.sc:nth-child(1)::after{background:var(--violet)}.sc:nth-child(2)::after{background:var(--pink)}.sc:nth-child(3)::after{background:var(--teal)}.sc:nth-child(4)::after{background:var(--amber)}
+.sc:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px)}
+.sc-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.8rem;margin-bottom:.75rem}
+.sc-n{font-family:var(--font-mono);font-size:1.75rem;font-weight:500;line-height:1;letter-spacing:-.02em}
+.sc-l{font-size:.68rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.07em;margin-top:4px}
+.sc-ch{font-size:.67rem;font-weight:600;margin-top:5px;display:flex;align-items:center;gap:3px}
+.dc-readiness-row{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-bottom:1.75rem}
+.main-g{display:grid;grid-template-columns:1fr 320px;gap:1.1rem;margin-bottom:1.75rem}
+.ch-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.ch-title{font-size:.88rem;font-weight:700;letter-spacing:-.01em;font-family:var(--font-head)}
+.ch-wrap{height:195px}
+.qs-card{background:linear-gradient(145deg,var(--dark-4),var(--dark-3));border:1px solid var(--border-v);border-radius:var(--r-lg);padding:1.4rem;position:relative;overflow:hidden}
+.qs-card::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:var(--violet);border-radius:50%;filter:blur(60px);opacity:.06}
+.qs-title{font-family:var(--font-head);font-size:1.05rem;font-weight:800;margin-bottom:.3rem}
+.qs-sub{font-size:.78rem;color:var(--white-3);margin-bottom:1.1rem;line-height:1.65}
+.skills-card{margin-top:.9rem}
+.sk-r{display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem}
+.sk-n{font-size:.76rem;color:var(--white-2);width:115px;flex-shrink:0}
+.sk-bar{flex:1;height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden}
+.sk-f{height:100%;border-radius:3px;transition:width 1.2s var(--ease)}
+.sk-p{font-size:.68rem;color:var(--white-3);width:32px;text-align:right;font-family:var(--font-mono)}
+.cats-g{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1.75rem}
+.cat-c{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.2rem;text-align:center;cursor:pointer;transition:var(--t) var(--spring);text-decoration:none;color:inherit;display:block;position:relative;overflow:hidden}
+.cat-c::before{content:'';position:absolute;inset:0;opacity:0;transition:var(--t);pointer-events:none}
+.cat-c.c1::before{background:radial-gradient(circle at 50% 0%,rgba(124,92,252,.1),transparent 60%)}
+.cat-c.c2::before{background:radial-gradient(circle at 50% 0%,rgba(96,165,250,.1),transparent 60%)}
+.cat-c.c3::before{background:radial-gradient(circle at 50% 0%,rgba(52,211,153,.1),transparent 60%)}
+.cat-c.c4::before{background:radial-gradient(circle at 50% 0%,rgba(244,114,182,.1),transparent 60%)}
+.cat-c:hover{transform:translateY(-4px) scale(1.02)}.cat-c:hover::before{opacity:1}
+.cat-c.c1:hover{border-color:rgba(124,92,252,.3);box-shadow:0 12px 36px rgba(124,92,252,.1)}
+.cat-c.c2:hover{border-color:rgba(96,165,250,.3);box-shadow:0 12px 36px rgba(96,165,250,.1)}
+.cat-c.c3:hover{border-color:rgba(52,211,153,.3);box-shadow:0 12px 36px rgba(52,211,153,.1)}
+.cat-c.c4:hover{border-color:rgba(244,114,182,.3);box-shadow:0 12px 36px rgba(244,114,182,.1)}
+.cat-c.cv:hover{border-color:rgba(244,114,182,.4);box-shadow:0 12px 36px rgba(244,114,182,.15)}
+.cat-em{font-size:1.8rem;display:block;margin-bottom:.65rem}
+.cat-name{font-size:.85rem;font-weight:700;margin-bottom:.18rem;font-family:var(--font-head);letter-spacing:-.01em}
+.cat-desc{font-size:.7rem;color:var(--white-3);line-height:1.5}
+.cat-score{font-size:.68rem;color:var(--white-3);margin-top:.5rem;font-family:var(--font-mono)}
+.video-card{grid-column:1/-1;background:linear-gradient(135deg,rgba(244,114,182,.08),rgba(124,92,252,.08));border:1px solid rgba(244,114,182,.25);display:flex;align-items:center;gap:1.5rem;padding:1.25rem 1.5rem;text-align:left}
+.video-card:hover{border-color:rgba(244,114,182,.4);box-shadow:0 12px 36px rgba(244,114,182,.1);transform:translateY(-2px)}
+.video-card-left{font-size:2.5rem;flex-shrink:0}
+.video-card-info{flex:1}
+.video-card-title{font-family:var(--font-head);font-size:1rem;font-weight:800;margin-bottom:.2rem}
+.video-card-desc{font-size:.75rem;color:var(--white-3);line-height:1.6}
+.video-card-badges{display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap}
+.video-card-arrow{color:rgba(244,114,182,.6);font-size:1.2rem;flex-shrink:0}
+.rec-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.sess-i{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:.45rem;transition:var(--t);cursor:pointer}
+.sess-i:hover{border-color:rgba(255,255,255,.09);transform:translateX(3px)}
+.s-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.s-inf{flex:1}
+.s-title{font-size:.85rem;font-weight:600;margin-bottom:1px}
+.s-meta{font-size:.7rem;color:var(--white-3);display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.s-sc{font-family:var(--font-mono);font-size:1.1rem;font-weight:500}
+.readiness-bar{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin:.35rem 0}
+.readiness-fill{height:100%;border-radius:3px;transition:width 1.2s ease}
+@media(max-width:1100px){.stats-g{grid-template-columns:repeat(2,1fr)}.main-g{grid-template-columns:1fr}.cats-g{grid-template-columns:repeat(2,1fr)}.dc-readiness-row{grid-template-columns:1fr}}
+@media(max-width:600px){.cats-g{grid-template-columns:1fr}.video-card{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-blob bb3"></div><div class="bg-grid"></div></div>
+<nav class="nav">
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html" class="on">Dashboard</a></li>
+    <li><a href="interview.html">Practice</a></li>
+    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="resume.html">Resume</a></li>
+    <li><a href="daily-challenge.html">🔥 Daily</a></li>
+    <li><a href="replay.html">Replay</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="analytics.html">Analytics</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+    <li><a href="profile.html">Profile</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-streak" id="nav-streak">🔥 0</div>
+    <div class="nav-av" id="nav-av" onclick="location.href='profile.html'" style="cursor:pointer">A</div>
+  </div>
+</nav>
+
+<div class="pw"><div class="w page">
+
+  <!-- Greeting -->
+  <div class="dash-top stag" style="margin-bottom:3rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 2rem;">
+    <div style="flex: 1;">
+      <div class="lbl" style="margin-bottom: 0.5rem; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--pink);"><i class="fa-solid fa-bolt"></i> VIBE CHECK</div>
+      <div class="greet" style="font-size:clamp(2rem, 4.5vw, 3.5rem); line-height: 1.1;">Let's Cook, <em id="uname">—</em> 🥶</div>
+      <div class="greet-sub" id="greet-sub" style="font-size: 0.95rem; line-height: 1.6; max-width: 500px; margin-top: 0.8rem; color: var(--white-2);">Time to secure that bag. Choose your practice mode below and don't take any L's. 💼✨</div>
+    </div>
+    <button class="btn btn-v btn-xl" onclick="showInterviewChoice()" style="border-radius: 18px; padding: 18px 36px; font-size: 1.1rem; box-shadow: 0 10px 40px -10px var(--violet); transform: translateY(-4px);">
+      <i class="fa-solid fa-play" style="margin-right: 4px;"></i> Grind Now 🔥
+    </button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-g stag" style="margin-bottom: 2rem;">
+    <div class="sc card" style="padding: 1.5rem; text-align: center;">
+      <div class="sc-ic" style="background:var(--violet-dim);color:var(--violet-bright); margin: 0 auto 0.8rem auto; border-radius: 50%; width: 48px; height: 48px; font-size: 1.2rem;"><i class="fa-solid fa-microphone-lines"></i></div>
+      <div class="sc-n" id="ss" style="font-size: 2.5rem; font-family: var(--font-head); font-weight: 900;">0</div>
+      <div class="sc-l" style="font-weight: 700; color: var(--violet-bright);">Sessions</div>
+      <div class="sc-ch" style="color:var(--white-3); justify-content: center;"><i class="fa-solid fa-arrow-trend-up"></i> All time w's</div>
+    </div>
+    <div class="sc card" style="padding: 1.5rem; text-align: center;">
+      <div class="sc-ic" style="background:var(--pink-dim);color:var(--pink); margin: 0 auto 0.8rem auto; border-radius: 50%; width: 48px; height: 48px; font-size: 1.2rem;"><i class="fa-solid fa-star"></i></div>
+      <div class="sc-n" id="sa" style="font-size: 2.5rem; font-family: var(--font-head); font-weight: 900;">—</div>
+      <div class="sc-l" style="font-weight: 700; color: var(--pink);">Avg Score</div>
+      <div class="sc-ch" id="sa-l" style="color:var(--white-3); justify-content: center;">No sessions yet 💀</div>
+    </div>
+    <div class="sc card" style="padding: 1.5rem; text-align: center;">
+      <div class="sc-ic" style="background:var(--teal-dim);color:var(--teal); margin: 0 auto 0.8rem auto; border-radius: 50%; width: 48px; height: 48px; font-size: 1.2rem;"><i class="fa-solid fa-circle-check"></i></div>
+      <div class="sc-n" id="sq" style="font-size: 2.5rem; font-family: var(--font-head); font-weight: 900;">0</div>
+      <div class="sc-l" style="font-weight: 700; color: var(--teal);">Questions</div>
+      <div class="sc-ch" style="color:var(--white-3); justify-content: center;"><i class="fa-solid fa-check"></i> Full clears</div>
+    </div>
+    <div class="sc card" style="padding: 1.5rem; text-align: center;">
+      <div class="sc-ic" style="background:var(--amber-dim);color:var(--amber); margin: 0 auto 0.8rem auto; border-radius: 50%; width: 48px; height: 48px; font-size: 1.2rem;"><i class="fa-solid fa-fire"></i></div>
+      <div class="sc-n" id="sst" style="font-size: 2.5rem; font-family: var(--font-head); font-weight: 900;">0</div>
+      <div class="sc-l" style="font-weight: 700; color: var(--amber);">Day Streak</div>
+      <div class="sc-ch" style="color:var(--white-3); justify-content: center;"><i class="fa-solid fa-fire"></i> Don't let it die</div>
+    </div>
+  </div>
+
+  <!-- Daily Challenge + Readiness Row -->
+  <div class="dc-readiness-row stag">
+    <!-- Daily Challenge Widget -->
+    <div class="card" style="padding:1.25rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem">
+        <div class="lbl">🔥 Daily Challenge</div>
+        <a href="daily-challenge.html" style="font-size:.7rem;color:var(--violet-bright);text-decoration:none">View →</a>
+      </div>
+      <div id="dc-widget-content">
+        <div class="dots-ai"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <!-- Readiness Score Widget -->
+    <div class="card" style="padding:1.25rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem">
+        <div class="lbl">Interview Readiness</div>
+        <a href="resume.html" style="font-size:.7rem;color:var(--violet-bright);text-decoration:none">Details →</a>
+      </div>
+      <div id="readiness-widget-content">
+        <div class="dots-ai"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart + Quick Start -->
+  <div class="main-g">
+    <div class="card card-glow">
+      <div class="ch-h">
+        <div class="ch-title">Score Progression</div>
+        <span class="badge bv" id="prog-label">Last Sessions</span>
+      </div>
+      <div class="ch-wrap"><canvas id="ch"></canvas></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.9rem">
+      <div class="qs-card">
+        <div class="qs-title">Ready to practice?</div>
+        <div class="qs-sub">Groq AI generates unique questions every session. Never repeats!</div>
+        <button class="btn btn-v" onclick="showInterviewChoice()" style="width:100%;justify-content:center">
+          <i class="fa-solid fa-rocket"></i> Start Interview
+        </button>
+      </div>
+      <div class="card skills-card">
+        <div class="ch-h" style="margin-bottom:.9rem">
+          <div class="ch-title">Skill Scores</div>
+          <a href="analytics.html" style="font-size:.7rem;color:var(--violet-bright);text-decoration:none">Details →</a>
+        </div>
+        <div id="sk-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Cards -->
+  <div style="margin-bottom:1rem">
+    <div class="lbl" style="margin-bottom:.85rem">Practice by Domain</div>
+  </div>
+  <div class="cats-g stag">
+    <a href="javascript:void(0)" onclick="showInterviewChoice('technical')" class="cat-c c1">
+      <span class="cat-em">💻</span>
+      <div class="cat-name">Technical</div>
+      <div class="cat-desc">DSA · Java · System Design</div>
+      <div class="cat-score" id="cat-technical">—</div>
+    </a>
+    <a href="javascript:void(0)" onclick="showInterviewChoice('hr')" class="cat-c c2">
+      <span class="cat-em">🤝</span>
+      <div class="cat-name">HR Round</div>
+      <div class="cat-desc">Behavioral · Leadership</div>
+      <div class="cat-score" id="cat-hr">—</div>
+    </a>
+    <a href="javascript:void(0)" onclick="showInterviewChoice('aptitude')" class="cat-c c3">
+      <span class="cat-em">🧮</span>
+      <div class="cat-name">Aptitude</div>
+      <div class="cat-desc">Logical · Quantitative</div>
+      <div class="cat-score" id="cat-aptitude">—</div>
+    </a>
+    <a href="javascript:void(0)" onclick="showInterviewChoice('mixed')" class="cat-c c4">
+      <span class="cat-em">🎯</span>
+      <div class="cat-name">Full Mock</div>
+      <div class="cat-desc">All Categories Combined</div>
+      <div class="cat-score" id="cat-mixed">—</div>
+    </a>
+    <!-- Video Interview Card -->
+    <a href="javascript:void(0)" onclick="showInterviewChoice()" class="cat-c cv video-card">
+      <div class="video-card-left">🎥</div>
+      <div class="video-card-info">
+        <div class="video-card-title">AI Video Interview — Feel the Real Pressure!</div>
+        <div class="video-card-desc">Camera on · AI speaks questions · Voice answers · Filler word detection · Real evaluation</div>
+        <div class="video-card-badges">
+          <span class="badge bp">NEW</span>
+          <span class="badge bv">AI Powered</span>
+          <span class="badge bt">Voice + Camera</span>
+        </div>
+      </div>
+      <div class="video-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+  </div>
+
+  <!-- Quick Links Row -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:1.75rem" class="stag">
+    <a href="resume.html" class="card" style="padding:1rem;text-decoration:none;color:inherit;display:flex;align-items:center;gap:.75rem;transition:var(--t)" onmouseover="this.style.borderColor='rgba(124,92,252,.3)'" onmouseout="this.style.borderColor=''">
+      <div style="width:36px;height:36px;border-radius:9px;background:var(--violet-dim);color:var(--violet-bright);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0"><i class="fa-solid fa-file-lines"></i></div>
+      <div><div style="font-size:.82rem;font-weight:700">Resume Analyzer</div><div style="font-size:.68rem;color:var(--white-3)">AI skill gap analysis</div></div>
+    </a>
+    <a href="replay.html" class="card" style="padding:1rem;text-decoration:none;color:inherit;display:flex;align-items:center;gap:.75rem;transition:var(--t)" onmouseover="this.style.borderColor='rgba(96,165,250,.3)'" onmouseout="this.style.borderColor=''">
+      <div style="width:36px;height:36px;border-radius:9px;background:var(--blue-dim);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0"><i class="fa-solid fa-film"></i></div>
+      <div><div style="font-size:.82rem;font-weight:700">Session Replay</div><div style="font-size:.68rem;color:var(--white-3)">Review past sessions</div></div>
+    </a>
+    <a href="analytics.html" class="card" style="padding:1rem;text-decoration:none;color:inherit;display:flex;align-items:center;gap:.75rem;transition:var(--t)" onmouseover="this.style.borderColor='rgba(52,211,153,.3)'" onmouseout="this.style.borderColor=''">
+      <div style="width:36px;height:36px;border-radius:9px;background:var(--teal-dim);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0"><i class="fa-solid fa-chart-line"></i></div>
+      <div><div style="font-size:.82rem;font-weight:700">Analytics</div><div style="font-size:.68rem;color:var(--white-3)">Track your progress</div></div>
+    </a>
+  </div>
+
+  <!-- Recent Activity -->
+  <div style="margin-bottom:2.5rem">
+    <div class="rec-h">
+      <div class="lbl">Recent Activity</div>
+      <a href="history.html" class="btn btn-ghost btn-sm"><i class="fa-solid fa-clock-rotate-left"></i> View All</a>
+    </div>
+    <div id="rec-list"></div>
+  </div>
+
+</div></div>
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/jarvis.js"></script>
+<script>
+if(!getToken()) window.location.href='login.html';
+const user=S.get('iq3_user');
+const h=new Date().getHours();
+document.getElementById('uname').textContent=getFirstName();
+document.getElementById('nav-av').textContent=getInitial();
+const streak=updateStreak();
+document.getElementById('sst').textContent=streak;
+document.getElementById('nav-streak').innerHTML=`🔥 ${streak}`;
+
+const cm={
+  technical:['💻','var(--violet-dim)','Technical Interview'],
+  hr:['🤝','var(--blue-dim)','HR Round'],
+  aptitude:['🧮','var(--teal-dim)','Aptitude Test'],
+  mixed:['🎯','var(--pink-dim)','Full Mock Interview']
+};
+
+// ── INTERVIEW CHOICE MODAL ──
+function showInterviewChoice(category=null){
+  const existing=document.getElementById('iv-choice-modal');
+  if(existing)existing.remove();
+  const modal=document.createElement('div');
+  modal.id='iv-choice-modal';
+  modal.innerHTML=`
+    <div style="position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem" onclick="if(event.target===this)document.getElementById('iv-choice-modal').remove()">
+      <div style="background:#0d0e1a;border:1px solid rgba(124,92,252,.3);border-radius:20px;padding:2rem;max-width:520px;width:100%;animation:scIn .3s cubic-bezier(0.34,1.56,0.64,1)">
+        <div style="font-family:var(--font-head);font-size:1.4rem;font-weight:900;text-align:center;margin-bottom:.3rem;color:white">Choose Interview Mode</div>
+        <div style="text-align:center;color:rgba(255,255,255,.4);font-size:.8rem;margin-bottom:1.5rem">How do you want to practice?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1rem">
+          <a href="interview.html${category?'?cat='+category:''}" style="background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:16px;padding:1.25rem;text-align:center;text-decoration:none;color:white;transition:all .25s ease;display:flex;flex-direction:column;gap:.4rem" onmouseover="this.style.borderColor='rgba(124,92,252,.5)';this.style.background='rgba(124,92,252,.08)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)';this.style.background='rgba(255,255,255,.04)';this.style.transform='none'">
+            <div style="font-size:2.2rem">⌨️</div>
+            <div style="font-family:var(--font-head);font-size:.95rem;font-weight:800">Text Interview</div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.45);line-height:1.55">Type or speak answers · 5–50 questions · AI evaluation</div>
+            <div style="display:flex;gap:.35rem;justify-content:center;flex-wrap:wrap;margin-top:.2rem">
+              <span style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:2px 8px;font-size:.62rem;color:rgba(255,255,255,.6)">⚡ Fast</span>
+              <span style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:2px 8px;font-size:.62rem;color:rgba(255,255,255,.6)">🎤 Voice</span>
+            </div>
+          </a>
+          <a href="video-interview.html${category?'?cat='+category:''}" style="background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:16px;padding:1.25rem;text-align:center;text-decoration:none;color:white;transition:all .25s ease;display:flex;flex-direction:column;gap:.4rem" onmouseover="this.style.borderColor='rgba(244,114,182,.5)';this.style.background='rgba(244,114,182,.08)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)';this.style.background='rgba(255,255,255,.04)';this.style.transform='none'">
+            <div style="font-size:2.2rem">🎥</div>
+            <div style="font-family:var(--font-head);font-size:.95rem;font-weight:800">Video Interview</div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.45);line-height:1.55">Camera on · AI speaks · Voice answers · Filler detection</div>
+            <div style="display:flex;gap:.35rem;justify-content:center;flex-wrap:wrap;margin-top:.2rem">
+              <span style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:2px 8px;font-size:.62rem;color:rgba(255,255,255,.6)">📹 Camera</span>
+              <span style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:2px 8px;font-size:.62rem;color:rgba(255,255,255,.6)">🔊 AI Voice</span>
+            </div>
+          </a>
+        </div>
+        <button onclick="document.getElementById('iv-choice-modal').remove()" style="width:100%;background:none;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px;color:rgba(255,255,255,.35);font-size:.78rem;cursor:pointer;font-family:inherit">Cancel</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+// ── LOAD DASHBOARD ──
+async function loadDashboard(){
+  try{
+    const[sessions,stats]=await Promise.all([Sessions.getAll(),apiFetch('/sessions/stats')]);
+    if(stats.totalSessions>0){
+      const greetSub=stats.averageScore>=8?'🔥 Outstanding performance! Keep it up!':stats.averageScore>=6?'💪 Good progress! Push for 8+!':'🎯 Keep practicing — you\'re getting better!';
+      document.getElementById('greet-sub').textContent=greetSub;
+    }
+    document.getElementById('ss').textContent=stats.totalSessions||sessions.length;
+    document.getElementById('sq').textContent=stats.totalQuestions||sessions.reduce((a,s)=>a+(s.totalQuestions||0),0);
+    if(stats.averageScore>0){
+      document.getElementById('sa').textContent=stats.averageScore+'/10';
+      const el=document.getElementById('sa-l');
+      el.textContent=scoreLabel(stats.averageScore);
+      el.style.color=scoreColor(stats.averageScore);
+    }
+    const catScores=stats.categoryScores||{};
+    Object.entries(catScores).forEach(([cat,score])=>{
+      const el=document.getElementById('cat-'+cat);
+      if(el){el.textContent=`Avg: ${score}/10`;el.style.color=scoreColor(score);}
+    });
+    buildSkills(stats);
+    buildChart(sessions);
+    buildRecent(sessions);
+  }catch(err){
+    console.error(err);
+    const cached=S.get('iq3_history')||[];
+    buildChart(cached);buildRecent(cached);buildSkills({});
+  }
+}
+
+// ── DAILY CHALLENGE WIDGET ──
+async function loadDailyWidget(){
+  try{
+    const data=await apiFetch('/daily/today');
+    const el=document.getElementById('dc-widget-content');
+    if(data.completed){
+      el.innerHTML=`<div style="display:flex;align-items:center;gap:.75rem"><div style="font-size:1.5rem">✅</div><div><div style="font-size:.85rem;font-weight:600;color:var(--green)">Completed Today!</div><div style="font-size:.72rem;color:var(--white-3)">Score: ${data.score}/10 · Come back tomorrow</div></div></div>`;
+    }else{
+      el.innerHTML=`<div style="font-size:.82rem;color:var(--white-2);line-height:1.6;margin-bottom:.75rem">${(data.question||'').substring(0,100)}...</div><a href="daily-challenge.html" class="btn btn-v btn-sm" style="width:100%;justify-content:center"><i class="fa-solid fa-bolt"></i> Answer Today's Challenge</a>`;
+    }
+  }catch(err){
+    document.getElementById('dc-widget-content').innerHTML='<p style="font-size:.78rem;color:var(--white-3)">Could not load challenge</p>';
+  }
+}
+
+// ── READINESS WIDGET ──
+async function loadReadinessWidget(){
+  try{
+    const data=await apiFetch('/resume/readiness');
+    const el=document.getElementById('readiness-widget-content');
+    const score=data.readinessScore||0;
+    el.innerHTML=`
+      <div style="display:flex;align-items:center;gap:.85rem">
+        <div style="font-family:var(--font-mono);font-size:2.2rem;font-weight:500;color:${data.statusColor}">${score}</div>
+        <div style="flex:1">
+          <div style="font-size:.88rem;font-weight:700;color:${data.statusColor};margin-bottom:.3rem">${data.status}</div>
+          <div class="readiness-bar"><div class="readiness-fill" style="width:${score}%;background:${data.statusColor}"></div></div>
+          <div style="font-size:.68rem;color:var(--white-3)">${(data.message||'').substring(0,55)}...</div>
+        </div>
+      </div>`;
+  }catch(err){
+    document.getElementById('readiness-widget-content').innerHTML='<p style="font-size:.78rem;color:var(--white-3)">Complete sessions to see readiness</p>';
+  }
+}
+
+function buildSkills(stats){
+  const skills=[
+    {n:'Accuracy',p:stats.accuracyScore?Math.round(stats.accuracyScore*10):0,c:'#9d7fff',raw:stats.accuracyScore||0},
+    {n:'Clarity',p:stats.clarityScore?Math.round(stats.clarityScore*10):0,c:'#60a5fa',raw:stats.clarityScore||0},
+    {n:'Completeness',p:stats.completenessScore?Math.round(stats.completenessScore*10):0,c:'#2dd4bf',raw:stats.completenessScore||0},
+    {n:'Technical',p:stats.categoryScores?.technical?Math.round(stats.categoryScores.technical*10):0,c:'#fbbf24',raw:stats.categoryScores?.technical||0},
+    {n:'HR Skills',p:stats.categoryScores?.hr?Math.round(stats.categoryScores.hr*10):0,c:'#f472b6',raw:stats.categoryScores?.hr||0}
+  ];
+  const sl=document.getElementById('sk-list');sl.innerHTML='';
+  skills.forEach(s=>{sl.innerHTML+=`<div class="sk-r"><div class="sk-n">${s.n}</div><div class="sk-bar"><div class="sk-f" style="width:0%;background:${s.c}" data-p="${s.p}"></div></div><div class="sk-p" style="color:${s.raw>0?s.c:'var(--white-3)'}">${s.raw>0?s.raw+'/10':'—'}</div></div>`});
+  setTimeout(()=>document.querySelectorAll('.sk-f').forEach(el=>el.style.width=el.dataset.p+'%'),300);
+}
+
+function buildChart(sessions){
+  Chart.defaults.color='rgba(100,110,140,.6)';Chart.defaults.borderColor='rgba(255,255,255,.05)';Chart.defaults.font.family="'Satoshi',sans-serif";
+  const ctx=document.getElementById('ch').getContext('2d');
+  const l7=sessions.slice(0,8).reverse();
+  document.getElementById('prog-label').textContent=`Last ${l7.length||5} sessions`;
+  const g=ctx.createLinearGradient(0,0,0,195);g.addColorStop(0,'rgba(124,92,252,.25)');g.addColorStop(1,'rgba(124,92,252,0)');
+  new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:l7.length?l7.map((_,i)=>`S${i+1}`):['S1','S2','S3','S4','S5'],
+      datasets:[{data:l7.length?l7.map(s=>s.score):[0,0,0,0,0],borderColor:'#9d7fff',backgroundColor:g,borderWidth:2.5,pointBackgroundColor:l7.length?l7.map(s=>scoreColor(s.score)):'#9d7fff',pointRadius:5,tension:.4,fill:true}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Score: ${c.raw}/10`}}},scales:{y:{min:0,max:10,ticks:{stepSize:2}}}}
+  });
+}
+
+function buildRecent(sessions){
+  const rl=document.getElementById('rec-list');
+  if(!sessions.length){rl.innerHTML=`<div class="empty-s"><div class="empty-ic">🎯</div><h3>No sessions yet</h3><p>Start your first mock interview!</p><a href="javascript:void(0)" onclick="showInterviewChoice()" class="btn btn-v btn-sm" style="margin-top:.5rem"><i class="fa-solid fa-play"></i> Start Now</a></div>`;return;}
+  sessions.slice(0,4).forEach(s=>{
+    const[ic,bg,label]=cm[s.category]||cm.mixed;
+    rl.innerHTML+=`<div class="sess-i" onclick="location.href='history.html'">
+      <div class="s-ic" style="background:${bg}">${ic}</div>
+      <div class="s-inf">
+        <div class="s-title">${label}</div>
+        <div class="s-meta"><span>${s.totalQuestions||s.questions} questions</span><span>·</span><span>${new Date(s.createdAt||s.date).toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</span><span class="badge diff-${s.difficulty||'medium'}">${s.difficulty||'medium'}</span></div>
+      </div>
+      <div class="s-sc" style="color:${scoreColor(s.score)}">${s.score}/10</div>
+    </div>`;
+  });
+}
+
+// Load everything
+loadDashboard();
+loadDailyWidget();
+loadReadinessWidget();
+</script>
+</body>
+</html>

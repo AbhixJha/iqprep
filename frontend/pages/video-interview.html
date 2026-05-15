@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Video Interview</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{cursor:auto}
+a,button,[onclick],select,label,.vi-ctrl-btn,.vi-cat-btn,.vi-qty-btn,.vi-diff-btn,.vi-pers-btn{cursor:pointer!important}
+input,textarea{cursor:text!important}
+.vi-page{min-height:100vh;background:#07080c;display:flex;flex-direction:column}
+.vi-setup{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem}
+.vi-setup-card{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--r-xl);padding:2.5rem;max-width:640px;width:100%;text-align:center}
+.vi-setup-icon{width:72px;height:72px;border-radius:50%;background:var(--grad-v);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1.2rem;box-shadow:0 0 40px var(--violet-glow)}
+.vi-setup-title{font-family:var(--font-head);font-size:1.8rem;font-weight:900;letter-spacing:-.03em;margin-bottom:.4rem}
+.vi-setup-title em{font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.vi-setup-sub{color:var(--white-3);font-size:.85rem;margin-bottom:2rem;line-height:1.7}
+.vi-cfg-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem;text-align:left}
+.vi-sec-label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--white-3);margin-bottom:.6rem;display:flex;align-items:center;gap:6px}
+.vi-sec-label i{color:var(--violet-bright)}
+.vi-cat-list{display:flex;flex-direction:column;gap:.4rem}
+.vi-cat-btn{background:var(--dark-4);border:2px solid var(--border);border-radius:var(--r-md);padding:.7rem .9rem;cursor:pointer;transition:all .25s ease;text-align:left;font-family:inherit;color:var(--white);display:flex;align-items:center;gap:.65rem;width:100%}
+.vi-cat-btn:hover{border-color:rgba(124,92,252,.4);background:rgba(124,92,252,.06)}
+.vi-cat-btn.on{border-color:var(--violet);background:rgba(124,92,252,.12);box-shadow:0 0 0 1px var(--violet)}
+.vi-cat-btn span{font-size:1.05rem;flex-shrink:0}
+.vi-cat-btn-name{font-size:.82rem;font-weight:700}
+.vi-qty-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.85rem}
+.vi-qty-btn{background:var(--dark-4);border:2px solid var(--border);border-radius:8px;padding:.5rem .9rem;cursor:pointer;transition:all .25s ease;font-family:var(--font-mono);font-weight:500;font-size:.88rem;color:rgba(255,255,255,.5)}
+.vi-qty-btn.on{border-color:var(--violet);color:var(--violet-bright);background:rgba(124,92,252,.12)}
+.vi-qty-btn:hover{border-color:rgba(124,92,252,.3);color:var(--violet-bright)}
+.vi-diff-row{display:flex;gap:.4rem;flex-wrap:wrap}
+/* DIFFICULTY BUTTONS */
+.vi-diff-btn{background:var(--dark-4);border:2px solid var(--border);border-radius:8px;padding:.5rem 1rem;cursor:pointer;transition:all .25s ease;font-family:inherit;font-size:.8rem;font-weight:700;color:rgba(255,255,255,.5)}
+.vi-diff-btn[data-d="easy"].on{border-color:#34d399;color:#34d399;background:rgba(52,211,153,.1)}
+.vi-diff-btn[data-d="medium"].on{border-color:#fbbf24;color:#fbbf24;background:rgba(251,191,36,.1)}
+.vi-diff-btn[data-d="hard"].on{border-color:#f87171;color:#f87171;background:rgba(248,113,113,.1)}
+.vi-diff-btn:hover{border-color:rgba(255,255,255,.2);color:white}
+/* PERSONALITY BUTTONS — separate class to avoid conflict */
+.vi-pers-btn{background:var(--dark-4);border:2px solid var(--border);border-radius:8px;padding:.5rem 1rem;cursor:pointer;transition:all .25s ease;font-family:inherit;font-size:.8rem;font-weight:700;color:rgba(255,255,255,.5)}
+.vi-pers-btn:hover{border-color:rgba(124,92,252,.4);color:var(--violet-bright)}
+.vi-pers-btn.on{border-color:var(--violet);color:var(--violet-bright);background:rgba(124,92,252,.12);box-shadow:0 0 0 1px var(--violet)}
+/* ─────────────────────────────────── */
+.vi-perms{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.75rem}
+.vi-perm{display:flex;align-items:center;gap:.75rem;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem}
+.vi-perm-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
+.vi-perm-info{flex:1}
+.vi-perm-title{font-size:.82rem;font-weight:600}
+.vi-perm-desc{font-size:.68rem;color:var(--white-3)}
+.vi-perm-status{font-size:.72rem;font-weight:600}
+.perm-waiting{color:var(--white-3)}
+.perm-granted{color:var(--green)}
+.perm-denied{color:var(--red)}
+.vi-interview{flex:1;display:none;flex-direction:column;height:100vh}
+.vi-top-bar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;background:rgba(7,8,12,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+.vi-brand{display:flex;align-items:center;gap:.6rem;font-family:var(--font-head);font-size:.95rem;font-weight:800}
+.vi-brand-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:recPulse 1s ease infinite}
+@keyframes recPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.vi-progress{flex:1;max-width:300px;margin:0 1rem}
+.vi-prog-label{font-size:.65rem;color:var(--white-3);margin-bottom:.3rem;text-align:center}
+.vi-timer-badge{font-family:var(--font-mono);font-size:.88rem;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-sm);padding:4px 12px}
+.vi-main{display:flex;flex:1;overflow:hidden}
+.vi-camera-side{width:340px;flex-shrink:0;padding:1rem;display:flex;flex-direction:column;gap:.75rem;background:var(--dark);overflow-y:auto}
+.vi-camera-wrap{position:relative;border-radius:var(--r-lg);overflow:hidden;background:#000;aspect-ratio:4/3}
+video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.vi-cam-overlay{position:absolute;inset:0;pointer-events:none}
+.vi-cam-corner{position:absolute;width:20px;height:20px;border-color:var(--violet);border-style:solid;opacity:.6}
+.vi-cam-corner.tl{top:8px;left:8px;border-width:2px 0 0 2px;border-radius:3px 0 0 0}
+.vi-cam-corner.tr{top:8px;right:8px;border-width:2px 2px 0 0;border-radius:0 3px 0 0}
+.vi-cam-corner.bl{bottom:8px;left:8px;border-width:0 0 2px 2px;border-radius:0 0 0 3px}
+.vi-cam-corner.br{bottom:8px;right:8px;border-width:0 2px 2px 0;border-radius:0 0 3px 0}
+.vi-cam-status{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);border-radius:20px;padding:2px 10px;font-size:.62rem;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:4px}
+.vi-cam-live-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:recPulse 1s ease infinite}
+.vi-tips{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--r-md);padding:.85rem}
+.vi-tips-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--white-3);margin-bottom:.55rem}
+.vi-tip{display:flex;align-items:flex-start;gap:.5rem;font-size:.72rem;color:var(--white-2);margin-bottom:.35rem;line-height:1.5}
+.vi-tip i{color:var(--violet-bright);font-size:.65rem;margin-top:2px;flex-shrink:0}
+.vi-filler-box{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--r-md);padding:.85rem}
+.vi-filler-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--white-3);margin-bottom:.55rem}
+.vi-filler-count{display:flex;gap:.5rem;flex-wrap:wrap}
+.filler-badge{background:var(--red-dim);border:1px solid rgba(248,113,113,.2);border-radius:6px;padding:2px 8px;font-size:.68rem;color:var(--red);display:flex;align-items:center;gap:4px}
+.vi-content-side{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.vi-interviewer{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(124,92,252,.05),transparent)}
+.vi-int-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem}
+.vi-int-avatar{width:44px;height:44px;border-radius:50%;background:var(--grad-v);display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 0 20px var(--violet-glow);position:relative;flex-shrink:0}
+.vi-int-speaking{position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--violet);animation:speakRing 1s ease infinite;display:none}
+.vi-int-avatar.speaking .vi-int-speaking{display:block}
+@keyframes speakRing{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.1);opacity:.3}}
+.vi-int-name{font-family:var(--font-head);font-size:.95rem;font-weight:800}
+.vi-int-role{font-size:.68rem;color:var(--white-3)}
+.vi-int-status{font-size:.72rem;color:var(--violet-bright);margin-left:auto;display:flex;align-items:center;gap:5px}
+.vi-question-box{background:var(--dark-3);border:1px solid var(--border-v);border-radius:var(--r-lg);padding:1.1rem 1.25rem}
+.vi-q-num{font-family:var(--font-mono);font-size:.62rem;color:var(--violet-bright);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.45rem}
+.vi-q-text{font-size:1rem;font-weight:500;line-height:1.7;color:var(--white)}
+.vi-q-tags{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.6rem}
+.vi-answer-area{flex:1;padding:1.25rem 1.5rem;display:flex;flex-direction:column;overflow:hidden}
+.vi-answer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.vi-answer-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--white-3);display:flex;align-items:center;gap:6px}
+.vi-answer-label i{color:var(--violet-bright)}
+.vi-transcript{flex:1;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);padding:.85rem;font-size:.85rem;color:var(--white-2);line-height:1.7;overflow-y:auto;min-height:100px}
+.vi-interim{color:rgba(255,255,255,.4);font-style:italic}
+.vi-controls{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.75rem;background:var(--dark);flex-shrink:0}
+.vi-ctrl-btn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;background:none;border:none;color:var(--white-3);font-family:var(--font-body);transition:var(--t)}
+.vi-ctrl-btn:hover{color:var(--white)}
+.vi-ctrl-btn-ic{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:var(--t)}
+.vi-ctrl-btn-label{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.vi-record-btn{margin:0 auto}
+.vi-record-btn .vi-ctrl-btn-ic{width:64px;height:64px;background:var(--grad-v);color:white;font-size:1.3rem;box-shadow:0 0 30px var(--violet-glow)}
+.vi-record-btn.recording .vi-ctrl-btn-ic{background:linear-gradient(135deg,var(--red),#ff6b6b);box-shadow:0 0 30px rgba(244,63,94,.4);animation:recordPulse .8s ease infinite}
+@keyframes recordPulse{0%,100%{box-shadow:0 0 30px rgba(244,63,94,.3)}50%{box-shadow:0 0 50px rgba(244,63,94,.6)}}
+.vi-skip-btn .vi-ctrl-btn-ic{background:var(--dark-3);border:1px solid var(--border)}
+.vi-submit-btn .vi-ctrl-btn-ic{background:var(--green-dim);border:1px solid rgba(52,211,153,.25);color:var(--green)}
+.vi-end-btn .vi-ctrl-btn-ic{background:var(--red-dim);border:1px solid rgba(248,113,113,.25);color:var(--red)}
+.vi-results{display:none;flex:1;overflow-y:auto;padding:2rem}
+.vi-results-header{text-align:center;margin-bottom:2rem}
+.vi-results-ring{width:140px;height:140px;border-radius:50%;margin:1.5rem auto;border:3px solid transparent;background:linear-gradient(var(--dark),var(--dark)) padding-box,var(--grad-v) border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 50px rgba(124,92,252,.15)}
+.vi-results-score{font-family:var(--font-mono);font-size:2.8rem;font-weight:500;line-height:1}
+.vi-results-label{font-size:.6rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.1em}
+.vi-results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;max-width:500px;margin:0 auto 2rem}
+.vi-rstat{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--r-md);padding:.9rem;text-align:center}
+.vi-rstat-n{font-family:var(--font-mono);font-size:1.3rem;font-weight:500}
+.vi-rstat-l{font-size:.62rem;color:var(--white-3);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+.vi-qa-review{max-width:700px;margin:0 auto}
+.vi-qa-item{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;margin-bottom:.75rem}
+.vi-qa-q{font-size:.88rem;font-weight:600;margin-bottom:.5rem}
+.vi-qa-ans{font-size:.78rem;color:var(--white-2);background:var(--dark-3);border-radius:var(--r-sm);padding:.6rem .75rem;margin-bottom:.5rem;line-height:1.65}
+.vi-qa-feedback{font-size:.75rem;color:var(--white-2);line-height:1.65}
+.vi-filler-warn{background:var(--red-dim);border:1px solid rgba(248,113,113,.2);border-radius:var(--r-sm);padding:.4rem .6rem;font-size:.72rem;color:var(--red);margin-bottom:.4rem;display:flex;align-items:center;gap:5px}
+@media(max-width:900px){.vi-main{flex-direction:column}.vi-camera-side{width:100%;flex-direction:row;flex-wrap:wrap;gap:.75rem}.vi-camera-wrap{width:180px;flex-shrink:0}}
+#editor-container {display:none; height:220px; width:100%; border-radius:6px; border:1px solid var(--border); margin-top:8px;}
+.ide-toolbar {display:none; margin-top:8px; background:var(--dark-4); padding:6px 12px; border-radius:6px; align-items:center; justify-content:space-between; border:1px solid var(--border);}
+.ide-toolbar select {background:var(--dark-1); color:var(--white); border:1px solid var(--border); border-radius:4px; padding:4px 8px; font-size:.7rem;}
+@media(max-width:480px){.vi-cfg-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="vi-page">
+
+<!-- NAV -->
+<nav class="nav" style="position:sticky;top:0;z-index:100;background:rgba(7,8,12,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between">
+  <a href="dashboard.html" style="display:flex;align-items:center;gap:.6rem;text-decoration:none;font-family:var(--font-head);font-size:.95rem;font-weight:800;color:white">
+    <div style="width:30px;height:30px;border-radius:8px;background:var(--grad-v);display:flex;align-items:center;justify-content:center;font-size:.75rem"><i class="fa-solid fa-brain"></i></div>IQPrep
+  </a>
+  <div style="display:flex;gap:1.25rem;align-items:center">
+    <a href="dashboard.html" style="font-size:.8rem;color:var(--white-3);text-decoration:none">Dashboard</a>
+    <a href="interview.html" style="font-size:.8rem;color:var(--white-3);text-decoration:none">Practice</a>
+    <a href="video-interview.html" style="font-size:.8rem;color:var(--violet-bright);text-decoration:none;font-weight:600">🎥 Video</a>
+    <a href="history.html" style="font-size:.8rem;color:var(--white-3);text-decoration:none">History</a>
+    <a href="resume.html" style="font-size:.8rem;color:var(--white-3);text-decoration:none">Resume</a>
+    <a href="daily-challenge.html" style="font-size:.8rem;color:var(--white-3);text-decoration:none">🔥 Daily</a>
+  </div>
+  <a href="dashboard.html" class="btn btn-ghost btn-sm"><i class="fa-solid fa-arrow-left"></i> Back</a>
+</nav>
+
+<!-- ══ SETUP SCREEN ══ -->
+<div class="vi-setup" id="vi-setup">
+  <div class="vi-setup-card">
+    <div class="vi-setup-icon">🎥</div>
+    <h1 class="vi-setup-title">AI <em>Video</em> Interview</h1>
+    <p class="vi-setup-sub">Camera on · AI speaks questions · You answer by voice · Real-time AI evaluation</p>
+
+    <div class="vi-cfg-grid">
+      <div>
+        <div class="vi-sec-label"><i class="fa-solid fa-layer-group"></i> Category</div>
+        <div class="vi-cat-list">
+          <button class="vi-cat-btn on" data-cat="technical" onclick="selCat(this)"><span>💻</span><div class="vi-cat-btn-name">Technical</div></button>
+          <button class="vi-cat-btn" data-cat="hr" onclick="selCat(this)"><span>🤝</span><div class="vi-cat-btn-name">HR Round</div></button>
+          <button class="vi-cat-btn" data-cat="aptitude" onclick="selCat(this)"><span>🧮</span><div class="vi-cat-btn-name">Aptitude</div></button>
+          <button class="vi-cat-btn" data-cat="mixed" onclick="selCat(this)"><span>🎯</span><div class="vi-cat-btn-name">Full Mock</div></button>
+        </div>
+      </div>
+      <div>
+        <div class="vi-sec-label"><i class="fa-solid fa-list-ol"></i> Questions</div>
+        <div class="vi-qty-row">
+          <button class="vi-qty-btn" data-q="3" onclick="selQty(this)">3</button>
+          <button class="vi-qty-btn on" data-q="5" onclick="selQty(this)">5</button>
+          <button class="vi-qty-btn" data-q="8" onclick="selQty(this)">8</button>
+          <button class="vi-qty-btn" data-q="10" onclick="selQty(this)">10</button>
+        </div>
+
+        <div class="vi-sec-label" style="margin-top:.85rem"><i class="fa-solid fa-gauge-high"></i> Difficulty</div>
+        <div class="vi-diff-row">
+          <button class="vi-diff-btn" data-d="easy" onclick="selDiff(this)">🟢 Easy</button>
+          <button class="vi-diff-btn on" data-d="medium" onclick="selDiff(this)">🟡 Medium</button>
+          <button class="vi-diff-btn" data-d="hard" onclick="selDiff(this)">🔴 Hard</button>
+        </div>
+
+        <div class="vi-sec-label" style="margin-top:.85rem"><i class="fa-solid fa-robot"></i> AI Personality</div>
+        <div class="vi-diff-row">
+          <button class="vi-pers-btn on" data-p="friendly" onclick="selPers(this)">😊 Friendly</button>
+          <button class="vi-pers-btn" data-p="strict" onclick="selPers(this)">🧐 Strict</button>
+          <button class="vi-pers-btn" data-p="neutral" onclick="selPers(this)">😐 Neutral</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="vi-perms">
+      <div class="vi-perm" id="perm-cam">
+        <div class="vi-perm-ic" style="background:var(--violet-dim);color:var(--violet-bright)"><i class="fa-solid fa-video"></i></div>
+        <div class="vi-perm-info"><div class="vi-perm-title">Camera Access</div><div class="vi-perm-desc">Required to show your video feed</div></div>
+        <div class="vi-perm-status perm-waiting" id="cam-status">Requesting...</div>
+      </div>
+      <div class="vi-perm" id="perm-mic">
+        <div class="vi-perm-ic" style="background:var(--pink-dim);color:var(--pink)"><i class="fa-solid fa-microphone"></i></div>
+        <div class="vi-perm-info"><div class="vi-perm-title">Microphone Access</div><div class="vi-perm-desc">Required to capture your answers</div></div>
+        <div class="vi-perm-status perm-waiting" id="mic-status">Requesting...</div>
+      </div>
+    </div>
+
+    <button class="btn btn-v btn-xl" id="start-vi-btn" onclick="startVideoInterview()" style="width:100%;justify-content:center" disabled>
+      <i class="fa-solid fa-spinner fa-spin" id="start-vi-icon"></i>
+      <span id="start-vi-text">Requesting Permissions...</span>
+    </button>
+    <div style="margin-top:.75rem">
+      <a href="interview.html" style="font-size:.73rem;color:var(--white-3);text-decoration:none">← Back to text interview</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INTERVIEW SCREEN ══ -->
+<div class="vi-interview" id="vi-interview">
+  <div class="vi-top-bar">
+    <div class="vi-brand"><div class="vi-brand-dot"></div>IQPrep Live</div>
+    <div class="vi-progress">
+      <div class="vi-prog-label" id="vi-prog-label">Question 1 of 5</div>
+      <div class="prog"><div class="prog-f" id="vi-prog-bar" style="width:0%"></div></div>
+    </div>
+    <div class="vi-timer-badge" id="vi-timer">00:00</div>
+  </div>
+
+  <div class="vi-main">
+    <div class="vi-camera-side">
+      <div class="vi-camera-wrap">
+        <video id="vi-video" autoplay muted playsinline></video>
+        <div class="vi-cam-overlay">
+          <div class="vi-cam-corner tl"></div><div class="vi-cam-corner tr"></div>
+          <div class="vi-cam-corner bl"></div><div class="vi-cam-corner br"></div>
+          <div class="vi-cam-status"><div class="vi-cam-live-dot"></div>LIVE</div>
+        </div>
+      </div>
+      <div class="vi-tips">
+        <div class="vi-tips-title">💡 Tips</div>
+        <div class="vi-tip"><i class="fa-solid fa-eye"></i>Maintain eye contact with camera</div>
+        <div class="vi-tip"><i class="fa-solid fa-microphone"></i>Speak clearly and at normal pace</div>
+        <div class="vi-tip"><i class="fa-solid fa-lightbulb"></i>Use STAR method for HR questions</div>
+        <div class="vi-tip"><i class="fa-solid fa-clock"></i>Take a moment before answering</div>
+      </div>
+      <div class="vi-filler-box">
+        <div class="vi-filler-title">⚠️ Filler Words Detected</div>
+        <div class="vi-filler-count" id="vi-fillers"><span style="font-size:.72rem;color:var(--white-3)">None detected yet</span></div>
+      </div>
+    </div>
+
+    <div class="vi-content-side">
+      <div class="vi-interviewer">
+        <div class="vi-int-header">
+          <div class="vi-int-avatar" id="vi-int-avatar" style="background: url('../img/anime_interviewer.png') center/cover; color: transparent;">
+            <div class="vi-int-speaking"></div>
+          </div>
+          <div>
+            <div class="vi-int-name">ARIA</div>
+            <div class="vi-int-role" id="vi-int-role-label">AI Interviewer · Friendly Mode</div>
+          </div>
+          <div class="vi-int-status" id="vi-int-status">
+            <i class="fa-solid fa-circle" style="font-size:.45rem;color:var(--green)"></i> Ready
+          </div>
+        </div>
+        <div class="vi-question-box">
+          <div class="vi-q-num" id="vi-q-num">QUESTION 01</div>
+          <div class="vi-q-text" id="vi-q-text">Loading your question...</div>
+          <div class="vi-q-tags" id="vi-q-tags"></div>
+        </div>
+      </div>
+
+      <div class="vi-answer-area">
+        <div class="vi-answer-header">
+          <div class="vi-answer-label"><i class="fa-solid fa-microphone"></i> Your Answer (Live Transcript)</div>
+          <button class="btn btn-ghost btn-sm" onclick="toggleIde()" style="height:28px;font-size:.65rem;padding:0 8px;margin-right:auto;margin-left:10px;"><i class="fa-solid fa-code"></i> IDE</button>
+          <div style="font-size:.68rem;color:var(--white-3)" id="vi-rec-status">Press mic to start answering</div>
+        </div>
+        <div class="vi-transcript" id="vi-transcript">
+          <span style="color:var(--white-3);font-style:italic;font-size:.82rem">🎤 Press the mic button below to start speaking...</span>
+        </div>
+        <div class="ide-toolbar" id="ide-toolbar">
+          <div style="font-size:0.75rem; font-weight:700;"><i class="fa-solid fa-terminal" style="color:var(--violet-bright)"></i> Code Editor</div>
+          <select id="ide-lang" onchange="changeLang()">
+            <option value="java">Java</option>
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="c_cpp">C++</option>
+          </select>
+        </div>
+        <div id="editor-container"></div>
+      </div>
+
+      <div class="vi-controls">
+        <button class="vi-ctrl-btn vi-skip-btn" onclick="skipQuestion()">
+          <div class="vi-ctrl-btn-ic"><i class="fa-solid fa-forward"></i></div>
+          <div class="vi-ctrl-btn-label">Skip</div>
+        </button>
+        <button class="vi-ctrl-btn vi-record-btn" id="vi-record-btn" onclick="toggleRecording()">
+          <div class="vi-ctrl-btn-ic"><i class="fa-solid fa-microphone" id="vi-rec-icon"></i></div>
+          <div class="vi-ctrl-btn-label" id="vi-rec-label">Speak</div>
+        </button>
+        <button class="vi-ctrl-btn vi-submit-btn" onclick="submitVoiceAnswer()">
+          <div class="vi-ctrl-btn-ic"><i class="fa-solid fa-check"></i></div>
+          <div class="vi-ctrl-btn-label">Submit</div>
+        </button>
+        <button class="vi-ctrl-btn vi-end-btn" onclick="endVideoInterview()">
+          <div class="vi-ctrl-btn-ic"><i class="fa-solid fa-stop"></i></div>
+          <div class="vi-ctrl-btn-label">End</div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESULTS SCREEN ══ -->
+<div class="vi-results" id="vi-results">
+  <div class="vi-results-header">
+    <div class="lbl" style="justify-content:center">Interview Complete</div>
+    <div style="font-family:var(--font-head);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;margin-top:.4rem">Your <em style="font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Video Results</em></div>
+  </div>
+  <div class="vi-results-ring">
+    <div class="vi-results-score" id="vi-final-score">0</div>
+    <div class="vi-results-label">/ 10</div>
+  </div>
+  <div style="text-align:center;color:var(--white-3);font-size:.88rem;margin-bottom:1.5rem" id="vi-final-verdict"></div>
+  <div class="vi-results-grid" style="grid-template-columns:repeat(4,1fr); max-width:600px;">
+    <div class="vi-rstat"><div class="vi-rstat-n" id="vr-q">0</div><div class="vi-rstat-l">Questions</div></div>
+    <div class="vi-rstat"><div class="vi-rstat-n" id="vr-f">0</div><div class="vi-rstat-l">Filler Words</div></div>
+    <div class="vi-rstat"><div class="vi-rstat-n" id="vr-t">0s</div><div class="vi-rstat-l">Avg Answer</div></div>
+    <div class="vi-rstat"><div class="vi-rstat-n" id="vr-n">0%</div><div class="vi-rstat-l">Nervousness</div></div>
+  </div>
+  <div class="vi-qa-review" id="vi-qa-review"></div>
+  <div style="display:flex;gap:.75rem;justify-content:center;margin-top:2rem;flex-wrap:wrap">
+    <button class="btn btn-ghost" onclick="location.href='dashboard.html'"><i class="fa-solid fa-house"></i> Dashboard</button>
+    <button class="btn btn-ghost" onclick="location.href='history.html'"><i class="fa-solid fa-clock-rotate-left"></i> History</button>
+    <button class="btn btn-v" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> Try Again</button>
+  </div>
+</div>
+
+</div><!-- end vi-page -->
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/jarvis.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
+<script>
+if(!getToken()) window.location.href='login.html';
+
+// ── CONFIG ──
+let cfg={cat:'technical',diff:'medium',qty:5,pers:'friendly'};
+let sess={qs:[],answers:[],scores:[],fillerCounts:[],idx:0,startTime:null,answerStartTime:null,totalFillers:0,qaData:[]};
+let stream=null,recognition=null,isRecording=false;
+let currentTranscript='',interimTranscript='';
+let sessionTimer=null,sessionSeconds=0;
+let fillerTracker={};
+
+const fillerWords=['um','uh','like','you know','basically','literally','actually','so','right','okay','hmm','err','yeah','well','kind of','sort of'];
+
+// ── SELECTORS ──
+function selCat(b){
+  document.querySelectorAll('.vi-cat-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  cfg.cat=b.dataset.cat;
+}
+
+function selQty(b){
+  document.querySelectorAll('.vi-qty-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  cfg.qty=parseInt(b.dataset.q);
+}
+
+function selDiff(b){
+  // Only remove .on from difficulty buttons (data-d), NOT personality buttons
+  document.querySelectorAll('.vi-diff-btn[data-d]').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  cfg.diff=b.dataset.d;
+}
+
+function selPers(b){
+  // Only remove .on from personality buttons (vi-pers-btn), separate class
+  document.querySelectorAll('.vi-pers-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  cfg.pers=b.dataset.p;
+  // Update the interviewer role label if interview already started
+  const roleLabel=document.getElementById('vi-int-role-label');
+  if(roleLabel){
+    const persLabel={friendly:'Friendly Mode',strict:'Strict Mode',neutral:'Neutral Mode'};
+    roleLabel.textContent=`AI Interviewer · ${persLabel[cfg.pers]||'Friendly Mode'}`;
+  }
+}
+
+// ── PERMISSIONS ──
+async function requestPermissions(){
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:true});
+    permissionsGranted();
+  }catch(err1){
+    try{
+      const v=await navigator.mediaDevices.getUserMedia({video:true});
+      const a=await navigator.mediaDevices.getUserMedia({audio:true});
+      stream=new MediaStream([...v.getTracks(),...a.getTracks()]);
+      permissionsGranted();
+    }catch(err2){
+      permissionDenied(err2);
+    }
+  }
+}
+
+function permissionsGranted(){
+  document.getElementById('cam-status').textContent='✅ Granted';
+  document.getElementById('cam-status').className='vi-perm-status perm-granted';
+  document.getElementById('mic-status').textContent='✅ Granted';
+  document.getElementById('mic-status').className='vi-perm-status perm-granted';
+  document.getElementById('start-vi-icon').className='fa-solid fa-video';
+  document.getElementById('start-vi-text').textContent='Start Video Interview';
+  document.getElementById('start-vi-btn').disabled=false;
+  const video=document.getElementById('vi-video');
+  if(video)video.srcObject=stream;
+}
+
+function permissionDenied(err){
+  const msg=err.name==='NotAllowedError'?'❌ Blocked — allow in browser':err.name==='NotFoundError'?'❌ No camera found':'❌ '+err.name;
+  document.getElementById('cam-status').textContent=msg;
+  document.getElementById('cam-status').className='vi-perm-status perm-denied';
+  document.getElementById('mic-status').textContent=msg;
+  document.getElementById('mic-status').className='vi-perm-status perm-denied';
+  document.getElementById('start-vi-btn').disabled=false;
+  document.getElementById('start-vi-icon').className='fa-solid fa-triangle-exclamation';
+  document.getElementById('start-vi-text').textContent='Click lock icon → Allow Camera & Mic → Refresh';
+  toast('Camera Blocked!','Click 🔒 in address bar → Allow Camera & Microphone → Refresh page','e',8000);
+}
+
+// ── START INTERVIEW ──
+async function startVideoInterview(){
+  const btn=document.getElementById('start-vi-btn');
+  btn.disabled=true;
+  document.getElementById('start-vi-icon').className='fa-solid fa-spinner fa-spin';
+  document.getElementById('start-vi-text').textContent='AI is generating questions...';
+
+  // Update personality label on interview screen
+  const persLabel={friendly:'Friendly Mode',strict:'Strict Mode',neutral:'Neutral Mode'};
+  const roleLabel=document.getElementById('vi-int-role-label');
+  if(roleLabel) roleLabel.textContent=`AI Interviewer · ${persLabel[cfg.pers]||'Friendly Mode'}`;
+
+  try{
+    const token=getToken();
+    const res=await fetch(`http://localhost:8080/api/questions/generate?category=${cfg.cat}&difficulty=${cfg.diff}&count=${cfg.qty}`,{headers:{'Authorization':`Bearer ${token}`}});
+    if(res.ok){
+      const data=await res.json();
+      sess.qs=data.map(q=>({q:q.question||q.q,tags:q.tags||[]}));
+    }else throw new Error('AI failed');
+  }catch(err){
+    // Fallback questions
+    sess.qs=[
+      {q:'Tell me about yourself and your technical background.',tags:['Introduction']},
+      {q:'What is polymorphism in Java? Give a real-world example.',tags:['Java','OOP']},
+      {q:'Describe your most challenging project and how you solved it.',tags:['HR','Problem Solving']},
+      {q:'Explain the difference between ArrayList and LinkedList.',tags:['Java','DSA']},
+      {q:'Where do you see yourself in 5 years?',tags:['HR','Career']}
+    ].slice(0,cfg.qty);
+    toast('Using backup questions','AI questions unavailable','w');
+  }
+
+  document.getElementById('vi-setup').style.display='none';
+  document.getElementById('vi-interview').style.display='flex';
+
+  const video=document.getElementById('vi-video');
+  if(stream)video.srcObject=stream;
+
+  sess.startTime=Date.now();
+  sessionTimer=setInterval(()=>{
+    sessionSeconds++;
+    const m=String(Math.floor(sessionSeconds/60)).padStart(2,'0');
+    const s=String(sessionSeconds%60).padStart(2,'0');
+    document.getElementById('vi-timer').textContent=`${m}:${s}`;
+  },1000);
+
+  loadQuestion();
+}
+
+// ── LOAD QUESTION ──
+function loadQuestion(){
+  const q=sess.qs[sess.idx];const n=sess.idx+1;
+  document.getElementById('vi-q-num').textContent=`QUESTION ${String(n).padStart(2,'0')}`;
+  document.getElementById('vi-q-text').textContent=q.q;
+  document.getElementById('vi-q-tags').innerHTML=(q.tags||[]).map(t=>`<span class="badge bv">${t}</span>`).join('');
+  document.getElementById('vi-prog-label').textContent=`Question ${n} of ${sess.qs.length}`;
+  document.getElementById('vi-prog-bar').style.width=`${(n/sess.qs.length)*100}%`;
+  currentTranscript='';interimTranscript='';
+  document.getElementById('vi-transcript').innerHTML='<span style="color:var(--white-3);font-style:italic;font-size:.82rem">🎤 Press the mic button below to start speaking...</span>';
+  document.getElementById('vi-rec-status').textContent='Press mic to start answering';
+  fillerTracker={};
+  speakQuestion(q.q);
+}
+
+// ── TTS ──
+function speakQuestion(text){
+  const avatar=document.getElementById('vi-int-avatar');
+  const status=document.getElementById('vi-int-status');
+  window.speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(text);
+  // Adjust speech rate based on personality
+  utt.rate=cfg.pers==='strict'?0.95:cfg.pers==='neutral'?0.9:0.85;
+  utt.pitch=cfg.pers==='strict'?0.9:1.0;
+  utt.lang='en-US';utt.volume=1.0;
+  const voices=window.speechSynthesis.getVoices();
+  const v=voices.find(v=>v.name==='Google US English')||voices.find(v=>v.name.includes('Microsoft')&&v.lang.startsWith('en'))||voices.find(v=>v.lang==='en-US');
+  if(v)utt.voice=v;
+  utt.onstart=()=>{avatar.classList.add('speaking');status.innerHTML='<i class="fa-solid fa-volume-high" style="color:var(--violet-bright)"></i> Asking question...'};
+  utt.onend=()=>{
+    avatar.classList.remove('speaking');
+    status.innerHTML='<i class="fa-solid fa-circle" style="font-size:.45rem;color:var(--green)"></i> Your turn — speak now!';
+    setTimeout(()=>{if(!isRecording)startRecording();},500);
+  };
+  window.speechSynthesis.speak(utt);
+}
+
+function speakFeedback(text){
+  window.speechSynthesis.cancel();
+  const clean=text.replace(/<[^>]*>/g,'').trim().substring(0,200);
+  const utt=new SpeechSynthesisUtterance(clean);
+  utt.rate=0.9;utt.lang='en-US';
+  const voices=window.speechSynthesis.getVoices();
+  const v=voices.find(v=>v.name==='Google US English')||voices.find(v=>v.lang==='en-US');
+  if(v)utt.voice=v;
+  const avatar=document.getElementById('vi-int-avatar');
+  const status=document.getElementById('vi-int-status');
+  utt.onstart=()=>{avatar.classList.add('speaking');status.innerHTML='<i class="fa-solid fa-comment" style="color:var(--violet-bright)"></i> Giving feedback...'};
+  utt.onend=()=>{avatar.classList.remove('speaking');status.innerHTML='<i class="fa-solid fa-circle" style="font-size:.45rem;color:var(--green)"></i> Ready';};
+  window.speechSynthesis.speak(utt);
+}
+
+// ── RECORDING ──
+function toggleRecording(){isRecording?stopRecording():startRecording();}
+
+function startRecording(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){toast('Not supported','Use Chrome browser!','e');return;}
+  recognition=new SR();
+  recognition.continuous=true;recognition.interimResults=true;recognition.lang='en-US';
+  recognition.onstart=()=>{
+    isRecording=true;
+    sess.answerStartTime=Date.now();
+    document.getElementById('vi-record-btn').classList.add('recording');
+    document.getElementById('vi-rec-icon').className='fa-solid fa-stop';
+    document.getElementById('vi-rec-label').textContent='Stop';
+    document.getElementById('vi-rec-status').textContent='🔴 Recording — speak your answer...';
+    document.getElementById('vi-transcript').innerHTML='';
+  };
+  recognition.onresult=(e)=>{
+    let interim='',final='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript+' ';
+      else interim+=e.results[i][0].transcript;
+    }
+    if(final){currentTranscript+=final;detectFillers(final);}
+    interimTranscript=interim;
+    const el=document.getElementById('vi-transcript');
+    el.innerHTML=`<span>${currentTranscript}</span>${interim?`<span class="vi-interim">${interim}</span>`:''}`;
+    el.scrollTop=el.scrollHeight;
+  };
+  recognition.onerror=(e)=>{
+    console.error('Speech error:',e.error);
+    stopRecording();
+    if(e.error!=='no-speech')toast('Voice error',e.error,'e');
+  };
+  recognition.onend=()=>{if(isRecording)recognition.start();};
+  recognition.start();
+}
+
+function stopRecording(){
+  isRecording=false;
+  if(recognition){recognition.onend=null;try{recognition.stop();}catch(e){}recognition=null;}
+  document.getElementById('vi-record-btn').classList.remove('recording');
+  document.getElementById('vi-rec-icon').className='fa-solid fa-microphone';
+  document.getElementById('vi-rec-label').textContent='Speak';
+  document.getElementById('vi-rec-status').textContent=currentTranscript?'Answer recorded ✅ — click Submit':'Press mic to start answering';
+}
+
+// ── FILLER DETECTION ──
+function detectFillers(text){
+  const words=text.toLowerCase().split(/\s+/);
+  let found=false;
+  words.forEach(word=>{
+    const clean=word.replace(/[^a-z\s]/g,'').trim();
+    if(fillerWords.includes(clean)){fillerTracker[clean]=(fillerTracker[clean]||0)+1;sess.totalFillers++;found=true;}
+  });
+  if(found){
+    const el=document.getElementById('vi-fillers');
+    el.innerHTML=Object.entries(fillerTracker).map(([w,c])=>`<div class="filler-badge"><i class="fa-solid fa-triangle-exclamation" style="font-size:.55rem"></i>"${w}" ×${c}</div>`).join('');
+  }
+}
+
+// ── SUBMIT ANSWER ──
+async function submitVoiceAnswer(){
+  stopRecording();
+  window.speechSynthesis.cancel();
+  let answer=currentTranscript.trim();
+  if(ideMode && editor){
+    const code=editor.getValue().trim();
+    if(code) answer += "\n\n```" + document.getElementById('ide-lang').value + "\n" + code + "\n```";
+  }
+  const q=sess.qs[sess.idx];
+  const answerTime=sess.answerStartTime?Math.round((Date.now()-sess.answerStartTime)/1000):0;
+  const fillerCount=Object.values(fillerTracker).reduce((a,b)=>a+b,0);
+
+  if(!answer){toast('No answer recorded','Please speak or type your answer first!','w');return;}
+
+  // Show evaluating
+  document.getElementById('vi-int-status').innerHTML='<i class="fa-solid fa-spinner fa-spin" style="color:var(--violet-bright)"></i> Evaluating...';
+  document.getElementById('vi-rec-status').textContent='🤖 AI is evaluating your answer...';
+
+  // ── REAL AI EVALUATION ──
+  let evaluation={score:5,feedback:'AI evaluation unavailable.',strengths:'Good attempt',improvements:'Keep practicing',betterAnswer:'',accuracyScore:5,clarityScore:5,completenessScore:5};
+
+  try{
+    // Calculate WPM & Behavior Metrics
+    const durationInMinutes = answerTime / 60;
+    const wordCount = answer.trim().split(/\s+/).length;
+    const wpm = answerTime > 0 ? Math.round(wordCount / (durationInMinutes > 0 ? durationInMinutes : 1)) : 0;
+    let behaviorNote = 'Neutral pace';
+    if (wpm > 150) behaviorNote = 'Fast pace (Potentially nervous or rushing)';
+    if (wpm < 80) behaviorNote = 'Slow pace (Hesitant or carefully thinking)';
+    const metricsPayload = `WPM: ${wpm} (${behaviorNote}) | Filler Words Used: ${fillerCount}`;
+
+    const token=getToken();
+    const evalRes=await fetch('http://localhost:8080/api/evaluate',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+      body:JSON.stringify({
+        question:q.q,
+        answer:answer,
+        category:cfg.cat,
+        difficulty:cfg.diff,
+        personality:cfg.pers,
+        behaviorMetrics: metricsPayload
+      })
+    });
+
+    if(evalRes.ok){
+      const data=await evalRes.json();
+      console.log('Evaluation response:', data);
+      evaluation={
+        score:data.score!=null?Number(data.score):5,
+        feedback:data.feedback||'Good attempt! Keep practicing.',
+        strengths:data.strengths||'Answer submitted',
+        improvements:data.improvements||'Keep practicing',
+        betterAnswer:data.betterAnswer||'',
+        accuracyScore:data.accuracyScore!=null?Number(data.accuracyScore):5,
+        clarityScore:data.clarityScore!=null?Number(data.clarityScore):5,
+        completenessScore:data.completenessScore!=null?Number(data.completenessScore):5
+      };
+    }else{
+      console.error('Eval API error:', evalRes.status);
+    }
+  }catch(err){
+    console.error('Evaluation error:',err);
+  }
+
+  // Save QA data
+  sess.answers.push(answer);
+  sess.scores.push(evaluation.score);
+  sess.fillerCounts.push(fillerCount);
+  sess.qaData.push({
+    question:q.q,
+    userAnswer:answer,
+    aiFeedback:evaluation.feedback,
+    betterAnswer:evaluation.betterAnswer,
+    score:evaluation.score,
+    accuracyScore:evaluation.accuracyScore,
+    clarityScore:evaluation.clarityScore,
+    completenessScore:evaluation.completenessScore,
+    tags:(q.tags||[]).join(','),
+    skipped:false,
+    fillerCount,
+    answerTime
+  });
+
+  // Show score toast
+  toast(`Score: ${evaluation.score}/10`,scoreLabel(evaluation.score)+' '+scoreEmoji(evaluation.score),evaluation.score>=7?'s':evaluation.score>=5?'i':'w');
+
+  // AI speaks feedback
+  const feedbackSpeech=`You scored ${evaluation.score} out of 10. ${evaluation.score>=8?'Excellent answer!':evaluation.score>=6?'Good answer, with some room for improvement.':'This answer needs more depth and detail.'}`;
+  speakFeedback(feedbackSpeech);
+
+  // Next question or end
+  if(sess.idx>=sess.qs.length-1){
+    setTimeout(()=>endVideoInterview(),3500);
+  }else{
+    sess.idx++;
+    currentTranscript='';interimTranscript='';
+    setTimeout(()=>loadQuestion(),3500);
+  }
+}
+
+// ── SKIP ──
+function skipQuestion(){
+  stopRecording();window.speechSynthesis.cancel();
+  sess.answers.push('[Skipped]');sess.scores.push(0);sess.fillerCounts.push(0);
+  sess.qaData.push({question:sess.qs[sess.idx].q,userAnswer:'[Skipped]',aiFeedback:'Skipped',betterAnswer:'',score:0,accuracyScore:0,clarityScore:0,completenessScore:0,tags:'',skipped:true,fillerCount:0,answerTime:0});
+  toast('Skipped','Moving to next question','w');
+  if(sess.idx>=sess.qs.length-1){endVideoInterview();return;}
+  sess.idx++;currentTranscript='';interimTranscript='';
+  loadQuestion();
+}
+
+// ── END INTERVIEW ──
+async function endVideoInterview(){
+  stopRecording();window.speechSynthesis.cancel();
+  clearInterval(sessionTimer);
+  if(stream)stream.getTracks().forEach(t=>t.stop());
+
+  const scores=sess.scores.filter(s=>s>0);
+  const avg=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):'0';
+  const totalFillers=sess.fillerCounts.reduce((a,b)=>a+b,0);
+  const answered=sess.qaData.filter(q=>!q.skipped);
+  const avgAnswerTime=answered.length?Math.round(answered.reduce((a,q)=>a+q.answerTime,0)/answered.length):0;
+  
+  // Calculate simulated Nervousness based on filler words frequency and total time
+  let totalTime = sess.qaData.reduce((acc, q) => acc + q.answerTime, 1);
+  let nervousRatio = (totalFillers * 8) / totalTime; // arbitrary behavioral mock logic
+  let nervousnessPercent = Math.min(100, Math.round(nervousRatio * 100));
+
+  // Show results
+  document.getElementById('vi-interview').style.display='none';
+  document.getElementById('vi-results').style.display='block';
+
+  const scoreEl=document.getElementById('vi-final-score');
+  scoreEl.textContent=avg;
+  scoreEl.style.color=scoreColor(parseFloat(avg));
+  document.getElementById('vi-final-verdict').textContent=`${scoreLabel(parseFloat(avg))} performance — ${avg}/10`;
+  document.getElementById('vr-q').textContent=sess.qs.length;
+  document.getElementById('vr-f').textContent=totalFillers;
+  document.getElementById('vr-f').style.color=totalFillers>5?'var(--red)':totalFillers>2?'var(--amber)':'var(--green)';
+  document.getElementById('vr-t').textContent=avgAnswerTime+'s';
+  document.getElementById('vr-n').textContent=nervousnessPercent+'%';
+  document.getElementById('vr-n').style.color=nervousnessPercent>50?'var(--red)':nervousnessPercent>25?'var(--amber)':'var(--green)';
+
+  // QA Review
+  const reviewEl=document.getElementById('vi-qa-review');
+  reviewEl.innerHTML='<div class="lbl" style="margin-bottom:1rem">Question by Question Review</div>';
+  sess.qaData.forEach((qa,i)=>{
+    const sc=parseFloat(qa.score||0);const c=scoreColor(sc);
+    if(qa.skipped){
+      reviewEl.innerHTML+=`<div class="vi-qa-item"><div class="vi-qa-q">Q${i+1}. ${qa.question}</div><div style="background:var(--red-dim);border:1px solid rgba(248,113,113,.2);border-radius:6px;padding:.4rem .6rem;font-size:.72rem;color:var(--red);text-align:center"><i class="fa-solid fa-forward"></i> Skipped</div></div>`;
+    }else{
+      reviewEl.innerHTML+=`
+        <div class="vi-qa-item">
+          <div class="vi-qa-q">Q${i+1}. ${qa.question}</div>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem">
+            ${(qa.tags||'').split(',').filter(Boolean).map(t=>`<span class="badge bv">${t}</span>`).join('')}
+            <span class="badge" style="background:${c}22;color:${c};border:1px solid ${c}44">Score: ${sc}/10</span>
+            ${qa.fillerCount>0?`<span class="badge" style="background:var(--red-dim);color:var(--red);border:1px solid rgba(248,113,113,.25)">⚠️ ${qa.fillerCount} fillers</span>`:''}
+          </div>
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--white-3);margin-bottom:.3rem">Your Answer</div>
+          <div class="vi-qa-ans">${qa.userAnswer}</div>
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--white-3);margin-bottom:.3rem">AI Feedback</div>
+          <div class="vi-qa-feedback">${qa.aiFeedback}</div>
+          ${qa.betterAnswer?`<div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--violet-bright);margin:.4rem 0 .3rem">Better Answer</div><div class="vi-qa-feedback" style="background:var(--violet-soft);border-radius:var(--r-sm);padding:.6rem .75rem;border:1px solid var(--border-v)">${qa.betterAnswer}</div>`:''}
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:.6rem">
+            <div style="background:var(--dark-3);border-radius:6px;padding:.4rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.82rem;color:var(--violet-bright)">${qa.accuracyScore}/10</div><div style="font-size:.55rem;color:var(--white-3);text-transform:uppercase">Accuracy</div></div>
+            <div style="background:var(--dark-3);border-radius:6px;padding:.4rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.82rem;color:var(--teal)">${qa.clarityScore}/10</div><div style="font-size:.55rem;color:var(--white-3);text-transform:uppercase">Clarity</div></div>
+            <div style="background:var(--dark-3);border-radius:6px;padding:.4rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.82rem;color:var(--pink)">${qa.completenessScore}/10</div><div style="font-size:.55rem;color:var(--white-3);text-transform:uppercase">Complete</div></div>
+          </div>
+        </div>`;
+    }
+  });
+
+  // Save to backend
+  try{
+    await Sessions.save({
+      category:cfg.cat,difficulty:cfg.diff,personality:cfg.pers,
+      totalQuestions:sess.qs.length,score:parseFloat(avg),
+      bestScore:Math.max(...sess.scores,0),timeTaken:sessionSeconds,
+      weakTopics:[],answers:sess.qaData
+    });
+    toast('Session saved! 🎉',`Video interview score: ${avg}/10`,'s',5000);
+  }catch(err){
+    console.error('Save error:',err);
+  }
+
+  // AI speaks final result
+  setTimeout(()=>{
+    const msg=`Interview complete! Your final score is ${avg} out of 10. ${parseFloat(avg)>=7?'Great job! Keep practicing to get even better.':'Keep practicing daily and you will improve significantly!'}`;
+    const utt=new SpeechSynthesisUtterance(msg);
+    utt.rate=0.9;utt.lang='en-US';
+    const voices=window.speechSynthesis.getVoices();
+    const v=voices.find(v=>v.name==='Google US English')||voices.find(v=>v.lang==='en-US');
+    if(v)utt.voice=v;
+    window.speechSynthesis.speak(utt);
+  },500);
+}
+
+// ── URL PARAMS ──
+const urlParams=new URLSearchParams(window.location.search);
+const urlCat=urlParams.get('cat');
+if(urlCat){
+  cfg.cat=urlCat;
+  document.querySelectorAll('.vi-cat-btn').forEach(b=>b.classList.toggle('on',b.dataset.cat===urlCat));
+}
+
+let ideMode = false;
+let editor = null;
+function toggleIde() {
+  ideMode = !ideMode;
+  document.getElementById('ide-toolbar').style.display = ideMode ? 'flex' : 'none';
+  document.getElementById('editor-container').style.display = ideMode ? 'block' : 'none';
+  if(ideMode && !editor) {
+    editor = ace.edit("editor-container");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/java");
+    editor.setOptions({fontSize: "14px", showPrintMargin: false});
+  }
+}
+function changeLang() {
+  if(editor) editor.session.setMode("ace/mode/" + document.getElementById('ide-lang').value);
+}
+
+// ── INIT ──
+window.speechSynthesis.getVoices();
+if(window.speechSynthesis.onvoiceschanged!==undefined){window.speechSynthesis.onvoiceschanged=()=>{};}
+requestPermissions();
+</script>
+</body>
+</html>

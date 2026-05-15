@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Profile</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.page{padding:2.5rem 0}
+.pg{display:grid;grid-template-columns:290px 1fr;gap:1.35rem;align-items:start}
+.p-card{padding:1.75rem;text-align:center;position:sticky;top:80px}
+.av{width:82px;height:82px;border-radius:50%;background:var(--grad-v);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:2rem;font-weight:900;color:white;margin:0 auto 1.1rem;box-shadow:0 0 32px var(--violet-glow),0 0 0 3px rgba(124,92,252,.15)}
+.p-name{font-family:var(--font-head);font-size:1.25rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.18rem}
+.p-role{color:var(--violet-bright);font-size:.78rem;font-weight:600;margin-bottom:.18rem}
+.p-email{color:var(--white-3);font-size:.72rem;margin-bottom:1rem}
+.p-bgs{display:flex;justify-content:center;gap:.35rem;flex-wrap:wrap;margin-bottom:1rem}
+.p-sts{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:1.1rem}
+.ps{background:var(--dark-4);border-radius:var(--r-sm);padding:.65rem;text-align:center}
+.ps-n{font-family:var(--font-mono);font-size:1.1rem;font-weight:500}
+.ps-l{font-size:.6rem;color:var(--white-3);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+.pr{display:flex;flex-direction:column;gap:1.1rem}
+.sc_{padding:1.4rem}
+.sc-title{font-size:.83rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.55rem;font-family:var(--font-head);letter-spacing:-.01em}
+.sc-title i{color:var(--violet-bright)}
+.sr_{display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sr_:last-child{border-bottom:none;padding-bottom:0}
+.sr-l{font-size:.8rem;font-weight:500}
+.sr-d{font-size:.68rem;color:var(--white-3);margin-top:1px}
+.tog{width:38px;height:20px;background:rgba(255,255,255,.08);border-radius:var(--r-full);cursor:pointer;transition:var(--t);position:relative;flex-shrink:0}
+.tog.on{background:var(--violet)}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:white;transition:var(--t)}
+.tog.on::after{left:21px}
+.ach-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem}
+.ach{background:var(--dark-4);border:1px solid var(--border);border-radius:var(--r-md);padding:.8rem;text-align:center;transition:var(--t) var(--spring)}
+.ach.on{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.05);box-shadow:0 0 20px rgba(251,191,36,.05)}
+.ach.off{opacity:.25;filter:grayscale(1)}
+.ach-ic{font-size:1.35rem;display:block;margin-bottom:.3rem}
+.ach-n{font-size:.72rem;font-weight:700;margin-bottom:.15rem;font-family:var(--font-head)}
+.ach-d{font-size:.62rem;color:var(--white-3)}
+.ach.on .ach-d{color:var(--amber)}
+.danger-z{border-color:rgba(244,63,94,.15)!important}
+.danger-z .sc-title{color:var(--red)}
+.danger-z .sc-title i{color:var(--red)}
+.pw-fields{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+@media(max-width:900px){.pg{grid-template-columns:1fr}.p-card{position:static}.ach-g{grid-template-columns:repeat(2,1fr)}.pw-fields{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<nav class="nav">
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="interview.html">Practice</a></li>
+    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="analytics.html">Analytics</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+    <li><a href="profile.html" class="on">Profile</a></li>
+  </ul>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+</nav>
+<div class="pw"><div class="w page">
+  <div style="margin-bottom:1.6rem"><div class="lbl">Your Account</div><div class="h1" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:.3rem;letter-spacing:-.025em">Profile & <span style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Settings</span></div></div>
+  <div class="pg">
+    <div class="card p-card stag">
+      <div class="av" id="av">A</div>
+      <div class="p-name" id="pn">User</div>
+      <div class="p-role" id="pr_">Aspiring Developer</div>
+      <div class="p-email" id="pe">user@example.com</div>
+      <div class="p-bgs" id="pbg"></div>
+      <div class="p-sts">
+        <div class="ps"><div class="ps-n" id="ps-s">0</div><div class="ps-l">Sessions</div></div>
+        <div class="ps"><div class="ps-n" id="ps-a" style="color:var(--violet-bright)">—</div><div class="ps-l">Avg</div></div>
+        <div class="ps"><div class="ps-n" id="ps-st" style="color:var(--amber)">0🔥</div><div class="ps-l">Streak</div></div>
+      </div>
+      <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="Auth.logout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+      </button>
+    </div>
+    <div class="pr stag">
+      <div class="card sc_">
+        <div class="sc-title"><i class="fa-solid fa-user-pen"></i> Edit Profile</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div class="fg"><label>First Name</label><input class="fi ni" type="text" id="ef" placeholder="First name"></div>
+          <div class="fg"><label>Last Name</label><input class="fi ni" type="text" id="el" placeholder="Last name"></div>
+        </div>
+        <div class="fg"><label>Target Role</label><div class="iw"><i class="ic fa-solid fa-briefcase"></i><input class="fi" type="text" id="er" placeholder="e.g. Backend Developer"></div></div>
+        <div class="fg" style="margin-bottom:0"><label>Bio</label><textarea class="fi ni" id="eb" placeholder="Tell us about yourself..." rows="3" style="min-height:72px"></textarea></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:.8rem">
+          <button class="btn btn-v btn-sm" onclick="saveP()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        </div>
+      </div>
+      <div class="card sc_">
+        <div class="sc-title"><i class="fa-solid fa-lock"></i> Change Password</div>
+        <div class="pw-fields">
+          <div class="fg"><label>Current Password</label><input class="fi ni" type="password" id="pw-old" placeholder="Current password"></div>
+          <div class="fg"><label>New Password</label><input class="fi ni" type="password" id="pw-new" placeholder="Min 6 characters"></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end">
+          <button class="btn btn-ghost btn-sm" onclick="changePassword()"><i class="fa-solid fa-key"></i> Update Password</button>
+        </div>
+      </div>
+      <div class="card sc_">
+        <div class="sc-title"><i class="fa-solid fa-sliders"></i> Preferences</div>
+        <div class="sr_"><div><div class="sr-l">Auto-start Timer</div><div class="sr-d">Timer begins when question loads</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="sr_"><div><div class="sr-l">Show Difficulty Badge</div><div class="sr-d">Display on questions</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="sr_"><div><div class="sr-l">Sound Effects</div><div class="sr-d">Play notification sounds</div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+        <div class="sr_"><div><div class="sr-l">Daily Reminder</div><div class="sr-d">Remind me to practice daily</div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <div class="card sc_">
+        <div class="sc-title"><i class="fa-solid fa-trophy"></i> Achievements <span id="ach-count" style="font-size:.7rem;color:var(--white-3);font-weight:400"></span></div>
+        <div class="ach-g" id="ach-g"><div style="text-align:center;padding:2rem;color:var(--white-3);grid-column:1/-1"><div class="dots-ai" style="justify-content:center"><span></span><span></span><span></span></div><p style="font-size:.78rem;margin-top:.75rem">Loading achievements...</p></div></div>
+      </div>
+      <div class="card sc_ danger-z">
+        <div class="sc-title"><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</div>
+        <div class="sr_"><div><div class="sr-l">Reset All Progress</div><div class="sr-d">Clears all session history locally</div></div><button class="btn btn-danger btn-sm" onclick="resetP()"><i class="fa-solid fa-trash"></i> Reset</button></div>
+        <div class="sr_"><div><div class="sr-l">Delete Account</div><div class="sr-d">Permanently delete your account</div></div><button class="btn btn-danger btn-sm" onclick="toast('Coming soon','Account deletion available soon.','i')"><i class="fa-solid fa-user-xmark"></i> Delete</button></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/jarvis.js"></script>
+<script>
+if(!getToken()) window.location.href='login.html';
+const user=S.get('iq3_user');
+document.getElementById('nav-av').textContent=getInitial();
+document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+document.getElementById('av').textContent=getInitial();
+document.getElementById('pn').textContent=getFullName();
+document.getElementById('pr_').textContent=user?.roles?.split(',')[0]||user?.targetRole||'Aspiring Developer';
+document.getElementById('pe').textContent=user?.email||'';
+document.getElementById('ef').value=user?.firstName||'';
+document.getElementById('el').value=user?.lastName||'';
+document.getElementById('er').value=user?.targetRole||'';
+document.getElementById('ps-st').textContent=getStreak()+'🔥';
+
+const allAchs=[
+  {id:'FIRST_SESSION',ic:'🚀',n:'First Flight',d:'Complete first session'},
+  {id:'FIVE_SESSIONS',ic:'⭐',n:'Rising Star',d:'Complete 5 sessions'},
+  {id:'TEN_SESSIONS',ic:'🏆',n:'Champion',d:'Complete 10 sessions'},
+  {id:'TWENTY_FIVE_SESSIONS',ic:'👑',n:'Legend',d:'Complete 25 sessions'},
+  {id:'STREAK_3',ic:'🔥',n:'On Fire',d:'3-day streak'},
+  {id:'STREAK_7',ic:'💥',n:'Unstoppable',d:'7-day streak'},
+  {id:'PERFECT_SCORE',ic:'💯',n:'Perfect',d:'Score 9+ on any session'},
+  {id:'ALL_ROUNDER',ic:'🎯',n:'All-Rounder',d:'Try all 4 categories'},
+];
+
+async function loadStats(){
+  try{
+    const stats=await apiFetch('/sessions/stats');
+    const earned=stats.achievements||[];
+    document.getElementById('ps-s').textContent=stats.totalSessions||0;
+    if(stats.averageScore>0){document.getElementById('ps-a').textContent=parseFloat(stats.averageScore).toFixed(1);document.getElementById('ps-a').style.color=scoreColor(stats.averageScore);}
+    const pb=document.getElementById('pbg');
+    if(earned.length===0){pb.innerHTML='<span style="font-size:.7rem;color:var(--white-3)">No badges yet — keep practicing!</span>';}
+    else{pb.innerHTML=earned.slice(0,3).map(id=>{const a=allAchs.find(x=>x.id===id);return a?`<span class="badge bv">${a.ic} ${a.n}</span>`:''}).join('');}
+    document.getElementById('ach-count').textContent=`${earned.length}/${allAchs.length} unlocked`;
+    document.getElementById('ach-g').innerHTML=allAchs.map(a=>{const isOn=earned.includes(a.id);return `<div class="ach ${isOn?'on':'off'}"><span class="ach-ic">${a.ic}</span><div class="ach-n">${a.n}</div><div class="ach-d">${isOn?'✅ Unlocked':a.d}</div></div>`}).join('');
+  }catch(err){
+    document.getElementById('ach-g').innerHTML=`<p style="color:var(--white-3);font-size:.78rem;grid-column:1/-1;text-align:center">Could not load achievements.</p>`;
+  }
+}
+
+async function saveP(){
+  try{
+    await UserAPI.updateProfile({firstName:document.getElementById('ef').value.trim(),lastName:document.getElementById('el').value.trim(),targetRole:document.getElementById('er').value.trim(),bio:document.getElementById('eb').value.trim()});
+    const u=S.get('iq3_user');
+    document.getElementById('pn').textContent=getFullName();
+    document.getElementById('pr_').textContent=u?.targetRole||'Aspiring Developer';
+    document.getElementById('av').textContent=getInitial();
+    document.getElementById('nav-av').textContent=getInitial();
+    toast('Saved!','Profile updated successfully.','s');
+  }catch(err){toast('Error',err.message,'e');}
+}
+
+async function changePassword(){
+  const oldP=document.getElementById('pw-old').value;
+  const newP=document.getElementById('pw-new').value;
+  if(!oldP||!newP){toast('Missing fields','Fill both password fields.','w');return}
+  if(newP.length<6){toast('Too short','New password must be 6+ characters.','w');return}
+  try{
+    await apiFetch('/user/change-password',{method:'POST',body:JSON.stringify({oldPassword:oldP,newPassword:newP})});
+    document.getElementById('pw-old').value='';document.getElementById('pw-new').value='';
+    toast('Password changed!','Your password has been updated.','s');
+  }catch(err){toast('Error',err.message,'e');}
+}
+
+function resetP(){if(confirm('Reset all local history?')){S.del('iq3_history');toast('Reset','Local history cleared.','w');setTimeout(()=>location.reload(),800);}}
+loadStats();
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQPrep — Leaderboard</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.page{padding:2.5rem 0}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:1.1rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.pod{text-align:center;position:relative}
+.pod-av{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:1.5rem;font-weight:900;margin:0 auto .6rem;position:relative}
+.pod-av::after{content:attr(data-rank);position:absolute;bottom:-4px;right:-4px;width:22px;height:22px;border-radius:50%;font-size:.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--dark)}
+.pod-1 .pod-av{width:80px;height:80px;font-size:1.9rem;box-shadow:0 0 40px rgba(251,191,36,.3)}
+.pod-1 .pod-av::after{background:#fbbf24;color:#000}
+.pod-2 .pod-av::after{background:#94a3b8;color:#000}
+.pod-3 .pod-av::after{background:#cd7c2f;color:#000}
+.pod-name{font-size:.82rem;font-weight:700;margin-bottom:.2rem;font-family:var(--font-head)}
+.pod-score{font-family:var(--font-mono);font-size:1rem;font-weight:500}
+.pod-role{font-size:.65rem;color:var(--white-3);margin-top:2px}
+.pod-base{border-radius:var(--r-md) var(--r-md) 0 0;width:110px;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;font-family:var(--font-head)}
+.pod-1 .pod-base{height:80px;background:linear-gradient(180deg,rgba(251,191,36,.2),rgba(251,191,36,.05));border:1px solid rgba(251,191,36,.25)}
+.pod-2 .pod-base{height:60px;background:linear-gradient(180deg,rgba(148,163,184,.15),rgba(148,163,184,.03));border:1px solid rgba(148,163,184,.2)}
+.pod-3 .pod-base{height:45px;background:linear-gradient(180deg,rgba(205,124,47,.15),rgba(205,124,47,.03));border:1px solid rgba(205,124,47,.2)}
+.lb-filters{display:flex;gap:.55rem;margin-bottom:1.1rem;flex-wrap:wrap}
+.lb-f{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-full);padding:6px 14px;font-size:.75rem;font-weight:600;color:var(--white-3);cursor:pointer;transition:var(--t);font-family:var(--font-body)}
+.lb-f.on,.lb-f:hover{border-color:var(--border-v);color:var(--violet-bright);background:var(--violet-soft)}
+.lb-list{display:flex;flex-direction:column;gap:.45rem}
+.lb-row{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);transition:var(--t)}
+.lb-row:hover{border-color:rgba(255,255,255,.09);transform:translateX(3px)}
+.lb-row.you{border-color:var(--border-v);background:var(--violet-soft)}
+.lb-rank{font-family:var(--font-mono);font-size:.9rem;font-weight:500;width:28px;text-align:center;flex-shrink:0}
+.lb-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:.95rem;font-weight:700;flex-shrink:0}
+.lb-info{flex:1}
+.lb-name{font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.lb-meta{font-size:.7rem;color:var(--white-3);margin-top:1px}
+.lb-score{font-family:var(--font-mono);font-size:1.05rem;font-weight:500;text-align:right}
+.lb-sessions{font-size:.65rem;color:var(--white-3);text-align:right;margin-top:1px}
+.you-badge{background:var(--violet-dim);border:1px solid var(--border-v);border-radius:20px;padding:1px 7px;font-size:.6rem;font-weight:700;color:var(--violet-bright)}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<nav class="nav">
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="interview.html">Practice</a></li>
+    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="analytics.html">Analytics</a></li>
+    <li><a href="leaderboard.html" class="on">Leaderboard</a></li>
+    <li><a href="profile.html">Profile</a></li>
+  </ul>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+</nav>
+<div class="pw"><div class="w page">
+  <div class="ph stag">
+    <div><div class="lbl">Global Rankings</div><div class="h1" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:.3rem;letter-spacing:-.025em">🏆 <span style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Leaderboard</span></div></div>
+    <a href="interview.html" class="btn btn-v btn-sm"><i class="fa-solid fa-rocket"></i> Climb Rankings</a>
+  </div>
+  <div id="loading" style="text-align:center;padding:3rem"><div class="dots-ai"><span></span><span></span><span></span></div><p style="color:var(--white-3);margin-top:1rem;font-size:.85rem">Loading rankings...</p></div>
+  <div id="lb-content" style="display:none">
+    <div class="podium stag" id="podium"></div>
+    <div class="lb-filters">
+      <button class="lb-f on" onclick="setFilter(this,'all')">🌍 All Users</button>
+      <button class="lb-f" onclick="setFilter(this,'top10')">🔥 Top 10</button>
+    </div>
+    <div class="lb-list" id="lb-list"></div>
+  </div>
+  <div id="empty" style="display:none;text-align:center;padding:4rem 2rem;color:var(--white-3)">
+    <div style="font-size:3rem;opacity:.3;margin-bottom:1rem">🏆</div>
+    <h3 style="font-family:var(--font-head);margin-bottom:.5rem">No rankings yet!</h3>
+    <p style="margin-bottom:1.5rem">Be the first to complete a session!</p>
+    <a href="interview.html" class="btn btn-v">Start Practicing</a>
+  </div>
+</div></div>
+<div class="tc"></div>
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/jarvis.js"></script>
+<script>
+if(!getToken()) window.location.href='login.html';
+const user=S.get('iq3_user');
+document.getElementById('nav-av').textContent=getInitial();
+document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+const avatarColors=['#9d7fff','#60a5fa','#f472b6','#2dd4bf','#fbbf24','#f87171','#34d399','#a78bfa'];
+let allUsers=[];let curFilter='all';
+function getAvatarColor(name){let h=0;for(const c of name)h=c.charCodeAt(0)+((h<<5)-h);return avatarColors[Math.abs(h)%avatarColors.length]}
+function setFilter(btn,filter){document.querySelectorAll('.lb-f').forEach(b=>b.classList.remove('on'));btn.classList.add('on');curFilter=filter;renderList();}
+function renderPodium(users){
+  const top3=users.slice(0,3);const order=[1,0,2];const medals=['🥇','🥈','🥉'];const podClasses=['pod-2','pod-1','pod-3'];
+  const podiumEl=document.getElementById('podium');
+  order.forEach((idx,pos)=>{
+    if(!top3[idx])return;
+    const u=top3[idx];const isYou=u.email===user?.email;const color=getAvatarColor(u.name);const initial=(u.name||'?')[0].toUpperCase();
+    podiumEl.innerHTML+=`<div class="pod ${podClasses[pos]}"><div class="pod-av" style="background:${color}22;border:2px solid ${color};color:${color}" data-rank="${idx+1}">${initial}</div><div class="pod-name">${u.name.split(' ')[0]}${isYou?' 👈':''}</div><div class="pod-score" style="color:${scoreColor(u.averageScore)}">${parseFloat(u.averageScore||0).toFixed(1)}/10</div><div class="pod-role">${u.totalSessions} sessions</div><div class="pod-base">${medals[idx]}</div></div>`;
+  });
+}
+function renderList(){
+  const users=curFilter==='top10'?allUsers.slice(0,10):allUsers;
+  const el=document.getElementById('lb-list');el.innerHTML='';
+  const medals=['🥇','🥈','🥉'];
+  users.forEach((u,i)=>{
+    const isYou=u.email===user?.email;const color=getAvatarColor(u.name);const initial=(u.name||'?')[0].toUpperCase();const rank=i+1;
+    el.innerHTML+=`<div class="lb-row ${isYou?'you':''}"><div class="lb-rank" style="color:${rank<=3?['#fbbf24','#94a3b8','#cd7c2f'][rank-1]:'var(--white-3)'}">${rank<=3?medals[rank-1]:rank}</div><div class="lb-av" style="background:${color}22;border:1px solid ${color};color:${color}">${initial}</div><div class="lb-info"><div class="lb-name">${u.name}${isYou?'<span class="you-badge">YOU</span>':''}</div><div class="lb-meta">${u.totalSessions} sessions · ${u.streakDays||0}🔥 streak</div></div><div><div class="lb-score" style="color:${scoreColor(u.averageScore||0)}">${parseFloat(u.averageScore||0).toFixed(1)}/10</div><div class="lb-sessions">${scoreLabel(u.averageScore||0)}</div></div></div>`;
+  });
+}
+async function loadLeaderboard(){
+  try{
+    allUsers=await UserAPI.getLeaderboard();
+    document.getElementById('loading').style.display='none';
+    if(!allUsers||allUsers.length===0){document.getElementById('empty').style.display='block';return}
+    allUsers.sort((a,b)=>(b.averageScore||0)-(a.averageScore||0));
+    document.getElementById('lb-content').style.display='block';
+    renderPodium(allUsers);renderList();
+    const myRank=allUsers.findIndex(u=>u.email===user?.email)+1;
+    if(myRank>0)toast(`You are rank #${myRank}!`,`Keep practicing to climb higher! 🚀`,'i',4000);
+  }catch(err){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('empty').style.display='block';
+  }
+}
+loadLeaderboard();
+</script>
+</body>
+</html>
