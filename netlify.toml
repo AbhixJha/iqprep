@@ -1,0 +1,3 @@
+[build]
+  base = "IQPrep-Deploy/frontend"
+  publish = "IQPrep-Deploy/frontend"
