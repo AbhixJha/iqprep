@@ -4,73 +4,78 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IQPrep — History</title>
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="../css/overrides.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 .page{padding:2.5rem 0}
 .ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
 .ms-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:1.6rem}
-.ms{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-lg);padding:1rem 1.2rem;text-align:center}
+.ms{background:var(--dark-3);border:1px solid var(--border);border-radius:0;padding:1rem 1.2rem;text-align:center}
 .ms-n{font-family:var(--font-mono);font-size:1.45rem;font-weight:500}
 .ms-l{font-size:.65rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.07em;margin-top:4px}
 .sf{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-bottom:1.4rem}
 .sw{position:relative;flex:1;min-width:190px}
 .sw i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--white-3);font-size:.76rem}
-.si{width:100%;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-full);padding:8px 13px 8px 35px;font-family:var(--font-body);font-size:.8rem;color:var(--white);outline:none;transition:var(--t)}
+.si{width:100%;background:var(--dark-3);border:1px solid var(--border);border-radius:0;padding:8px 13px 8px 35px;font-family:var(--font-body);font-size:.8rem;color:var(--white);outline:none;transition:var(--t)}
 .si:focus{border-color:var(--border-v)}.si::placeholder{color:var(--white-3)}
-.fb_{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-full);padding:6px 13px;font-size:.75rem;font-weight:600;color:var(--white-3);cursor:pointer;transition:var(--t);font-family:var(--font-body)}
+.fb_{background:var(--dark-3);border:1px solid var(--border);border-radius:0;padding:6px 13px;font-size:.75rem;font-weight:600;color:var(--white-3);cursor:pointer;transition:var(--t);font-family:var(--font-body)}
 .fb_:hover,.fb_.on{border-color:var(--border-v);color:var(--violet-bright);background:var(--violet-soft)}
-.ss_{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-full);padding:6px 12px;font-size:.75rem;color:var(--white-3);outline:none;cursor:pointer;font-family:var(--font-body)}
+.ss_{background:var(--dark-3);border:1px solid var(--border);border-radius:0;padding:6px 12px;font-size:.75rem;color:var(--white-3);outline:none;cursor:pointer;font-family:var(--font-body)}
 .hl{display:flex;flex-direction:column;gap:.45rem}
-.hi{display:flex;align-items:center;gap:.9rem;padding:.82rem 1rem;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);transition:var(--t);cursor:pointer}
-.hi:hover{border-color:rgba(255,255,255,.09);transform:translateX(3px)}
-.h-ic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.hi{display:flex;align-items:center;gap:.9rem;padding:.82rem 1rem;background:var(--dark-3);border:1px solid var(--border);border-radius:0;transition:var(--t);cursor:pointer}
+.hi:hover{border-color:rgba(233,236,244,.09);transform:translateX(3px)}
+.h-ic{width:38px;height:38px;border-radius:0;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
 .h-inf{flex:1}
 .h-t{font-size:.84rem;font-weight:600;margin-bottom:1px}
 .h-m{font-size:.68rem;color:var(--white-3);display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
 .h-sc{font-family:var(--font-mono);font-size:1.05rem;font-weight:500;text-align:right}
-.h-sb{width:55px;height:2.5px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:.3rem;overflow:hidden;margin-left:auto}
-.h-sf{height:100%;border-radius:2px}
+.h-sb{width:55px;height:2.5px;background:rgba(233,236,244,.06);border-radius:0;margin-top:.3rem;overflow:hidden;margin-left:auto}
+.h-sf{height:100%;border-radius:0}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem}
-.modal{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--r-xl);width:100%;max-width:720px;max-height:85vh;overflow-y:auto}
+.modal{background:var(--dark-2);border:1px solid var(--border);border-radius:0;width:100%;max-width:720px;max-height:85vh;overflow-y:auto}
 .modal-h{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.6rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--dark-2);z-index:2}
 .modal-title{font-family:var(--font-head);font-size:1.1rem;font-weight:800}
-.modal-close{width:32px;height:32px;border-radius:50%;background:var(--dark-4);border:1px solid var(--border);color:var(--white-3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:var(--t)}
+.modal-close{width:32px;height:32px;border-radius:0;background:var(--dark-4);border:1px solid var(--border);color:var(--white-3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:var(--t)}
 .modal-close:hover{background:var(--dark-3);color:var(--white)}
 .modal-body{padding:1.4rem 1.6rem}
 .modal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1.2rem}
-.mstat{background:var(--dark-3);border-radius:var(--r-sm);padding:.65rem;text-align:center}
+.mstat{background:var(--dark-3);border-radius:0;padding:.65rem;text-align:center}
 .mstat-n{font-family:var(--font-mono);font-size:1.1rem;font-weight:500}
 .mstat-l{font-size:.6rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
-.qa-item{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;margin-bottom:.65rem}
+.qa-item{background:var(--dark-3);border:1px solid var(--border);border-radius:0;padding:1rem;margin-bottom:.65rem}
 .qa-q{font-size:.85rem;font-weight:600;margin-bottom:.5rem;line-height:1.5}
 .qa-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--white-3);margin-bottom:.25rem}
-.qa-ans{font-size:.78rem;color:var(--white-2);line-height:1.65;background:var(--dark-4);border-radius:var(--r-sm);padding:.6rem .75rem;margin-bottom:.5rem}
+.qa-ans{font-size:.78rem;color:var(--white-2);line-height:1.65;background:var(--dark-4);border-radius:0;padding:.6rem .75rem;margin-bottom:.5rem}
 .qa-fb{font-size:.75rem;color:var(--white-2);line-height:1.65}
 .qa-score-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:.5rem}
-.qa-sc{background:var(--dark-4);border-radius:6px;padding:.4rem;text-align:center}
+.qa-sc{background:var(--dark-4);border-radius:0;padding:.4rem;text-align:center}
 .qa-sc-n{font-family:var(--font-mono);font-size:.85rem;font-weight:500}
 .qa-sc-l{font-size:.55rem;color:var(--white-3);text-transform:uppercase}
-.skipped-badge{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:6px;padding:.4rem .6rem;font-size:.72rem;color:var(--red);text-align:center}
+.skipped-badge{background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2);border-radius:0;padding:.4rem .6rem;font-size:.72rem;color:var(--red);text-align:center}
+@media(max-width:768px){.sf{flex-direction:column;align-items:stretch}.sw{min-width:100%}.modal-stats{grid-template-columns:repeat(2,1fr)}.modal-h{padding:1rem 1.2rem}.modal-body{padding:1rem 1.2rem}.hi{gap:.65rem;padding:.7rem .8rem}.h-sc{font-size:.9rem}}
+@media(max-width:480px){.ms-g{grid-template-columns:1fr}.ms-n{font-size:1.2rem}}
 </style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M0%200h32v22l-10%2010H0z%22%20fill%3D%22%23F59E0B%22/%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%224.4%22%20height%3D%229%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2213.8%22%20y%3D%2210%22%20width%3D%224.4%22%20height%3D%2216%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%2221%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%224.4%22%20fill%3D%22%2300F0FF%22/%3E%3C/svg%3E">
 </head>
-<body>
+<body data-motion="lite">
 <div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
 <nav class="nav">
-  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><svg class="logo-svg" viewBox="0 0 32 32" width="20" height="20" aria-hidden="true"><rect x="6" y="17" width="4.4" height="9" fill="#08090D"/><rect x="13.8" y="10" width="4.4" height="16" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="21" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="4.4" fill="#00F0FF"/></svg></div>IQPrep</a>
   <ul class="nav-links">
     <li><a href="dashboard.html">Dashboard</a></li>
     <li><a href="interview.html">Practice</a></li>
-    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="video-interview.html">Video</a></li>
     <li><a href="history.html" class="on">History</a></li>
     <li><a href="analytics.html">Analytics</a></li>
     <li><a href="leaderboard.html">Leaderboard</a></li>
     <li><a href="profile.html">Profile</a></li>
   </ul>
-  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak"><span class="sk">STREAK</span> 0</div><div class="nav-av" id="nav-av">A</div></div>
 </nav>
 <div class="pw"><div class="w page">
   <div class="ph">
-    <div><div class="lbl">Your Journey</div><div class="h1" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:.3rem;letter-spacing:-.025em">Session <span style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">History</span></div></div>
+    <div><div class="lbl">History</div><div class="h1" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:.3rem;letter-spacing:-.025em">Session <span style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">History</span></div></div>
     <a href="interview.html" class="btn btn-v btn-sm"><i class="fa-solid fa-plus"></i> New Session</a>
   </div>
   <div class="ms-g stag">
@@ -81,10 +86,10 @@
   <div class="sf">
     <div class="sw"><i class="fa-solid fa-magnifying-glass"></i><input class="si" id="srch" placeholder="Search sessions..." oninput="render()"></div>
     <button class="fb_ on" data-f="all" onclick="setF(this)">All</button>
-    <button class="fb_" data-f="technical" onclick="setF(this)">💻 Technical</button>
-    <button class="fb_" data-f="hr" onclick="setF(this)">🤝 HR</button>
-    <button class="fb_" data-f="aptitude" onclick="setF(this)">🧮 Aptitude</button>
-    <button class="fb_" data-f="mixed" onclick="setF(this)">🎯 Mixed</button>
+    <button class="fb_" data-f="technical" onclick="setF(this)">Technical</button>
+    <button class="fb_" data-f="hr" onclick="setF(this)">HR</button>
+    <button class="fb_" data-f="aptitude" onclick="setF(this)">Aptitude</button>
+    <button class="fb_" data-f="mixed" onclick="setF(this)">Mixed</button>
     <select class="ss_" id="srt" onchange="render()">
       <option value="newest">Newest</option>
       <option value="oldest">Oldest</option>
@@ -116,9 +121,9 @@
 if(!getToken()) window.location.href='login.html';
 const user=S.get('iq3_user');
 document.getElementById('nav-av').textContent=getInitial();
-document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+document.getElementById('nav-streak').innerHTML=`<span class="sk">STREAK</span> ${getStreak()}`;
 
-const cm={technical:['💻','var(--violet-dim)','Technical Interview'],hr:['🤝','var(--blue-dim)','HR Round'],aptitude:['🧮','var(--teal-dim)','Aptitude Test'],mixed:['🎯','var(--pink-dim)','Full Mock Interview']};
+const cm={technical:['DEV','var(--violet-dim)','Technical Interview'],hr:['HR','var(--blue-dim)','HR Round'],aptitude:['APT','var(--teal-dim)','Aptitude Test'],mixed:['MIX','var(--pink-dim)','Full Mock Interview']};
 let allSessions=[];let curF='all';
 
 function setF(b){document.querySelectorAll('.fb_').forEach(x=>x.classList.remove('on'));b.classList.add('on');curF=b.dataset.f;render();}
@@ -131,7 +136,7 @@ function render(){
   else if(srt==='high')items.sort((a,b)=>b.score-a.score);
   else if(srt==='low')items.sort((a,b)=>a.score-b.score);
   const el=document.getElementById('hl');
-  if(!items.length){el.innerHTML=`<div class="empty-s"><div class="empty-ic">🔍</div><h3>No sessions found</h3><p>Try a different filter or start a new session.</p><a href="interview.html" class="btn btn-v btn-sm" style="margin-top:.5rem">Start Session</a></div>`;return}
+  if(!items.length){el.innerHTML=`<div class="empty-s"><div class="empty-ic">—</div><h3>No sessions found</h3><p>Try a different filter or start a new session.</p><a href="interview.html" class="btn btn-v btn-sm" style="margin-top:.5rem">Start Session</a></div>`;return}
   el.innerHTML=items.map(s=>{
     const[ic,bg,label]=cm[s.category]||cm.mixed;
     const sc=parseFloat(s.score);const c=scoreColor(sc);
@@ -174,7 +179,7 @@ async function openSession(id){
             <div class="qa-ans">${qa.userAnswer||'No answer'}</div>
             <div class="qa-label">AI Feedback</div>
             <div class="qa-fb">${qa.aiFeedback||'—'}</div>
-            ${qa.betterAnswer?`<div class="qa-label" style="margin-top:.5rem;color:var(--violet-bright)">Better Answer</div><div class="qa-fb" style="background:var(--violet-soft);border-radius:var(--r-sm);padding:.6rem .75rem;border:1px solid var(--border-v)">${qa.betterAnswer}</div>`:''}
+            ${qa.betterAnswer?`<div class="qa-label" style="margin-top:.5rem;color:var(--violet-bright)">Better Answer</div><div class="qa-fb" style="background:var(--violet-soft);border-radius:0;padding:.6rem .75rem;border:1px solid var(--border-v)">${qa.betterAnswer}</div>`:''}
             <div class="qa-score-row">
               <div class="qa-sc"><div class="qa-sc-n" style="color:var(--violet-bright)">${qa.accuracyScore||sc}/10</div><div class="qa-sc-l">Accuracy</div></div>
               <div class="qa-sc"><div class="qa-sc-n" style="color:var(--teal)">${qa.clarityScore||sc}/10</div><div class="qa-sc-l">Clarity</div></div>
@@ -215,5 +220,7 @@ async function loadHistory(){
 }
 loadHistory();
 </script>
+<script src="../js/mobile-nav.js"></script>
+<script src="../js/motion.js"></script>
 </body>
 </html>

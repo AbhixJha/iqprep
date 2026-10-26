@@ -2,36 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IQPrep — Signing you in...</title>
+<title>IQPrep — Signing you in</title>
+<meta name="theme-color" content="#08090D">
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="../css/auth.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-body{min-height:100vh;display:flex;align-items:center;justify-content:center}
-.cb-box{text-align:center;padding:3rem;max-width:420px;width:100%}
-.cb-logo{width:72px;height:72px;border-radius:20px;background:var(--grad-v);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:white;margin:0 auto 1.5rem;box-shadow:0 0 40px var(--violet-glow);animation:logoPulse 2s ease infinite}
-@keyframes logoPulse{0%,100%{box-shadow:0 0 40px var(--violet-glow)}50%{box-shadow:0 0 70px var(--violet-glow)}}
-.cb-title{font-family:var(--font-head);font-size:1.5rem;font-weight:900;letter-spacing:-.025em;margin-bottom:.4rem}
-.cb-sub{color:var(--white-3);font-size:.85rem;margin-bottom:1.5rem}
-.cb-status{font-size:.8rem;color:var(--violet-bright);font-family:var(--font-mono);margin-top:.75rem}
-.cb-error{color:var(--red);font-size:.82rem;margin-top:.75rem;background:var(--red-dim);border:1px solid rgba(248,113,113,.2);border-radius:var(--r-sm);padding:.65rem;display:none;text-align:left;line-height:1.6}
-.cb-back{display:none;margin-top:1.25rem;font-size:.78rem;color:var(--violet-bright);cursor:pointer;background:none;border:1px solid var(--border-v);border-radius:var(--r-full);padding:6px 16px;font-family:var(--font-body);transition:var(--t)}
-.cb-back:hover{background:var(--violet-dim)}
-.cb-debug{margin-top:1rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.75rem;font-size:.72rem;color:rgba(255,255,255,.4);font-family:monospace;text-align:left;display:none;word-break:break-all}
-</style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M0%200h32v22l-10%2010H0z%22%20fill%3D%22%23F59E0B%22/%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%224.4%22%20height%3D%229%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2213.8%22%20y%3D%2210%22%20width%3D%224.4%22%20height%3D%2216%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%2221%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%224.4%22%20fill%3D%22%2300F0FF%22/%3E%3C/svg%3E">
 </head>
-<body>
-<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
-<div class="cb-box">
-  <div class="cb-logo"><i class="fa-solid fa-brain"></i></div>
-  <div class="cb-title">Signing you in...</div>
-  <div class="cb-sub">Please wait while we connect your account</div>
-  <div class="dots-ai" style="justify-content:center"><span></span><span></span><span></span></div>
+<body data-motion="lite">
+<div class="cur"></div><div class="cur-ring"></div>
+<div class="cb-wrap">
+<div class="cb-box stag">
+      <div class="brand" style="margin-bottom:1.2rem"><span class="brand-mark"><svg class="logo-svg" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><rect x="6" y="17" width="4.4" height="9" fill="#08090D"/><rect x="13.8" y="10" width="4.4" height="16" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="21" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="4.4" fill="#00F0FF"/></svg></span>IQPrep</div>
+  <div class="cb-bars"><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="cb-title">Signing<br>you in.</div>
+  <div class="cb-sub">Hold on while the account is connected.</div>
   <div class="cb-status" id="cb-status">Reading authorization code...</div>
   <div class="cb-error" id="cb-error"></div>
   <div class="cb-debug" id="cb-debug"></div>
-  <button class="cb-back" id="cb-back" onclick="window.location.href='login.html'">
-    <i class="fa-solid fa-arrow-left"></i> Back to Login
-  </button>
+  <button class="btn btn-v cb-back" id="cb-back" onclick="window.location.href='login.html'">Back to login</button>
+</div>
 </div>
 <script src="../js/utils.js"></script>
 <script src="../js/config.js"></script>
@@ -68,7 +59,7 @@ async function handleCallback(){
   // ── Error from provider ──────────────────────────────────
   if(errParam){
     showError(
-      '❌ OAuth was cancelled or denied by ' + provider + '.<br><br>' +
+      'Sign-in was cancelled or denied by ' + provider + '.<br><br>' +
       'Reason: <code>' + errParam + '</code><br><br>' +
       'Click "Back to Login" and try again.',
       'error_param=' + errParam
@@ -80,11 +71,11 @@ async function handleCallback(){
   if(!code){
     // Check if this page was opened directly (not from OAuth redirect)
     showError(
-      '❌ No authorization code found in URL.<br><br>' +
+      'No authorization code found in URL.<br><br>' +
       'This usually means:<br>' +
       '• The OAuth redirect URI is wrong in Google/GitHub console<br>' +
       '• You opened this page directly instead of clicking the button<br><br>' +
-      'Expected redirect URI: <code>http://127.0.0.1:3000/IQPrep-Deploy/frontend/pages/oauth-callback.html</code>',
+      'Expected redirect URI: <code>' + window.location.origin + window.location.pathname + '</code>',
       'URL: ' + window.location.href
     );
     return;
@@ -123,29 +114,26 @@ async function handleCallback(){
     });
 
     localStorage.removeItem('iq3_oauth_provider');
-    setStatus('✅ Logged in as ' + data.firstName + '! Redirecting...');
+    setStatus('Logged in as ' + data.firstName + '! Redirecting...');
     setTimeout(() => window.location.href = 'dashboard.html', 1000);
 
   } catch(err){
     debug('Error: ' + err.message);
 
-    let friendlyMsg = '❌ Login failed.<br><br>';
+    let friendlyMsg = 'Login failed.<br><br>';
 
     if(err.message && err.message.includes('503')){
       friendlyMsg +=
         '<strong>OAuth not configured yet.</strong><br>' +
-        'Add your Google/GitHub credentials to <code>application.properties</code>.<br>' +
-        'See the setup guide for steps.';
+        'Add the Google or GitHub client id and secret to the backend environment variables.';
     } else if(err.message && err.message.includes('404')){
       friendlyMsg +=
         '<strong>Backend endpoint not found.</strong><br>' +
-        'Make sure the backend is running on port 8080 and<br>' +
-        'OAuth2Controller.java is in your controller folder.';
+        'The API URL in js/config.js may be wrong.';
     } else if(err.message && err.message.toLowerCase().includes('network') || err.message.includes('fetch')){
       friendlyMsg +=
-        '<strong>Cannot reach backend.</strong><br>' +
-        'Is Spring Boot running on port 8080?<br>' +
-        'Check your terminal for errors.';
+        '<strong>Cannot reach the server.</strong><br>' +
+        'Free hosting sleeps when idle. Wait about 30 seconds and try again.';
     } else {
       friendlyMsg += (err.message || 'Unknown error. Check browser console (F12).');
     }
@@ -156,5 +144,7 @@ async function handleCallback(){
 
 handleCallback();
 </script>
+<script src="../js/motion.js"></script>
+
 </body>
 </html>

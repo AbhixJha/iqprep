@@ -1,0 +1,53 @@
+/* App pages: loaded last. Fixes for inline page styles written for the old theme. */
+.nav-streak .sk{font-size:.58rem;letter-spacing:.14em;color:var(--white-3);margin-right:2px}
+@media(max-width:700px){.nav-streak .sk{display:none}}
+.popt-em{display:none}
+.cat-em,.opt-em{font-family:var(--font-display)!important;font-size:1.5rem!important;letter-spacing:.04em;color:var(--accent);line-height:1}
+.vi-cat-btn>span:first-child{font-family:var(--font-display)!important;font-size:1.4rem!important;letter-spacing:.04em;color:var(--accent);line-height:1}
+.ach-ic{font-family:var(--font-display)!important;font-size:1.6rem!important;line-height:1;letter-spacing:.02em}
+.empty-ic,.upload-ic,.vi-setup-icon,.video-card-left,.completed-ic{font-family:var(--font-display)!important;letter-spacing:.04em}
+
+/* greeting + stat cards */
+.greet{font-family:var(--font-display)!important;font-weight:600!important;text-transform:none;font-size:clamp(2rem,3.6vw,3.2rem)!important;line-height:1.08!important;letter-spacing:-.03em!important}
+.greet em{color:var(--accent)!important;-webkit-text-fill-color:currentColor!important;background:none!important}
+.greet-sub{font-size:1rem!important;color:var(--white-2)!important}
+.sc::after,.qs-card::before{display:none!important}
+.sc{background:transparent!important;border:0!important;border-left:2px solid var(--accent)!important;text-align:left!important;padding:.2rem 0 .2rem 1.1rem!important}
+.sc::before{display:none!important}
+.sc-ch{justify-content:flex-start!important}
+.sc-ic{display:none!important}
+.sc-n{font-family:var(--font-mono)!important;font-weight:500!important;font-size:2.6rem!important;letter-spacing:-.03em!important;color:var(--cyan)!important}
+.sc-l{font-family:var(--font-mono);letter-spacing:.14em!important}
+.sc-ch{font-family:var(--font-mono);letter-spacing:.04em}
+.pod-av,.p-av,[class$="-av"]{box-shadow:none!important}
+.pod-1 .pod-av{filter:none!important}
+
+/* page titles share the display voice */
+.dc-title,.vi-setup-title{font-family:var(--font-display)!important;font-weight:600!important;text-transform:none;font-size:clamp(1.8rem,3.2vw,2.6rem)!important;line-height:1.1!important;letter-spacing:-.03em!important}
+.dc-title em,.vi-setup-title em{color:var(--accent)!important;-webkit-text-fill-color:currentColor!important;background:none!important}
+.upload-zone>input{opacity:0!important;animation:none!important}
+.display{font-size:clamp(2.4rem,5vw,4rem)}
+
+/* profile stat tiles: never clip */
+.p-sts{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.ps{min-width:0;padding:.65rem .3rem!important;overflow:hidden}
+.ps-l{font-size:.56rem!important;letter-spacing:.04em!important;white-space:nowrap}
+.ps-n{font-size:1.05rem!important}
+.vi-setup-icon{box-shadow:none!important}
+.ico{display:block;margin:0 auto}
+.ivc-opt-ic .ico{margin:0}
+
+/* avatar: head-and-shoulders mark instead of a bare letter */
+.nav-av,.av{font-size:0!important;color:transparent!important;background-color:var(--accent)!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='15' r='6.5' fill='%2308090D'/%3E%3Cpath d='M6.5 38c0-8 6-13 13.500-13S33.500 30 33.500 38z' fill='%2308090D'/%3E%3Cpath d='M0 0h40v3H0z' fill='%2300F0FF' opacity='.0'/%3E%3C/svg%3E")!important;background-size:78% 78%!important;background-position:center bottom!important;background-repeat:no-repeat!important}
+.nav-av:hover{background-color:var(--accent-2)!important}
+.cat-em,.opt-em,.popt-em{color:var(--accent);display:inline-flex;align-items:center;justify-content:center}
+.cat-em .ico,.opt-em .ico{margin:0}
+.popt-em .ico{margin:0 auto .2rem}
+.jv-lbl{display:flex}.jv-lbl .ico{margin:0}
+.jarvis-avatar{display:flex;align-items:center;justify-content:center;color:#08090D}
+.jarvis-avatar .ico{margin:0}
+.av-act{display:flex;gap:.5rem;justify-content:center;margin:-.2rem 0 1rem}
+.av-btn{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--white-2);padding:6px 10px;cursor:pointer;transition:border-color .2s,color .2s}
+.av-btn:hover{border-color:var(--accent);color:var(--accent)}
+.nav-mark,.brand-mark{font-size:0}
+.logo-svg{display:block}

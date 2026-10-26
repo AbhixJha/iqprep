@@ -4,6 +4,8 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IQPrep — Daily Challenge</title>
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="../css/overrides.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 .page{padding:2.5rem 0}
@@ -13,43 +15,45 @@
 .dc-title em{font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .dc-sub{color:var(--white-3);font-size:.85rem}
 .dc-card{max-width:680px;margin:0 auto}
-.dc-q{font-size:1.05rem;font-weight:500;line-height:1.75;color:var(--white);margin-bottom:1.25rem;padding:1.25rem;background:var(--dark-3);border:1px solid var(--border-v);border-radius:var(--r-lg)}
+.dc-q{font-size:1.05rem;font-weight:500;line-height:1.75;color:var(--white);margin-bottom:1.25rem;padding:1.25rem;background:var(--dark-3);border:1px solid var(--border-v);border-radius:0}
 .dc-timer{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:1rem;font-size:.78rem;color:var(--white-3)}
-.dc-timer-badge{font-family:var(--font-mono);font-size:1rem;font-weight:500;color:var(--violet-bright);background:var(--violet-dim);border:1px solid var(--border-v);border-radius:var(--r-sm);padding:3px 12px}
+.dc-timer-badge{font-family:var(--font-mono);font-size:1rem;font-weight:500;color:var(--violet-bright);background:var(--violet-dim);border:1px solid var(--border-v);border-radius:0;padding:3px 12px}
 .dc-streak-bar{display:flex;align-items:center;justify-content:center;gap:.4rem;margin:1.5rem 0;flex-wrap:wrap}
-.streak-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:var(--t)}
+.streak-dot{width:28px;height:28px;border-radius:0;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:var(--t)}
 .streak-dot.done{background:var(--violet-dim);border-color:var(--violet);color:var(--violet-bright)}
-.streak-dot.today{background:var(--grad-v);border-color:transparent;color:white;box-shadow:0 0 16px var(--violet-glow)}
+.streak-dot.today{background:var(--grad-v);border-color:transparent;color:#08090D;box-shadow:0 0 16px var(--violet-glow)}
 .completed-card{text-align:center;padding:2rem}
 .completed-ic{font-size:3rem;margin-bottom:.75rem}
 .score-big{font-family:var(--font-mono);font-size:3rem;font-weight:500}
-.fb-box{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;margin-top:1rem;font-size:.82rem;color:var(--white-2);line-height:1.75;text-align:left}
+.fb-box{background:var(--dark-3);border:1px solid var(--border);border-radius:0;padding:1rem;margin-top:1rem;font-size:.82rem;color:var(--white-2);line-height:1.75;text-align:left}
 .eval-loading{text-align:center;padding:1.5rem;color:var(--white-3);font-size:.85rem;display:flex;flex-direction:column;align-items:center;gap:.75rem}
+@media(max-width:480px){.dc-card{padding:1.25rem .75rem!important}.dc-q{padding:1rem;font-size:.95rem}.score-big{font-size:2.4rem}.dc-streak-bar{gap:.25rem}.streak-dot{width:24px;height:24px;font-size:.55rem}}
 </style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M0%200h32v22l-10%2010H0z%22%20fill%3D%22%23F59E0B%22/%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%224.4%22%20height%3D%229%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2213.8%22%20y%3D%2210%22%20width%3D%224.4%22%20height%3D%2216%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%2221%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%224.4%22%20fill%3D%22%2300F0FF%22/%3E%3C/svg%3E">
 </head>
-<body>
+<body data-motion="lite">
 <div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
 <nav class="nav">
-  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><svg class="logo-svg" viewBox="0 0 32 32" width="20" height="20" aria-hidden="true"><rect x="6" y="17" width="4.4" height="9" fill="#08090D"/><rect x="13.8" y="10" width="4.4" height="16" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="21" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="4.4" fill="#00F0FF"/></svg></div>IQPrep</a>
   <ul class="nav-links">
     <li><a href="dashboard.html">Dashboard</a></li>
     <li><a href="interview.html">Practice</a></li>
-    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="video-interview.html">Video</a></li>
     <li><a href="resume.html">Resume</a></li>
-    <li><a href="daily-challenge.html" class="on">🔥 Daily</a></li>
+    <li><a href="daily-challenge.html" class="on">Daily</a></li>
     <li><a href="history.html">History</a></li>
     <li><a href="analytics.html">Analytics</a></li>
     <li><a href="leaderboard.html">Leaderboard</a></li>
     <li><a href="profile.html">Profile</a></li>
   </ul>
-  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak"><span class="sk">STREAK</span> 0</div><div class="nav-av" id="nav-av">A</div></div>
 </nav>
 <div class="pw"><div class="w page">
 
   <div class="dc-hero stag">
     <div class="dc-date"><i class="fa-solid fa-calendar-day"></i><span id="dc-date"></span></div>
     <div class="dc-title">Daily <em>Challenge</em></div>
-    <div class="dc-sub">One question every day. Build your streak. Stay sharp!</div>
+    <div class="dc-sub">One question a day. Keep your streak going.</div>
   </div>
 
   <!-- 7 day streak bar -->
@@ -89,8 +93,8 @@
     <div class="eval-loading">
       <div class="dots-ai"><span></span><span></span><span></span></div>
       <div>
-        <div style="font-weight:700;color:var(--white);margin-bottom:.3rem">🤖 AI is evaluating your answer...</div>
-        <div style="font-size:.75rem">Groq AI is analysing accuracy, clarity and completeness</div>
+        <div style="font-weight:700;color:var(--white);margin-bottom:.3rem">AI is evaluating your answer...</div>
+        <div style="font-size:.75rem">Scoring accuracy, clarity and completeness</div>
       </div>
     </div>
   </div>
@@ -98,8 +102,8 @@
   <!-- Completed Card -->
   <div class="card dc-card" id="dc-completed" style="display:none;padding:1.75rem">
     <div class="completed-card">
-      <div class="completed-ic" id="cc-ic">🎉</div>
-      <div style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;margin-bottom:.3rem">Challenge Complete!</div>
+      <div class="completed-ic" id="cc-ic">A</div>
+      <div style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;margin-bottom:.3rem">Challenge complete</div>
       <div style="color:var(--white-3);font-size:.82rem;margin-bottom:1rem">Come back tomorrow for a new challenge</div>
       <div class="score-big" id="cc-score" style="color:var(--violet-bright)">—</div>
       <div style="font-size:.65rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.07em;margin-top:3px">/ 10</div>
@@ -110,7 +114,7 @@
       <div class="fb-box" id="cc-feedback"></div>
 
       <div id="cc-better" style="display:none">
-        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--violet-bright);margin:1rem 0 .4rem;text-align:left">💡 A Better Answer Would Be:</div>
+        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--violet-bright);margin:1rem 0 .4rem;text-align:left">A Better Answer Would Be:</div>
         <div class="fb-box" id="cc-better-text" style="background:var(--violet-soft);border-color:var(--border-v)"></div>
       </div>
 
@@ -131,7 +135,7 @@
 if(!getToken()) window.location.href='login.html';
 const user=S.get('iq3_user');
 document.getElementById('nav-av').textContent=getInitial();
-document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+document.getElementById('nav-streak').innerHTML=`<span class="sk">STREAK</span> ${getStreak()}`;
 
 // Date display
 const now=new Date();
@@ -143,10 +147,10 @@ for(let i=6;i>=0;i--){
   const d=new Date();d.setDate(d.getDate()-i);
   const label=i===0?'Today':d.toLocaleDateString('en-IN',{weekday:'short'});
   const isToday=i===0;
-  streakBar.innerHTML+=`<div class="streak-dot ${isToday?'today':''}" title="${label}">${isToday?'★':i===1?'●':'○'}</div>`;
+  streakBar.innerHTML+=`<div class="streak-dot ${isToday?'today':''}" title="${label}">${isToday?'':i===1?'●':'○'}</div>`;
 }
 
-let challengeData=null; // stores {id, question, category, difficulty}
+let challengeData=null;
 let timerInterval=null;
 
 async function loadChallenge(){
@@ -185,12 +189,10 @@ async function submitChallenge(){
   if(!answer){toast('Empty','Write your answer first!','w');return;}
   clearInterval(timerInterval);
 
-  // Switch to evaluating state
   document.getElementById('dc-card').style.display='none';
   document.getElementById('dc-evaluating').style.display='block';
 
   try{
-    // ── STEP 1: Real AI Evaluation via /api/evaluate ──
     const question=challengeData?.question || document.getElementById('dc-question').textContent;
     const category=challengeData?.category || 'technical';
     const difficulty=challengeData?.difficulty || 'medium';
@@ -221,7 +223,6 @@ async function submitChallenge(){
       }
     }catch(evalErr){
       console.error('Eval error:', evalErr);
-      // Fallback: basic scoring based on answer length & content
       const wordCount=answer.split(/\s+/).filter(Boolean).length;
       if(wordCount<10) evalResult.score=3;
       else if(wordCount<25) evalResult.score=5;
@@ -231,15 +232,14 @@ async function submitChallenge(){
         (evalResult.score>=6?'Decent answer, keep improving!':'Try to write more detailed answers.');
     }
 
-    // ── STEP 2: Submit to backend with real score ──
     let backendMsg='Challenge completed!';
     try{
       const submitData=await apiFetch(`/daily/submit/${challengeData.id}`,{
         method:'POST',
         body:JSON.stringify({
           answer: answer,
-          score: evalResult.score,          // pass evaluated score
-          feedback: evalResult.feedback     // pass evaluated feedback
+          score: evalResult.score,
+          feedback: evalResult.feedback
         })
       });
       backendMsg=submitData.message||'Challenge completed!';
@@ -247,7 +247,6 @@ async function submitChallenge(){
       console.warn('Backend submit failed, showing result anyway:', submitErr);
     }
 
-    // ── STEP 3: Show results ──
     document.getElementById('dc-evaluating').style.display='none';
     showCompleted(
       evalResult.score,
@@ -257,7 +256,7 @@ async function submitChallenge(){
       evalResult.clarityScore,
       evalResult.completenessScore
     );
-    toast('Challenge Complete! 🎉', `Score: ${evalResult.score}/10`, evalResult.score>=7?'s':'i');
+    toast('Challenge complete', `Score: ${evalResult.score}/10`, evalResult.score>=7?'s':'i');
 
   }catch(err){
     document.getElementById('dc-evaluating').style.display='none';
@@ -277,14 +276,13 @@ function showCompleted(score, feedback, betterAnswer, accuracyScore, clarityScor
   const sc=parseFloat(score||0);
   document.getElementById('cc-score').textContent=sc;
   document.getElementById('cc-score').style.color=scoreColor(sc);
-  document.getElementById('cc-ic').textContent=sc>=9?'🏆':sc>=7?'⭐':sc>=5?'💪':'📚';
+  document.getElementById('cc-ic').textContent=sc>=9?'A+':sc>=7?'A':sc>=5?'B':'C';
   document.getElementById('cc-feedback').textContent=feedback||'Great effort! Keep practicing daily.';
 
-  // Score breakdown (only when we have sub-scores)
   if(accuracyScore!=null && clarityScore!=null && completenessScore!=null){
     const breakdownEl=document.getElementById('cc-breakdown');
     const fmt=(val,label,color)=>`
-      <div style="background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-sm);padding:.65rem;text-align:center">
+      <div style="background:var(--dark-3);border:1px solid var(--border);border-radius:0;padding:.65rem;text-align:center">
         <div style="font-family:var(--font-mono);font-size:1.1rem;font-weight:500;color:${color}">${val}/10</div>
         <div style="font-size:.6rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px">${label}</div>
       </div>`;
@@ -294,17 +292,17 @@ function showCompleted(score, feedback, betterAnswer, accuracyScore, clarityScor
       fmt(completenessScore,'Complete','var(--pink)');
   }
 
-  // Better answer
   if(betterAnswer && betterAnswer.trim()){
     document.getElementById('cc-better').style.display='block';
     document.getElementById('cc-better-text').textContent=betterAnswer;
   }
 
-  // Update streak dot
   document.querySelectorAll('.streak-dot.today')[0]?.classList.add('done');
 }
 
 loadChallenge();
 </script>
+<script src="../js/mobile-nav.js"></script>
+<script src="../js/motion.js"></script>
 </body>
 </html>

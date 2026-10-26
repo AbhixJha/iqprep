@@ -4,49 +4,52 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IQPrep — Session Replay</title>
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="../css/overrides.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 .page{padding:2.5rem 0}
 .replay-container{max-width:780px;margin:0 auto}
 .session-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:2rem}
-.session-item{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-md);cursor:pointer;transition:var(--t)}
+.session-item{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;background:var(--dark-3);border:1px solid var(--border);border-radius:0;cursor:pointer;transition:var(--t)}
 .session-item:hover,.session-item.selected{border-color:var(--border-v);background:var(--violet-soft)}
-.s-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.s-ic{width:36px;height:36px;border-radius:0;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
 .replay-player{display:none}
-.rp-header{background:var(--dark-3);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.rp-header{background:var(--dark-3);border:1px solid var(--border);border-radius:0;padding:1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
 .rp-controls{display:flex;align-items:center;gap:.6rem}
-.rp-btn{width:36px;height:36px;border-radius:50%;background:var(--dark-4);border:1px solid var(--border);color:var(--white-3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:var(--t)}
-.rp-btn:hover{background:var(--dark-3);color:var(--white);border-color:rgba(255,255,255,.15)}
-.rp-btn.active{background:var(--grad-v);border-color:transparent;color:white;box-shadow:0 0 16px var(--violet-glow)}
+.rp-btn{width:36px;height:36px;border-radius:0;background:var(--dark-4);border:1px solid var(--border);color:var(--white-3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:var(--t)}
+.rp-btn:hover{background:var(--dark-3);color:var(--white);border-color:rgba(233,236,244,.15)}
+.rp-btn.active{background:var(--grad-v);border-color:transparent;color:#08090D;box-shadow:0 0 16px var(--violet-glow)}
 .rp-progress-wrap{flex:1;max-width:300px}
-.rp-progress{height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;cursor:pointer}
-.rp-progress-fill{height:100%;background:var(--grad-v);border-radius:2px;transition:width .3s ease}
+.rp-progress{height:4px;background:rgba(233,236,244,.08);border-radius:0;overflow:hidden;cursor:pointer}
+.rp-progress-fill{height:100%;background:var(--grad-v);border-radius:0;transition:width .3s ease}
 .rp-step-label{font-size:.65rem;color:var(--white-3);margin-top:4px;text-align:center}
 .qa-replay{animation:fadeUp .4s ease}
 .rq-num{font-family:var(--font-mono);font-size:.65rem;color:var(--violet-bright);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4rem}
 .rq-text{font-size:1rem;font-weight:500;line-height:1.7;margin-bottom:.75rem}
 .rq-section{margin-bottom:.85rem}
 .rq-section-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem;display:flex;align-items:center;gap:5px}
-.rq-section-body{background:var(--dark-4);border-radius:var(--r-sm);padding:.75rem;font-size:.82rem;color:var(--white-2);line-height:1.7;border:1px solid var(--border)}
-.score-chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:.88rem;font-weight:500;padding:2px 10px;border-radius:20px;margin-bottom:.5rem}
+.rq-section-body{background:var(--dark-4);border-radius:0;padding:.75rem;font-size:.82rem;color:var(--white-2);line-height:1.7;border:1px solid var(--border)}
+.score-chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:.88rem;font-weight:500;padding:2px 10px;border-radius:0;margin-bottom:.5rem}
 </style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M0%200h32v22l-10%2010H0z%22%20fill%3D%22%23F59E0B%22/%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%224.4%22%20height%3D%229%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2213.8%22%20y%3D%2210%22%20width%3D%224.4%22%20height%3D%2216%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%2221%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%224.4%22%20fill%3D%22%2300F0FF%22/%3E%3C/svg%3E">
 </head>
-<body>
+<body data-motion="lite">
 <div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
 <nav class="nav">
-  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><svg class="logo-svg" viewBox="0 0 32 32" width="20" height="20" aria-hidden="true"><rect x="6" y="17" width="4.4" height="9" fill="#08090D"/><rect x="13.8" y="10" width="4.4" height="16" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="21" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="4.4" fill="#00F0FF"/></svg></div>IQPrep</a>
   <ul class="nav-links">
     <li><a href="dashboard.html">Dashboard</a></li>
     <li><a href="interview.html">Practice</a></li>
-    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="video-interview.html">Video</a></li>
     <li><a href="resume.html">Resume</a></li>
-    <li><a href="daily-challenge.html">🔥 Daily</a></li>
+    <li><a href="daily-challenge.html">Daily</a></li>
     <li><a href="history.html">History</a></li>
     <li><a href="replay.html" class="on">Replay</a></li>
     <li><a href="analytics.html">Analytics</a></li>
     <li><a href="profile.html">Profile</a></li>
   </ul>
-  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak"><span class="sk">STREAK</span> 0</div><div class="nav-av" id="nav-av">A</div></div>
 </nav>
 <div class="pw"><div class="w page">
   <div style="margin-bottom:1.75rem stag">
@@ -110,9 +113,9 @@
 if(!getToken()) window.location.href='login.html';
 const user=S.get('iq3_user');
 document.getElementById('nav-av').textContent=getInitial();
-document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+document.getElementById('nav-streak').innerHTML=`<span class="sk">STREAK</span> ${getStreak()}`;
 
-const cm={technical:['💻','var(--violet-dim)','Technical'],hr:['🤝','var(--blue-dim)','HR'],aptitude:['🧮','var(--teal-dim)','Aptitude'],mixed:['🎯','var(--pink-dim)','Mixed']};
+const cm={technical:['DEV','var(--violet-dim)','Technical'],hr:['HR','var(--blue-dim)','HR'],aptitude:['APT','var(--teal-dim)','Aptitude'],mixed:['MIX','var(--pink-dim)','Mixed']};
 
 let currentSession=null;
 let currentStep=0;
@@ -124,7 +127,7 @@ async function loadSessions(){
     const sessions=await Sessions.getAll();
     const list=document.getElementById('session-list');
     if(!sessions.length){
-      list.innerHTML=`<div class="empty-s"><div class="empty-ic">📼</div><h3>No sessions yet</h3><p>Complete an interview to replay it here!</p><a href="interview.html" class="btn btn-v btn-sm" style="margin-top:.5rem">Start Now</a></div>`;
+      list.innerHTML=`<div class="empty-s"><div class="empty-ic">—</div><h3>No sessions yet</h3><p>Complete an interview to replay it here!</p><a href="interview.html" class="btn btn-v btn-sm" style="margin-top:.5rem">Start Now</a></div>`;
       return;
     }
     list.innerHTML=sessions.slice(0,10).map(s=>{
@@ -185,7 +188,7 @@ function renderStep(){
     content.innerHTML=`
       <div class="rq-num">QUESTION ${String(currentStep+1).padStart(2,'0')}</div>
       <div class="rq-text">${qa.question}</div>
-      <div style="background:var(--red-dim);border:1px solid rgba(248,113,113,.2);border-radius:var(--r-md);padding:.75rem;font-size:.82rem;color:var(--red);text-align:center">
+      <div style="background:var(--red-dim);border:1px solid rgba(244,63,94,.2);border-radius:0;padding:.75rem;font-size:.82rem;color:var(--red);text-align:center">
         <i class="fa-solid fa-forward"></i> This question was skipped
       </div>`;
     return;
@@ -214,15 +217,15 @@ function renderStep(){
       <div class="rq-section-body" style="background:var(--violet-soft);border-color:var(--border-v)">${qa.betterAnswer}</div>
     </div>`:''}
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:.5rem">
-      <div style="background:var(--dark-4);border-radius:var(--r-sm);padding:.6rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.9rem;color:var(--violet-bright)">${qa.accuracyScore||sc}/10</div><div style="font-size:.58rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Accuracy</div></div>
-      <div style="background:var(--dark-4);border-radius:var(--r-sm);padding:.6rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.9rem;color:var(--teal)">${qa.clarityScore||sc}/10</div><div style="font-size:.58rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Clarity</div></div>
-      <div style="background:var(--dark-4);border-radius:var(--r-sm);padding:.6rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.9rem;color:var(--pink)">${qa.completenessScore||sc}/10</div><div style="font-size:.58rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Complete</div></div>
+      <div style="background:var(--dark-4);border-radius:0;padding:.6rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.9rem;color:var(--violet-bright)">${qa.accuracyScore||sc}/10</div><div style="font-size:.58rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Accuracy</div></div>
+      <div style="background:var(--dark-4);border-radius:0;padding:.6rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.9rem;color:var(--teal)">${qa.clarityScore||sc}/10</div><div style="font-size:.58rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Clarity</div></div>
+      <div style="background:var(--dark-4);border-radius:0;padding:.6rem;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-mono);font-size:.9rem;color:var(--pink)">${qa.completenessScore||sc}/10</div><div style="font-size:.58rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Complete</div></div>
     </div>`;
 }
 
 function nextStep(){
   if(currentStep>=currentSession.answers.length-1){
-    toast('Replay complete!','You reviewed all questions 🎉','s');
+    toast('Replay complete!','You reviewed all questions','s');
     closeReplay();
     return;
   }
@@ -272,5 +275,7 @@ function closeReplay(){
 
 loadSessions();
 </script>
+<script src="../js/mobile-nav.js"></script>
+<script src="../js/motion.js"></script>
 </body>
 </html>

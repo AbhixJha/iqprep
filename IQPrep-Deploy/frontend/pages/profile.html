@@ -4,34 +4,36 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IQPrep — Profile</title>
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="../css/overrides.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 .page{padding:2.5rem 0}
 .pg{display:grid;grid-template-columns:290px 1fr;gap:1.35rem;align-items:start}
 .p-card{padding:1.75rem;text-align:center;position:sticky;top:80px}
-.av{width:82px;height:82px;border-radius:50%;background:var(--grad-v);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:2rem;font-weight:900;color:white;margin:0 auto 1.1rem;box-shadow:0 0 32px var(--violet-glow),0 0 0 3px rgba(124,92,252,.15)}
+.av{width:82px;height:82px;border-radius:0;background:var(--grad-v);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:2rem;font-weight:900;color:#08090D;margin:0 auto 1.1rem;box-shadow:0 0 32px var(--violet-glow),0 0 0 3px rgba(245,158,11,.15)}
 .p-name{font-family:var(--font-head);font-size:1.25rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.18rem}
 .p-role{color:var(--violet-bright);font-size:.78rem;font-weight:600;margin-bottom:.18rem}
 .p-email{color:var(--white-3);font-size:.72rem;margin-bottom:1rem}
 .p-bgs{display:flex;justify-content:center;gap:.35rem;flex-wrap:wrap;margin-bottom:1rem}
 .p-sts{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:1.1rem}
-.ps{background:var(--dark-4);border-radius:var(--r-sm);padding:.65rem;text-align:center}
+.ps{background:var(--dark-4);border-radius:0;padding:.65rem;text-align:center}
 .ps-n{font-family:var(--font-mono);font-size:1.1rem;font-weight:500}
 .ps-l{font-size:.6rem;color:var(--white-3);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
 .pr{display:flex;flex-direction:column;gap:1.1rem}
 .sc_{padding:1.4rem}
 .sc-title{font-size:.83rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.55rem;font-family:var(--font-head);letter-spacing:-.01em}
 .sc-title i{color:var(--violet-bright)}
-.sr_{display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sr_{display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid rgba(233,236,244,.04)}
 .sr_:last-child{border-bottom:none;padding-bottom:0}
 .sr-l{font-size:.8rem;font-weight:500}
 .sr-d{font-size:.68rem;color:var(--white-3);margin-top:1px}
-.tog{width:38px;height:20px;background:rgba(255,255,255,.08);border-radius:var(--r-full);cursor:pointer;transition:var(--t);position:relative;flex-shrink:0}
+.tog{width:38px;height:20px;background:rgba(233,236,244,.08);border-radius:0;cursor:pointer;transition:var(--t);position:relative;flex-shrink:0}
 .tog.on{background:var(--violet)}
-.tog::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:white;transition:var(--t)}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:0;background:white;transition:var(--t)}
 .tog.on::after{left:21px}
 .ach-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem}
-.ach{background:var(--dark-4);border:1px solid var(--border);border-radius:var(--r-md);padding:.8rem;text-align:center;transition:var(--t) var(--spring)}
+.ach{background:var(--dark-4);border:1px solid var(--border);border-radius:0;padding:.8rem;text-align:center;transition:var(--t) var(--spring)}
 .ach.on{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.05);box-shadow:0 0 20px rgba(251,191,36,.05)}
 .ach.off{opacity:.25;filter:grayscale(1)}
 .ach-ic{font-size:1.35rem;display:block;margin-bottom:.3rem}
@@ -44,27 +46,33 @@
 .pw-fields{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
 @media(max-width:900px){.pg{grid-template-columns:1fr}.p-card{position:static}.ach-g{grid-template-columns:repeat(2,1fr)}.pw-fields{grid-template-columns:1fr}}
 </style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M0%200h32v22l-10%2010H0z%22%20fill%3D%22%23F59E0B%22/%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%224.4%22%20height%3D%229%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2213.8%22%20y%3D%2210%22%20width%3D%224.4%22%20height%3D%2216%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%2221%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%224.4%22%20fill%3D%22%2300F0FF%22/%3E%3C/svg%3E">
 </head>
-<body>
+<body data-motion="lite">
 <div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
 <nav class="nav">
-  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><svg class="logo-svg" viewBox="0 0 32 32" width="20" height="20" aria-hidden="true"><rect x="6" y="17" width="4.4" height="9" fill="#08090D"/><rect x="13.8" y="10" width="4.4" height="16" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="21" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="4.4" fill="#00F0FF"/></svg></div>IQPrep</a>
   <ul class="nav-links">
     <li><a href="dashboard.html">Dashboard</a></li>
     <li><a href="interview.html">Practice</a></li>
-    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="video-interview.html">Video</a></li>
     <li><a href="history.html">History</a></li>
     <li><a href="analytics.html">Analytics</a></li>
     <li><a href="leaderboard.html">Leaderboard</a></li>
     <li><a href="profile.html" class="on">Profile</a></li>
   </ul>
-  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak"><span class="sk">STREAK</span> 0</div><div class="nav-av" id="nav-av">A</div></div>
 </nav>
 <div class="pw"><div class="w page">
   <div style="margin-bottom:1.6rem"><div class="lbl">Your Account</div><div class="h1" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:.3rem;letter-spacing:-.025em">Profile & <span style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Settings</span></div></div>
   <div class="pg">
     <div class="card p-card stag">
       <div class="av" id="av">A</div>
+      <div class="av-act">
+        <input type="file" id="av-file" accept="image/*" hidden>
+        <button type="button" class="av-btn" onclick="document.getElementById('av-file').click()">Change photo</button>
+        <button type="button" class="av-btn av-rm" id="av-rm" onclick="IQAvatar.clear();this.style.display='none';toast('Photo removed','info')">Remove</button>
+      </div>
       <div class="p-name" id="pn">User</div>
       <div class="p-role" id="pr_">Aspiring Developer</div>
       <div class="p-email" id="pe">user@example.com</div>
@@ -72,7 +80,7 @@
       <div class="p-sts">
         <div class="ps"><div class="ps-n" id="ps-s">0</div><div class="ps-l">Sessions</div></div>
         <div class="ps"><div class="ps-n" id="ps-a" style="color:var(--violet-bright)">—</div><div class="ps-l">Avg</div></div>
-        <div class="ps"><div class="ps-n" id="ps-st" style="color:var(--amber)">0🔥</div><div class="ps-l">Streak</div></div>
+        <div class="ps"><div class="ps-n" id="ps-st" style="color:var(--amber)">0</div><div class="ps-l">Streak</div></div>
       </div>
       <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="Auth.logout()">
         <i class="fa-solid fa-right-from-bracket"></i> Sign Out
@@ -129,7 +137,7 @@
 if(!getToken()) window.location.href='login.html';
 const user=S.get('iq3_user');
 document.getElementById('nav-av').textContent=getInitial();
-document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+document.getElementById('nav-streak').innerHTML=`<span class="sk">STREAK</span> ${getStreak()}`;
 document.getElementById('av').textContent=getInitial();
 document.getElementById('pn').textContent=getFullName();
 document.getElementById('pr_').textContent=user?.roles?.split(',')[0]||user?.targetRole||'Aspiring Developer';
@@ -137,17 +145,17 @@ document.getElementById('pe').textContent=user?.email||'';
 document.getElementById('ef').value=user?.firstName||'';
 document.getElementById('el').value=user?.lastName||'';
 document.getElementById('er').value=user?.targetRole||'';
-document.getElementById('ps-st').textContent=getStreak()+'🔥';
+document.getElementById('ps-st').textContent=getStreak();
 
 const allAchs=[
-  {id:'FIRST_SESSION',ic:'🚀',n:'First Flight',d:'Complete first session'},
-  {id:'FIVE_SESSIONS',ic:'⭐',n:'Rising Star',d:'Complete 5 sessions'},
-  {id:'TEN_SESSIONS',ic:'🏆',n:'Champion',d:'Complete 10 sessions'},
-  {id:'TWENTY_FIVE_SESSIONS',ic:'👑',n:'Legend',d:'Complete 25 sessions'},
-  {id:'STREAK_3',ic:'🔥',n:'On Fire',d:'3-day streak'},
-  {id:'STREAK_7',ic:'💥',n:'Unstoppable',d:'7-day streak'},
-  {id:'PERFECT_SCORE',ic:'💯',n:'Perfect',d:'Score 9+ on any session'},
-  {id:'ALL_ROUNDER',ic:'🎯',n:'All-Rounder',d:'Try all 4 categories'},
+  {id:'FIRST_SESSION',ic:'1',n:'First Flight',d:'Complete first session'},
+  {id:'FIVE_SESSIONS',ic:'5',n:'Rising Star',d:'Complete 5 sessions'},
+  {id:'TEN_SESSIONS',ic:'10',n:'Champion',d:'Complete 10 sessions'},
+  {id:'TWENTY_FIVE_SESSIONS',ic:'25',n:'Legend',d:'Complete 25 sessions'},
+  {id:'STREAK_3',ic:'3d',n:'On Fire',d:'3-day streak'},
+  {id:'STREAK_7',ic:'7d',n:'Unstoppable',d:'7-day streak'},
+  {id:'PERFECT_SCORE',ic:'9+',n:'Perfect',d:'Score 9+ on any session'},
+  {id:'ALL_ROUNDER',ic:'4/4',n:'All-Rounder',d:'Try all 4 categories'},
 ];
 
 async function loadStats(){
@@ -160,7 +168,7 @@ async function loadStats(){
     if(earned.length===0){pb.innerHTML='<span style="font-size:.7rem;color:var(--white-3)">No badges yet — keep practicing!</span>';}
     else{pb.innerHTML=earned.slice(0,3).map(id=>{const a=allAchs.find(x=>x.id===id);return a?`<span class="badge bv">${a.ic} ${a.n}</span>`:''}).join('');}
     document.getElementById('ach-count').textContent=`${earned.length}/${allAchs.length} unlocked`;
-    document.getElementById('ach-g').innerHTML=allAchs.map(a=>{const isOn=earned.includes(a.id);return `<div class="ach ${isOn?'on':'off'}"><span class="ach-ic">${a.ic}</span><div class="ach-n">${a.n}</div><div class="ach-d">${isOn?'✅ Unlocked':a.d}</div></div>`}).join('');
+    document.getElementById('ach-g').innerHTML=allAchs.map(a=>{const isOn=earned.includes(a.id);return `<div class="ach ${isOn?'on':'off'}"><span class="ach-ic">${a.ic}</span><div class="ach-n">${a.n}</div><div class="ach-d">${isOn?'Unlocked':a.d}</div></div>`}).join('');
   }catch(err){
     document.getElementById('ach-g').innerHTML=`<p style="color:var(--white-3);font-size:.78rem;grid-column:1/-1;text-align:center">Could not load achievements.</p>`;
   }
@@ -192,6 +200,14 @@ async function changePassword(){
 
 function resetP(){if(confirm('Reset all local history?')){S.del('iq3_history');toast('Reset','Local history cleared.','w');setTimeout(()=>location.reload(),800);}}
 loadStats();
+</script>
+<script src="../js/mobile-nav.js"></script>
+<script src="../js/motion.js"></script>
+<script>
+(function(){var f=document.getElementById('av-file'),rm=document.getElementById('av-rm');
+function sync(){rm.style.display=IQAvatar.has()?'':'none'}sync();
+f.addEventListener('change',function(){var file=f.files&&f.files[0];if(!file)return;
+IQAvatar.set(file).then(function(){sync();toast('Photo updated','success')}).catch(function(e){toast(e.message,'error')});f.value=''});})();
 </script>
 </body>
 </html>

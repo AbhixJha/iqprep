@@ -31,11 +31,11 @@ function getInitial() {
 // ── SCORE HELPERS ──
 function scoreColor(s) {
   s = parseFloat(s);
-  if (s >= 9) return '#34d399';
-  if (s >= 7) return '#60a5fa';
-  if (s >= 5) return '#fbbf24';
-  if (s >= 3) return '#f97316';
-  return '#f87171';
+  if (s >= 9) return '#10B981';
+  if (s >= 7) return '#38BDF8';
+  if (s >= 5) return '#FBBF24';
+  if (s >= 3) return '#ff8a1a';
+  return '#F43F5E';
 }
 function scoreLabel(s) {
   s = parseFloat(s);
@@ -47,11 +47,11 @@ function scoreLabel(s) {
 }
 function scoreEmoji(s) {
   s = parseFloat(s);
-  if (s >= 9) return '🏆';
-  if (s >= 7) return '⭐';
-  if (s >= 5) return '📈';
-  if (s >= 3) return '💪';
-  return '📚';
+  if (s >= 9) return 'A+';
+  if (s >= 7) return 'A';
+  if (s >= 5) return 'B';
+  if (s >= 3) return 'C';
+  return 'D';
 }
 
 // ── STREAK ──
@@ -149,23 +149,23 @@ function showInterviewChoice(category = null) {
         <div class="ivc-sub">How do you want to practice today?</div>
         <div class="ivc-opts">
           <a href="interview.html${category ? '?cat=' + category : ''}" class="ivc-opt ivc-text">
-            <div class="ivc-opt-ic">⌨️</div>
+            <div class="ivc-opt-ic"><svg class="ico" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="1"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9.5 14h5"/></svg></div>
             <div class="ivc-opt-name">Text Interview</div>
-            <div class="ivc-opt-desc">Type or speak your answers · 5–50 questions · Real AI evaluation</div>
+            <div class="ivc-opt-desc">Type or speak your answers · 5–50 questions · Every answer scored</div>
             <div class="ivc-opt-tags">
-              <span>⚡ Fast</span>
-              <span>🎤 Voice input</span>
-              <span>📊 Analytics</span>
+              <span>Fast</span>
+              <span>Voice input</span>
+              <span>Analytics</span>
             </div>
           </a>
           <a href="video-interview.html${category ? '?cat=' + category : ''}" class="ivc-opt ivc-video">
-            <div class="ivc-opt-ic">🎥</div>
+            <div class="ivc-opt-ic"><svg class="ico" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="1"/><path d="M15.5 10.5 21.5 7v10l-6-3.5z"/><circle cx="9" cy="12" r="2.2"/></svg></div>
             <div class="ivc-opt-name">Video Interview</div>
-            <div class="ivc-opt-desc">Camera on · AI speaks questions · Answer by voice · Filler detection</div>
+            <div class="ivc-opt-desc">Camera on · Questions read aloud · Answer by voice · Filler detection</div>
             <div class="ivc-opt-tags">
-              <span>📹 Camera</span>
-              <span>🔊 AI Voice</span>
-              <span>🆕 New</span>
+              <span>Camera</span>
+              <span>Voice</span>
+              <span>New</span>
             </div>
           </a>
         </div>
@@ -179,24 +179,26 @@ function showInterviewChoice(category = null) {
   const style = document.createElement('style');
   style.id = 'ivc-styles';
   style.textContent = `
-    .ivc-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;animation:fadeIn .2s ease}
-    .ivc-card{background:#0d0e1a;border:1px solid rgba(124,92,252,.3);border-radius:22px;padding:2rem;max-width:540px;width:100%;animation:scIn .35s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 30px 80px rgba(0,0,0,.6)}
-    .ivc-title{font-family:'Cabinet Grotesk',sans-serif;font-size:1.5rem;font-weight:900;text-align:center;margin-bottom:.3rem;color:white;letter-spacing:-.025em}
-    .ivc-sub{text-align:center;color:rgba(255,255,255,.4);font-size:.8rem;margin-bottom:1.5rem}
-    .ivc-opts{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1rem}
-    .ivc-opt{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:16px;padding:1.4rem 1.1rem;text-align:center;text-decoration:none;color:white;transition:all .25s cubic-bezier(0.34,1.56,0.64,1);display:flex;flex-direction:column;align-items:center;gap:.45rem}
-    .ivc-text:hover{border-color:rgba(124,92,252,.6);background:rgba(124,92,252,.1);transform:translateY(-4px);box-shadow:0 12px 32px rgba(124,92,252,.15)}
-    .ivc-video:hover{border-color:rgba(244,114,182,.6);background:rgba(244,114,182,.1);transform:translateY(-4px);box-shadow:0 12px 32px rgba(244,114,182,.15)}
-    .ivc-opt-ic{font-size:2.5rem;margin-bottom:.2rem}
-    .ivc-opt-name{font-family:'Cabinet Grotesk',sans-serif;font-size:1rem;font-weight:800;letter-spacing:-.015em}
-    .ivc-opt-desc{font-size:.71rem;color:rgba(255,255,255,.4);line-height:1.6}
-    .ivc-opt-tags{display:flex;gap:.3rem;justify-content:center;flex-wrap:wrap;margin-top:.3rem}
-    .ivc-opt-tags span{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:2px 8px;font-size:.62rem;color:rgba(255,255,255,.55)}
-    .ivc-cancel{width:100%;background:none;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:9px;color:rgba(255,255,255,.3);font-size:.78rem;cursor:pointer;transition:.2s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
-    .ivc-cancel:hover{border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.6)}
+    .ivc-bg{position:fixed;inset:0;background:rgba(8,9,13,.88);z-index:99990;display:flex;align-items:center;justify-content:center;padding:1rem;animation:fadeIn .2s ease}
+    .ivc-card{background:#111;border:1px solid rgba(233,236,244,.16);border-top:3px solid #F59E0B;padding:2rem;max-width:600px;width:100%;animation:scIn .35s cubic-bezier(.16,1,.3,1)}
+    .ivc-title{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:400;text-transform:uppercase;margin-bottom:.3rem;color:#E9ECF4;line-height:1}
+    .ivc-sub{color:rgba(233,236,244,.58);font-size:.9rem;margin-bottom:1.6rem}
+    .ivc-opts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(233,236,244,.16);border:1px solid rgba(233,236,244,.16);margin-bottom:1rem}
+    .ivc-opt{background:#0B0C11;padding:1.5rem 1.2rem;text-align:left;text-decoration:none;color:#E9ECF4;transition:background .25s;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;position:relative}
+    .ivc-opt::after{content:'';position:absolute;left:0;bottom:0;height:3px;width:100%;background:#F59E0B;transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.16,1,.3,1)}
+    .ivc-opt:hover{background:#151822}
+    .ivc-opt:hover::after{transform:scaleX(1)}
+    .ivc-opt-ic{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.16em;color:#F59E0B;margin-bottom:1.2rem}
+    .ivc-opt-name{font-family:'Inter',sans-serif;text-transform:uppercase;font-size:1.35rem;font-weight:800;line-height:1}
+    .ivc-opt-desc{font-size:.8rem;color:rgba(233,236,244,.58);line-height:1.6}
+    .ivc-opt-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
+    .ivc-opt-tags span{border:1px solid rgba(233,236,244,.2);padding:2px 7px;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(233,236,244,.6)}
+    .ivc-cancel{width:100%;background:none;border:1px solid rgba(233,236,244,.16);padding:11px;color:rgba(233,236,244,.58);font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+    .ivc-cancel:hover{border-color:#F59E0B;color:#F59E0B}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    @keyframes scIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-    @media(max-width:480px){.ivc-opts{grid-template-columns:1fr}}
+    @keyframes scIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:520px){.ivc-opts{grid-template-columns:1fr}}
+
   `;
   document.head.appendChild(style);
   document.body.appendChild(modal);
@@ -213,13 +215,7 @@ function closeInterviewChoice() {
 
 // ── SMOOTH PAGE LOAD ──
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.style.opacity = '0';
-  document.body.style.transition = 'opacity 0.3s ease';
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.body.style.opacity = '1';
-    });
-  });
+  
   // Stagger animations
   document.querySelectorAll('.stag > *').forEach((el, i) => {
     el.style.opacity = '0';
@@ -231,3 +227,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 50 + i * 70);
   });
 });
+
+/* Profile photo: kept in this browser only (localStorage), resized to 256px. */
+window.IQAvatar = (function () {
+  function key() { try { var u = JSON.parse(localStorage.getItem('iq3_user') || '{}'); return 'iq3_avatar_' + (u.email || u.id || 'me'); } catch (e) { return 'iq3_avatar_me'; } }
+  function get() { try { return localStorage.getItem(key()) || ''; } catch (e) { return ''; } }
+  function apply() {
+    var url = get();
+    document.querySelectorAll('.nav-av,.av').forEach(function (el) {
+      if (url) {
+        el.style.setProperty('background-image', 'url("' + url + '")', 'important');
+        el.style.setProperty('background-size', 'cover', 'important');
+        el.style.setProperty('background-position', 'center', 'important');
+      } else {
+        el.style.removeProperty('background-image'); el.style.removeProperty('background-size'); el.style.removeProperty('background-position');
+      }
+    });
+  }
+  function set(file) {
+    return new Promise(function (res, rej) {
+      if (!file || !/^image\//.test(file.type)) return rej(new Error('Please choose an image file.'));
+      var img = new Image(), r = new FileReader();
+      r.onerror = function () { rej(new Error('Could not read that file.')); };
+      r.onload = function () {
+        img.onerror = function () { rej(new Error('Could not open that image.')); };
+        img.onload = function () {
+          var n = 256, c = document.createElement('canvas'); c.width = c.height = n;
+          var m = Math.min(img.width, img.height), sx = (img.width - m) / 2, sy = (img.height - m) / 2;
+          c.getContext('2d').drawImage(img, sx, sy, m, m, 0, 0, n, n);
+          try { localStorage.setItem(key(), c.toDataURL('image/jpeg', 0.86)); } catch (e) { return rej(new Error('Not enough browser storage for the photo.')); }
+          apply(); res();
+        };
+        img.src = r.result;
+      };
+      r.readAsDataURL(file);
+    });
+  }
+  function clear() { try { localStorage.removeItem(key()); } catch (e) {} apply(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply); else apply();
+  return { apply: apply, set: set, clear: clear, has: function () { return !!get(); } };
+})();

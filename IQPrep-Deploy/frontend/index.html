@@ -2,138 +2,143 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IQPrep — Ace Every Interview</title>
+<title>IQPrep — Interview training arena</title>
+<meta name="description" content="Practise technical and HR interviews by typing, speaking or on camera. Every answer is scored on accuracy, clarity and completeness.">
+<meta name="theme-color" content="#08090D">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-.land{min-height:100vh;display:flex;flex-direction:column}
-.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem;position:relative}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--violet-dim);border:1px solid var(--border-v);border-radius:var(--r-full);padding:5px 14px;font-size:.68rem;font-weight:700;color:var(--violet-bright);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.75rem;animation:fadeUp .6s var(--ease) both}
-.hero-title{font-family:var(--font-head);font-size:clamp(3rem,8vw,6.5rem);font-weight:900;line-height:1;letter-spacing:-.04em;margin-bottom:1.5rem;animation:fadeUp .6s .08s var(--ease) both}
-.hero-title em{font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:clamp(.9rem,2vw,1.1rem);color:var(--white-2);line-height:1.8;max-width:520px;margin:0 auto 2.5rem;animation:fadeUp .6s .16s var(--ease) both}
-.hero-ctas{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .6s .24s var(--ease) both}
-.hero-stats{display:flex;align-items:center;justify-content:center;gap:3rem;margin-top:4rem;padding-top:3rem;border-top:1px solid var(--border);animation:fadeUp .6s .32s var(--ease) both;flex-wrap:wrap;gap:2rem}
-.hstat{text-align:center}
-.hstat-n{font-family:var(--font-head);font-size:2.4rem;font-weight:900;background:var(--grad-v);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.hstat-l{font-size:.75rem;color:var(--white-3);margin-top:5px;letter-spacing:.04em}
-
-/* FEATURES */
-.features{padding:5rem 0;border-top:1px solid var(--border)}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:2.5rem}
-.feat-card{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;transition:var(--t) var(--ease);position:relative;overflow:hidden}
-.feat-card::before{content:'';position:absolute;inset:0;background:var(--grad-card);opacity:0;transition:var(--t);pointer-events:none}
-.feat-card:hover{border-color:var(--border-v);transform:translateY(-3px);box-shadow:0 12px 40px rgba(124,92,252,.1)}
-.feat-card:hover::before{opacity:1}
-.feat-ic{width:42px;height:42px;border-radius:12px;background:var(--violet-dim);border:1px solid var(--border-v);display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--violet-bright);margin-bottom:1rem}
-.feat-title{font-family:var(--font-head);font-size:.95rem;font-weight:700;margin-bottom:.4rem;letter-spacing:-.01em}
-.feat-desc{font-size:.8rem;color:var(--white-3);line-height:1.7}
-
-/* HOW */
-.how{padding:5rem 0;border-top:1px solid var(--border)}
-.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2.5rem;position:relative}
-.how-steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--border-v),transparent);z-index:0}
-.step{text-align:center;position:relative;z-index:1}
-.step-num{width:56px;height:56px;border-radius:50%;background:var(--dark-3);border:1px solid var(--border-v);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:1rem;font-weight:500;color:var(--violet-bright);margin:0 auto 1rem;box-shadow:0 0 20px rgba(124,92,252,.15)}
-.step-title{font-size:.88rem;font-weight:700;margin-bottom:.25rem;font-family:var(--font-head)}
-.step-desc{font-size:.75rem;color:var(--white-3);line-height:1.65}
-
-/* CTA SECTION */
-.cta-sect{padding:5rem 0;border-top:1px solid var(--border);text-align:center}
-.cta-box{background:linear-gradient(135deg,rgba(124,92,252,.1),rgba(244,114,182,.06));border:1px solid var(--border-v);border-radius:var(--r-xl);padding:4rem;position:relative;overflow:hidden}
-.cta-box::before{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:rgba(124,92,252,.08);border-radius:50%;filter:blur(80px);pointer-events:none}
-
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between}
-footer p{font-size:.75rem;color:var(--white-3)}
-
-@media(max-width:900px){.feat-grid{grid-template-columns:1fr 1fr}.how-steps{grid-template-columns:repeat(2,1fr)}.how-steps::before{display:none}}
-@media(max-width:600px){.feat-grid{grid-template-columns:1fr}.how-steps{grid-template-columns:1fr}}
-</style>
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/landing.css">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M0%200h32v22l-10%2010H0z%22%20fill%3D%22%23F59E0B%22/%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%224.4%22%20height%3D%229%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2213.8%22%20y%3D%2210%22%20width%3D%224.4%22%20height%3D%2216%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%2221%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%224.4%22%20fill%3D%22%2300F0FF%22/%3E%3C/svg%3E">
 </head>
-<body>
-<div class="cur"></div><div class="cur-ring"></div>
-<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-blob bb3"></div><div class="bg-grid"></div></div>
+<body data-motion="arena">
 
-<!-- NAV -->
-<nav class="nav" style="position:absolute">
-  <a href="index.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
-  <div style="display:flex;gap:.6rem">
-    <a href="pages/login.html" class="btn btn-ghost btn-sm">Sign In</a>
-    <a href="pages/register.html" class="btn btn-v btn-sm"><i class="fa-solid fa-rocket"></i> Get Started</a>
+<canvas id="arena" data-mode="landing" aria-hidden="true"></canvas>
+<div class="vig" aria-hidden="true"></div>
+<div class="scroll-bar"></div>
+<div class="cur"></div><div class="cur-ring"></div>
+
+<nav class="nav l-nav">
+  <a href="index.html" class="nav-logo"><span class="nav-mark"><svg class="logo-svg" viewBox="0 0 32 32" width="20" height="20" aria-hidden="true"><rect x="6" y="17" width="4.4" height="9" fill="#08090D"/><rect x="13.8" y="10" width="4.4" height="16" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="21" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="4.4" fill="#00F0FF"/></svg></span>IQPrep</a>
+  <ul class="nav-links">
+    <li><a href="#act2">Training</a></li>
+    <li><a href="#act3">Measure</a></li>
+    <li><a href="#act4">Signals</a></li>
+    <li><a href="#act5">Advance</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="pages/login.html" class="btn btn-ghost btn-sm">Sign in</a>
+    <a href="pages/register.html" class="btn btn-v btn-sm" data-magnetic>Start free</a>
   </div>
 </nav>
 
-<div class="land">
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> AI-Powered Interview Platform</div>
-    <h1 class="hero-title">Ace every<br><em>interview</em><br>with AI.</h1>
-    <p class="hero-sub">Practice with real interview questions, receive instant AI feedback and land your dream job with complete confidence.</p>
-    <div class="hero-ctas">
-      <a href="pages/register.html" class="btn btn-v btn-xl"><i class="fa-solid fa-rocket"></i> Start for Free</a>
-      <a href="pages/login.html" class="btn btn-outline btn-xl"><i class="fa-solid fa-play"></i> Sign In</a>
-    </div>
-    <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n">50K+</div><div class="hstat-l">Questions Practiced</div></div>
-      <div class="hstat"><div class="hstat-n">98%</div><div class="hstat-l">Satisfaction Rate</div></div>
-      <div class="hstat"><div class="hstat-n">4.9★</div><div class="hstat-l">Average Rating</div></div>
-      <div class="hstat"><div class="hstat-n">500+</div><div class="hstat-l">Companies Covered</div></div>
-    </div>
-  </div>
-
-  <!-- FEATURES - ->
-  <section class="features">
-    <div class="w">
-      <div class="lbl" style="justify-content:center;margin-bottom:.5rem">What you get</div>
-      <div class="h1" style="text-align:center;font-size:clamp(1.5rem,3vw,2.2rem)">Everything you need to <em style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">dominate</em></div>
-      <div class="feat-grid stag">
-        <div class="feat-card"><div class="feat-ic"><i class="fa-solid fa-robot"></i></div><div class="feat-title">AI Evaluation</div><div class="feat-desc">Get instant, honest feedback on every answer with detailed scoring across accuracy, clarity and completeness.</div></div>
-        <div class="feat-card"><div class="feat-ic"><i class="fa-solid fa-microphone"></i></div><div class="feat-title">Voice Mode</div><div class="feat-desc">Practice out loud with speech-to-text input. Train yourself to articulate clearly just like a real interview.</div></div>
-        <div class="feat-card"><div class="feat-ic"><i class="fa-solid fa-video"></i></div><div class="feat-title">AI Video Interview</div><div class="feat-desc">Face-to-face mock interview via camera. AI asks questions and evaluates your communication in real time.</div></div>
-        <div class="feat-card"><div class="feat-ic"><i class="fa-solid fa-chart-line"></i></div><div class="feat-title">Progress Analytics</div><div class="feat-desc">Detailed analytics on your improvement over time, weak topic detection and personalized suggestions.</div></div>
-        <div class="feat-card"><div class="feat-ic"><i class="fa-solid fa-fire"></i></div><div class="feat-title">Streak System</div><div class="feat-desc">Build daily practice habits with streaks, achievements and a leaderboard to compete with peers.</div></div>
-        <div class="feat-card"><div class="feat-ic"><i class="fa-solid fa-comments"></i></div><div class="feat-title">JARVIS Assistant</div><div class="feat-desc">A voice AI assistant to guide, motivate and help you navigate the platform — just like having a coach.</div></div>
-  <!-- HOW IT WORKS -->
-  <section class="how">
-    <div class="w">
-      <div class="lbl" style="justify-content:center;margin-bottom:.5rem">Simple process</div>
-      <div class="h1" style="text-align:center;font-size:clamp(1.5rem,3vw,2.2rem)">How it <em style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">works</em></div>
-      <div class="how-steps stag">
-        <div class="step"><div class="step-num">01</div><div class="step-title">Create Account</div><div class="step-desc">Sign up free and set your target role and domain</div></div>
-        <div class="step"><div class="step-num">02</div><div class="step-title">Choose Session</div><div class="step-desc">Pick category, difficulty and number of questions</div></div>
-        <div class="step"><div class="step-num">03</div><div class="step-title">Practice & Answer</div><div class="step-desc">Answer via text or voice — just like a real interview</div></div>
-        <div class="step"><div class="step-num">04</div><div class="step-title">Get AI Feedback</div><div class="step-desc">Receive instant scoring, feedback and improvement tips</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta-sect">
-    <div class="w">
-      <div class="cta-box">
-        <div class="lbl" style="justify-content:center;margin-bottom:.75rem">Start today</div>
-        <div class="h1" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:.75rem">Your dream job is one<br><em style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">practice session</em> away.</div>
-        <p class="sub" style="max-width:420px;margin:0 auto 2rem">Join thousands of students who land jobs by practicing smarter.</p>
-        <a href="pages/register.html" class="btn btn-v btn-xl"><i class="fa-solid fa-rocket"></i> Create Free Account</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="nav-logo" style="font-size:.9rem"><div class="nav-mark" style="width:24px;height:24px;font-size:.65rem"><i class="fa-solid fa-brain"></i></div>IQPrep</div>
-    <p>Built for students who want to stand out.</p>
-  </footer>
+<div class="rail" aria-hidden="true">
+  <svg viewBox="0 0 2 100" preserveAspectRatio="none"><line x1="1" y1="0" x2="1" y2="100" class="r0"/><line x1="1" y1="0" x2="1" y2="100" class="r1" id="rail-p" pathLength="100"/></svg>
+  <span style="top:0%">I</span><span style="top:25%">II</span><span style="top:50%">III</span><span style="top:75%">IV</span><span style="top:100%">V</span>
 </div>
 
-<script src="js/utils.js"></script>
+<main>
+<!-- ACT I -->
+<header class="act a1" id="act1" data-act>
+  <div class="a1-in">
+    <div class="eyebrow"><span>ACT I</span> Enter the arena</div>
+    <h1 class="h-xl" data-lines>
+      <span class="ln"><span>Interviews are</span></span>
+      <span class="ln"><span>won <em>out loud.</em></span></span>
+    </h1>
+    <p class="lead rv">Practise technical and HR rounds by typing, speaking or turning your camera on. Every answer is scored, with a note on what it was missing. Then you go again.</p>
+    <div class="ctas rv">
+      <a href="pages/register.html" class="btn btn-v btn-lg" data-magnetic>Start practising</a>
+      <a href="pages/login.html" class="btn btn-outline btn-lg">I have an account</a>
+    </div>
+  </div>
+  <div class="a1-foot"><span>Text · Voice · Video</span><span class="cue">Scroll<i></i></span></div>
+</header>
+
+<!-- ACT II (pinned: scroll rotates the camera and focuses each ring) -->
+<section class="act a2" id="act2" data-act>
+  <div class="a2-pin">
+    <div class="eyebrow"><span>ACT II</span> Enter training</div>
+    <div class="a2-steps">
+      <article class="step" data-i="0">
+        <div class="step-k"><i class="sq amber"></i>RING 01 / TEXT</div>
+        <h2 class="h-lg">Type it.</h2>
+        <p>Read the question, write the answer. The slowest mode, and the best place to get your structure right before you have to say it aloud.</p>
+      </article>
+      <article class="step" data-i="1">
+        <div class="step-k"><i class="sq cyan"></i>RING 02 / VOICE</div>
+        <h2 class="h-lg">Say it.</h2>
+        <p>Answer by speaking. Your browser transcribes you live, so you see the words you actually used, filler words included.</p>
+      </article>
+      <article class="step" data-i="2">
+        <div class="step-k"><i class="sq ice"></i>RING 03 / VIDEO</div>
+        <h2 class="h-lg">Show up.</h2>
+        <p>Camera on, questions asked one at a time, the way a panel would. Analysis runs in your browser while you answer.</p>
+      </article>
+    </div>
+    <div class="a2-prog"><span>TEXT</span><span>VOICE</span><span>VIDEO</span><i></i></div>
+  </div>
+</section>
+
+<!-- ACT III -->
+<section class="act a3" id="act3" data-act>
+  <div class="a3-in">
+    <div class="eyebrow"><span>ACT III</span> Measure performance</div>
+    <h2 class="h-lg" data-lines><span class="ln"><span>Three numbers</span></span><span class="ln"><span>per answer.</span></span></h2>
+    <p class="lead rv">Each answer is graded on accuracy, clarity and completeness, with a written note on what to fix. Sessions are saved, so your analytics show which topics keep pulling the average down.</p>
+    <dl class="meter rv">
+      <div><dt>Accuracy</dt><dd><i style="--v:.82"></i></dd><b>8.2</b></div>
+      <div><dt>Clarity</dt><dd><i style="--v:.64"></i></dd><b>6.4</b></div>
+      <div><dt>Completeness</dt><dd><i style="--v:.5"></i></dd><b>5.0</b></div>
+    </dl>
+    <p class="note rv">Illustrative sample, not real user data.</p>
+  </div>
+</section>
+
+<!-- ACT IV -->
+<section class="act a4" id="act4" data-act>
+  <div class="a4-in">
+    <div class="eyebrow"><span>ACT IV</span> Read the signals</div>
+    <h2 class="h-lg" data-lines><span class="ln"><span>What your answer</span></span><span class="ln"><span>sounded like.</span></span></h2>
+    <div class="sig">
+      <div class="rv"><h3>Speech</h3><p>Live transcription, filler-word detection and speaking pace, shown after the answer.</p></div>
+      <div class="rv"><h3>Camera</h3><p>In video rounds, MediaPipe Face Landmarker runs in your browser and estimates nervousness from head movement, blinking and expression, combined with speech hesitation. It is an estimate, not a verdict.</p></div>
+      <div class="rv"><h3>Code</h3><p>Coding questions open an editor. Your solution is run through the backend so you see real output.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ACT V -->
+<section class="act a5" id="act5" data-act>
+  <div class="a5-in">
+    <div class="eyebrow"><span>ACT V</span> Improve and advance</div>
+    <h2 class="h-xl" data-lines><span class="ln"><span>Go again,</span></span><span class="ln"><span><em>higher.</em></span></span></h2>
+    <ul class="steps-l rv">
+      <li><b>01</b>Replay any past session question by question.</li>
+      <li><b>02</b>Check a resume against a job description for gaps.</li>
+      <li><b>03</b>Keep a streak with one daily challenge.</li>
+      <li><b>04</b>See where you stand on the leaderboard.</li>
+    </ul>
+    <div class="ctas rv">
+      <a href="pages/register.html" class="btn btn-v btn-lg" data-magnetic>Create account</a>
+      <a href="pages/login.html" class="btn btn-outline btn-lg">Sign in</a>
+    </div>
+    <p class="note rv">Free to start.</p>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <span>IQPrep</span>
+  <span>Text · Voice · Video practice</span>
+  <a href="#act1" data-top>Back to top</a>
+</footer>
+
 <script>
-// Check if user is already logged in
-try {
-  const token = localStorage.getItem('iq3_token');
-  const user = localStorage.getItem('iq3_user');
-  if (token && user) window.location.href = 'pages/dashboard.html';
-} catch(e) {}
+try { if (localStorage.getItem('iq3_token') && localStorage.getItem('iq3_user')) window.location.replace('pages/dashboard.html'); } catch (e) {}
 </script>
+<script src="js/vendor/lenis.min.js"></script>
+<script src="js/landing.js"></script>
+<script type="module" src="js/arena.js"></script>
 </body>
 </html>

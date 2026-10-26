@@ -4,11 +4,13 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IQPrep — Resume Analyzer</title>
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="../css/overrides.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 .page{padding:2.5rem 0}
 .ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
-.upload-zone{border:2px dashed var(--border);border-radius:var(--r-xl);padding:3rem 2rem;text-align:center;transition:var(--t);cursor:pointer;background:var(--dark-3);position:relative}
+.upload-zone{border:2px dashed var(--border);border-radius:0;padding:3rem 2rem;text-align:center;transition:var(--t);cursor:pointer;background:var(--dark-3);position:relative}
 .upload-zone:hover,.upload-zone.drag{border-color:var(--violet);background:var(--violet-soft)}
 .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .upload-ic{font-size:2.5rem;margin-bottom:.75rem;opacity:.5}
@@ -17,47 +19,48 @@
 .upload-formats{display:flex;gap:.4rem;justify-content:center;margin-top:.75rem;flex-wrap:wrap}
 .results-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:1.5rem}
 .match-ring-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem}
-.match-ring{width:160px;height:160px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.match-ring-bg{position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--violet) var(--pct), rgba(255,255,255,.05) 0);transition:all 1s ease}
-.match-ring-inner{position:absolute;inset:12px;background:var(--dark-2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.match-ring{width:160px;height:160px;border-radius:0;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.match-ring-bg{position:absolute;inset:0;border-radius:0;background:conic-gradient(var(--violet) var(--pct), rgba(233,236,244,.05) 0);transition:all 1s ease}
+.match-ring-inner{position:absolute;inset:12px;background:var(--dark-2);border-radius:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
 .match-pct{font-family:var(--font-mono);font-size:2rem;font-weight:500}
 .match-label{font-size:.65rem;color:var(--white-3);text-transform:uppercase;letter-spacing:.07em}
 .skills-wrap{display:flex;flex-wrap:wrap;gap:.4rem}
-.skill-tag{border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:600}
-.skill-have{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.25)}
-.skill-miss{background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.25)}
-.q-item{background:var(--dark-4);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem 1rem;font-size:.82rem;color:var(--white-2);line-height:1.6;display:flex;align-items:flex-start;gap:.6rem}
+.skill-tag{border-radius:0;padding:3px 10px;font-size:.72rem;font-weight:600}
+.skill-have{background:rgba(16,185,129,.12);color:#10B981;border:1px solid rgba(16,185,129,.25)}
+.skill-miss{background:rgba(244,63,94,.12);color:#F43F5E;border:1px solid rgba(244,63,94,.25)}
+.q-item{background:var(--dark-4);border:1px solid var(--border);border-radius:0;padding:.75rem 1rem;font-size:.82rem;color:var(--white-2);line-height:1.6;display:flex;align-items:flex-start;gap:.6rem}
 .q-item i{color:var(--violet-bright);font-size:.65rem;margin-top:3px;flex-shrink:0}
-.tip-item{display:flex;align-items:flex-start;gap:.65rem;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.tip-item{display:flex;align-items:flex-start;gap:.65rem;padding:.6rem 0;border-bottom:1px solid rgba(233,236,244,.04)}
 .tip-item:last-child{border:none}
 .tip-item i{color:var(--amber);font-size:.75rem;margin-top:2px;flex-shrink:0}
-.readiness-bar{height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;margin:.6rem 0}
-.readiness-fill{height:100%;border-radius:5px;transition:width 1.2s ease}
-.loading-overlay{position:fixed;inset:0;background:rgba(7,8,12,.85);backdrop-filter:blur(8px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.readiness-bar{height:10px;background:rgba(233,236,244,.06);border-radius:0;overflow:hidden;margin:.6rem 0}
+.readiness-fill{height:100%;border-radius:0;transition:width 1.2s ease}
+.loading-overlay{position:fixed;inset:0;background:rgba(8,9,13,.85);backdrop-filter:blur(8px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
 .loading-overlay p{color:var(--white-3);font-size:.88rem}
 @media(max-width:768px){.results-grid{grid-template-columns:1fr}}
 </style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M0%200h32v22l-10%2010H0z%22%20fill%3D%22%23F59E0B%22/%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%224.4%22%20height%3D%229%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2213.8%22%20y%3D%2210%22%20width%3D%224.4%22%20height%3D%2216%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%2221%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%224.4%22%20fill%3D%22%2300F0FF%22/%3E%3C/svg%3E">
 </head>
-<body>
+<body data-motion="lite">
 <div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
 <nav class="nav">
-  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-brain"></i></div>IQPrep</a>
+  <a href="dashboard.html" class="nav-logo"><div class="nav-mark"><svg class="logo-svg" viewBox="0 0 32 32" width="20" height="20" aria-hidden="true"><rect x="6" y="17" width="4.4" height="9" fill="#08090D"/><rect x="13.8" y="10" width="4.4" height="16" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="21" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="4.4" fill="#00F0FF"/></svg></div>IQPrep</a>
   <ul class="nav-links">
     <li><a href="dashboard.html">Dashboard</a></li>
     <li><a href="interview.html">Practice</a></li>
-    <li><a href="video-interview.html">🎥 Video</a></li>
+    <li><a href="video-interview.html">Video</a></li>
     <li><a href="resume.html" class="on">Resume</a></li>
     <li><a href="history.html">History</a></li>
     <li><a href="analytics.html">Analytics</a></li>
     <li><a href="leaderboard.html">Leaderboard</a></li>
     <li><a href="profile.html">Profile</a></li>
   </ul>
-  <div class="nav-right"><div class="nav-streak" id="nav-streak">🔥 0</div><div class="nav-av" id="nav-av">A</div></div>
+  <div class="nav-right"><div class="nav-streak" id="nav-streak"><span class="sk">STREAK</span> 0</div><div class="nav-av" id="nav-av">A</div></div>
 </nav>
 <div class="pw"><div class="w page">
   <div class="ph stag">
     <div>
-      <div class="lbl">AI Powered</div>
+      <div class="lbl">Analyzer</div>
       <div class="h1" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:.3rem;letter-spacing:-.025em">Resume <span style="background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Analyzer</span></div>
     </div>
   </div>
@@ -84,7 +87,7 @@
   <!-- Upload Zone -->
   <div class="upload-zone stag" id="upload-zone">
     <input type="file" id="resume-file" accept=".pdf,.txt,.doc,.docx" onchange="handleFile(this)">
-    <div class="upload-ic">📄</div>
+    <div class="upload-ic" style="color:var(--accent)"><svg class="ico" viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg></div>
     <div class="upload-title">Drop your resume here</div>
     <div class="upload-sub">Upload PDF, TXT, or paste text below</div>
     <div class="upload-formats">
@@ -147,11 +150,11 @@ Projects: E-commerce platform, Chat application..." style="min-height:160px"></t
     <!-- Skills -->
     <div class="results-grid" style="margin-top:1.1rem">
       <div class="card" style="padding:1.4rem">
-        <div style="font-size:.88rem;font-weight:700;font-family:var(--font-head);margin-bottom:.75rem;color:var(--green)">✅ Detected Skills</div>
+        <div style="font-size:.88rem;font-weight:700;font-family:var(--font-head);margin-bottom:.75rem;color:var(--green)">Detected Skills</div>
         <div class="skills-wrap" id="detected-skills"></div>
       </div>
       <div class="card" style="padding:1.4rem">
-        <div style="font-size:.88rem;font-weight:700;font-family:var(--font-head);margin-bottom:.75rem;color:var(--red)">❌ Missing Skills</div>
+        <div style="font-size:.88rem;font-weight:700;font-family:var(--font-head);margin-bottom:.75rem;color:var(--red)">Missing Skills</div>
         <div class="skills-wrap" id="missing-skills"></div>
       </div>
     </div>
@@ -159,7 +162,7 @@ Projects: E-commerce platform, Chat application..." style="min-height:160px"></t
     <!-- Suggested Questions -->
     <div class="card" style="padding:1.4rem;margin-top:1.1rem">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem;flex-wrap:wrap;gap:.5rem">
-        <div style="font-size:.88rem;font-weight:700;font-family:var(--font-head)">🎯 Suggested Interview Questions</div>
+        <div style="font-size:.88rem;font-weight:700;font-family:var(--font-head)">Suggested Interview Questions</div>
         <button class="btn btn-v btn-sm" onclick="practiceFromResume()"><i class="fa-solid fa-play"></i> Practice These</button>
       </div>
       <div style="display:flex;flex-direction:column;gap:.5rem" id="suggested-questions"></div>
@@ -167,7 +170,7 @@ Projects: E-commerce platform, Chat application..." style="min-height:160px"></t
 
     <!-- Improvement Tips -->
     <div class="card" style="padding:1.4rem;margin-top:1.1rem">
-      <div style="font-size:.88rem;font-weight:700;font-family:var(--font-head);margin-bottom:.75rem">💡 Improvement Tips</div>
+      <div style="font-size:.88rem;font-weight:700;font-family:var(--font-head);margin-bottom:.75rem">Improvement Tips</div>
       <div id="improvement-tips"></div>
     </div>
   </div>
@@ -176,7 +179,7 @@ Projects: E-commerce platform, Chat application..." style="min-height:160px"></t
 <!-- Loading Overlay -->
 <div class="loading-overlay" id="loading" style="display:none">
   <div class="dots-ai"><span></span><span></span><span></span></div>
-  <p>🤖 AI is analyzing your resume...</p>
+  <p>AI is analyzing your resume...</p>
   <p style="font-size:.72rem;opacity:.6">This may take 10-15 seconds</p>
 </div>
 
@@ -189,7 +192,7 @@ Projects: E-commerce platform, Chat application..." style="min-height:160px"></t
 if(!getToken()) window.location.href='login.html';
 const user=S.get('iq3_user');
 document.getElementById('nav-av').textContent=getInitial();
-document.getElementById('nav-streak').innerHTML=`🔥 ${getStreak()}`;
+document.getElementById('nav-streak').innerHTML=`<span class="sk">STREAK</span> ${getStreak()}`;
 
 let suggestedQs=[];
 let currentFile=null;
@@ -267,7 +270,7 @@ async function analyzeResume(){
     
     document.getElementById('loading').style.display='none';
     showResults(data);
-    toast('Analysis complete!','Your resume has been analyzed by AI 🎉','s');
+    toast('Analysis complete!','Your resume has been analyzed by AI','s');
   }catch(err){
     document.getElementById('loading').style.display='none';
     toast('Error',err.message,'e');
@@ -285,7 +288,7 @@ function showResults(data){
   document.getElementById('match-summary').textContent=pct>=70?'Great match for your target role!':pct>=40?'Moderate match — improve missing skills':'Low match — focus on core skills';
   const deg=(pct/100)*360;
   setTimeout(()=>{
-    document.getElementById('match-ring-bg').style.background=`conic-gradient(${pct>=70?'#34d399':pct>=40?'#fbbf24':'#f87171'} ${deg}deg, rgba(255,255,255,.05) 0)`;
+    document.getElementById('match-ring-bg').style.background=`conic-gradient(${pct>=70?'#10B981':pct>=40?'#FBBF24':'#F43F5E'} ${deg}deg, rgba(233,236,244,.05) 0)`;
   },100);
 
   // Summary
@@ -303,7 +306,7 @@ function showResults(data){
   const ms=document.getElementById('missing-skills');
   ms.innerHTML='';
   (data.missingSkills||[]).forEach(s=>{ms.innerHTML+=`<span class="skill-tag skill-miss">${s}</span>`});
-  if(!data.missingSkills?.length) ms.innerHTML='<span style="color:var(--green);font-size:.78rem">✅ No major gaps!</span>';
+  if(!data.missingSkills?.length) ms.innerHTML='<span style="color:var(--green);font-size:.78rem">No major gaps!</span>';
 
   // Questions
   suggestedQs=data.suggestedQuestions||[];
@@ -328,5 +331,7 @@ function practiceFromResume(){
 
 loadReadiness();
 </script>
+<script src="../js/mobile-nav.js"></script>
+<script src="../js/motion.js"></script>
 </body>
 </html>

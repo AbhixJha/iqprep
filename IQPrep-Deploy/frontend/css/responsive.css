@@ -1,0 +1,401 @@
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE.CSS — IQPrep Full Responsiveness Layer
+   Applied globally. Does NOT override functional styles.
+   ══════════════════════════════════════════════════════ */
+
+/* ── MOBILE HAMBURGER NAV ── */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 1.25rem;
+  padding: 6px;
+  cursor: pointer;
+  z-index: 1002;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.nav-mobile-overlay.open { opacity: 1; }
+
+.nav-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 280px;
+  height: 100vh;
+  background: var(--dark-2);
+  border-left: 1px solid var(--border);
+  z-index: 1001;
+  padding: 72px 1.25rem 2rem;
+  overflow-y: auto;
+  transition: right .3s cubic-bezier(0.2,0.8,0.2,1);
+  box-shadow: -8px 0 32px rgba(0,0,0,.4);
+}
+.nav-mobile-menu.open { right: 0; }
+
+.nav-mobile-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  color: var(--white-3);
+  text-decoration: none;
+  font-size: .88rem;
+  font-weight: 500;
+  border-radius:0;
+  transition: all .2s ease;
+  margin-bottom: 2px;
+}
+.nav-mobile-menu a:hover,
+.nav-mobile-menu a.on {
+  color: var(--violet-bright);
+  background: var(--violet-soft);
+}
+.nav-mobile-menu .nav-mobile-divider {
+  height: 1px;
+  background: var(--border);
+  margin: .75rem 0;
+}
+
+/* ── GLOBAL RESPONSIVE TYPOGRAPHY ── */
+@media (max-width: 480px) {
+  html { font-size: 15px; }
+  .display { font-size: clamp(1.6rem, 8vw, 2.4rem) !important; }
+  .h1 { font-size: clamp(1.2rem, 5vw, 1.6rem) !important; }
+}
+
+/* ── TOUCH TARGETS ── */
+@media (pointer: coarse) {
+  .btn, .btn-sm, .btn-auth, .btn-soc,
+  .opt, .dopt, .qopt, .popt, .chip,
+  .tab, .fb_, .lb-f,
+  .vi-ctrl-btn, .vi-cat-btn, .vi-qty-btn, .vi-diff-btn, .vi-pers-btn,
+  .hi, .sess-i, .cat-c,
+  .tog, .mic-b, .nav-av,
+  .modal-close, .streak-dot {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .nav-links a { padding: 8px 14px; }
+  .otp-input { width: 44px; height: 48px; }
+}
+
+/* ── SAFE AREA FOR NOTCHED PHONES ── */
+@supports (padding: max(0px)) {
+  .nav { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); }
+  .pw { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+}
+
+/* ═══════════════════════════════
+   BREAKPOINT: TABLET (≤ 1024px)
+   ═══════════════════════════════ */
+@media (max-width: 1024px) {
+  .w { max-width: 100%; padding: 0 1.5rem; }
+  .stats-g { grid-template-columns: repeat(2, 1fr); }
+  .main-g { grid-template-columns: 1fr; }
+  .cats-g { grid-template-columns: repeat(2, 1fr); }
+  .charts-g { grid-template-columns: 1fr; }
+  .row2 { grid-template-columns: 1fr; }
+  .dc-readiness-row { grid-template-columns: 1fr; }
+  .insight-g { grid-template-columns: 1fr 1fr; }
+  .results-grid { grid-template-columns: 1fr; }
+  .pg { grid-template-columns: 1fr; }
+  .p-card { position: static !important; }
+  .ms-g { grid-template-columns: repeat(3, 1fr); }
+
+  /* Video interview camera side */
+  .vi-main { flex-direction: column; }
+  .vi-camera-side {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: .75rem;
+    padding: .75rem;
+  }
+  .vi-camera-wrap { width: 200px; flex-shrink: 0; }
+  .vi-tips, .vi-filler-box, .vi-nervous-panel { flex: 1; min-width: 200px; }
+
+  /* Dashboard quick links */
+  .dash-top { flex-direction: column; align-items: flex-start; }
+  .dash-top .btn { align-self: flex-start; }
+
+  /* Video results grid */
+  .vi-results-grid { grid-template-columns: repeat(2, 1fr) !important; max-width: 100% !important; }
+}
+
+/* ═══════════════════════════════
+   BREAKPOINT: MOBILE (≤ 768px)
+   ═══════════════════════════════ */
+@media (max-width: 768px) {
+  /* Navbar */
+  .nav { padding: 0 1rem; height: 56px; }
+  .nav-links { display: none !important; }
+  .nav-hamburger { display: flex; align-items: center; justify-content: center; }
+  .nav-mobile-overlay,
+  .nav-mobile-menu { display: block; }
+
+  /* Custom cursor hide */
+  .cur, .cur-ring { display: none !important; }
+  body { cursor: auto !important; }
+
+  /* Layout */
+  .w, .w-sm, .w-md { padding: 0 1rem; }
+  .pw { padding-top: 56px; }
+  .page { padding: 1.5rem 0; }
+
+  /* Stats grid */
+  .stats-g { grid-template-columns: 1fr 1fr !important; gap: .65rem; }
+
+  /* Category grid */
+  .cats-g { grid-template-columns: 1fr 1fr !important; gap: .65rem; }
+  .quick-links-g { grid-template-columns: 1fr !important; }
+
+  /* Video card */
+  .video-card { flex-direction: column; text-align: center; padding: 1rem !important; }
+
+  /* Cards */
+  .card { padding: 1.2rem; }
+  .card:hover { transform: none; }
+
+  /* Quick links row */
+  [style*="grid-template-columns:repeat(3,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Interview setup */
+  .opt-g { grid-template-columns: 1fr; }
+  .pers-g { grid-template-columns: 1fr 1fr; }
+  .skill-scores { grid-template-columns: 1fr 1fr !important; }
+  .fb-grid { grid-template-columns: 1fr !important; }
+  .end-stats { grid-template-columns: 1fr 1fr !important; }
+
+  /* History filters */
+  .sf { flex-direction: column; align-items: stretch; }
+  .sw { min-width: 100%; }
+  .sf .fb_, .sf .ss_ { flex: 1; text-align: center; }
+
+  /* History modal */
+  .modal { max-height: 90vh; margin: .5rem; border-radius:0; }
+  .modal-stats { grid-template-columns: repeat(2, 1fr) !important; }
+  .modal-h { padding: 1rem 1.2rem; }
+  .modal-body { padding: 1rem 1.2rem; }
+
+  /* Profile grid */
+  .pg { grid-template-columns: 1fr !important; }
+  .pw-fields { grid-template-columns: 1fr !important; }
+  .ach-g { grid-template-columns: repeat(2, 1fr) !important; }
+  .p-card { position: static !important; }
+
+  /* Analytics */
+  .insight-g { grid-template-columns: 1fr !important; }
+
+  /* Leaderboard */
+  .podium { gap: .6rem; }
+  .pod-base { width: 85px; }
+  .pod-av { width: 52px; height: 52px; font-size: 1.2rem; }
+  .pod-1 .pod-av { width: 64px; height: 64px; font-size: 1.5rem; }
+  .lb-row { padding: .7rem .8rem; gap: .6rem; }
+
+  /* Video interview */
+  .vi-setup-card { padding: 1.5rem 1rem; }
+  .vi-cfg-grid { grid-template-columns: 1fr !important; }
+  .vi-camera-side {
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: .75rem;
+  }
+  .vi-camera-wrap { width: 100% !important; max-width: 320px; margin: 0 auto; }
+  .vi-controls { flex-wrap: wrap; justify-content: center; padding: .75rem 1rem; }
+  .vi-top-bar { padding: .6rem 1rem; }
+  .vi-progress { max-width: 200px; }
+  .vi-interviewer { padding: 1rem; }
+  .vi-answer-area { padding: .75rem 1rem; }
+  .vi-record-btn .vi-ctrl-btn-ic { width: 54px; height: 54px; font-size: 1.1rem; }
+  .vi-ctrl-btn-ic { width: 40px; height: 40px; font-size: .85rem; }
+  .vi-results-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Daily challenge */
+  .dc-card { padding: 1.25rem !important; }
+  .dc-streak-bar { gap: .25rem; }
+  .streak-dot { width: 24px; height: 24px; font-size: .55rem; }
+
+  /* Resume */
+  .upload-zone { padding: 2rem 1.25rem; }
+  .match-ring { width: 120px; height: 120px; }
+  .match-pct { font-size: 1.5rem; }
+
+  /* Auth pages */
+  .auth-left { display: none !important; }
+  .auth-right { width: 100% !important; padding: 2rem 1.25rem !important; }
+  .otp-inputs { gap: .35rem; }
+  .otp-input { width: 42px; height: 46px; font-size: 1.1rem; }
+  .socials { grid-template-columns: 1fr !important; }
+
+  /* Footer */
+  footer {
+    flex-direction: column;
+    gap: .75rem;
+    text-align: center;
+    padding: 1.25rem 1rem;
+  }
+
+  /* Greet section fixes */
+  .greet { font-size: clamp(1.4rem, 5vw, 2rem) !important; }
+  .greet-sub { font-size: .82rem !important; }
+
+  /* Toast */
+  .tc { left: 1rem; right: 1rem; bottom: 1rem; }
+  .toast { min-width: auto; max-width: 100%; }
+
+  /* IDE */
+  .ide-console-wrap { grid-template-columns: 1fr !important; }
+  #editor-container { height: 200px !important; }
+
+  /* Score ring */
+  .end-ring { width: 110px; height: 110px; }
+  .end-n { font-size: 2rem; }
+
+  /* Feedback */
+  .fb-sc-circle { width: 64px; height: 64px; font-size: 1.4rem; }
+  .fb-verd { font-size: 1rem; }
+}
+
+/* ════════════════════════════════════
+   BREAKPOINT: SMALL MOBILE (≤ 480px)
+   ════════════════════════════════════ */
+@media (max-width: 480px) {
+  .w, .w-sm, .w-md { padding: 0 .75rem; }
+
+  /* Stats on very small screens */
+  .stats-g { grid-template-columns: 1fr 1fr !important; gap: .5rem; }
+  .sc { padding: .85rem !important; }
+  .sc-n { font-size: 1.5rem !important; }
+  .sc-ic { width: 36px !important; height: 36px !important; }
+
+  /* Category single col on very small */
+  .cats-g { grid-template-columns: 1fr !important; }
+
+  /* Navigation */
+  .nav-mobile-menu { width: 260px; }
+
+  /* Hero */
+  .hero { padding: 4rem 1rem 2rem; }
+  .hero-title { font-size: clamp(2rem, 10vw, 3rem) !important; }
+  .hero-stats { gap: 1.5rem; }
+  .hstat-n { font-size: 1.8rem; }
+
+  /* Landing features */
+  .feat-grid { grid-template-columns: 1fr !important; }
+  .how-steps { grid-template-columns: 1fr !important; }
+
+  /* Buttons */
+  .btn-xl { padding: 12px 28px; font-size: .9rem; }
+  .hero-ctas { flex-direction: column; width: 100%; }
+  .hero-ctas .btn { width: 100%; justify-content: center; }
+
+  /* Interview end screen */
+  .end-stats { grid-template-columns: repeat(3, 1fr) !important; gap: .5rem; }
+  .est { padding: .6rem; }
+  .est-n { font-size: 1rem; }
+
+  /* Dashboard Grind button */
+  .dash-top .btn-xl {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px !important;
+    font-size: .95rem !important;
+  }
+
+  /* Modals */
+  .modal-bg { padding: .5rem; }
+  .modal { border-radius:0; }
+
+  /* Results grid */
+  .vi-results-grid { grid-template-columns: 1fr 1fr !important; gap: .5rem; }
+
+  /* Leaderboard podium */
+  .podium { flex-direction: row; justify-content: center; }
+  .pod-base { width: 70px; }
+
+  /* Video interview setup */
+  .vi-setup-card { padding: 1.25rem .75rem; }
+  .vi-perms { gap: .4rem; }
+  .vi-perm { padding: .6rem .75rem; }
+
+  /* IDE responsive */
+  .ide-toolbar-row { flex-direction: column; align-items: stretch; }
+  .ide-run-group { justify-content: flex-start; }
+}
+
+/* ════════════════════════════════════
+   BREAKPOINT: LARGE (≥ 1440px)
+   ════════════════════════════════════ */
+@media (min-width: 1440px) {
+  .w { max-width: 1280px; }
+}
+
+/* ── PREVENT HORIZONTAL SCROLL ── */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* ── FIX BACKGROUND BLOBS ON SMALL SCREENS ── */
+@media (max-width: 768px) {
+  .bb1 { width: 350px; height: 350px; top: -100px; right: -100px; }
+  .bb2 { width: 250px; height: 250px; bottom: -50px; left: -75px; }
+  .bb3 { width: 200px; height: 200px; }
+}
+
+/* ── SMOOTH SCROLL BEHAVIOR ── */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* ── PRINT STYLES ── */
+@media print {
+  .nav, .bg, .cur, .cur-ring, .tc, body::after { display: none !important; }
+  .pw { padding-top: 0; }
+  * { color: #000 !important; background: #fff !important; border-color: #ccc !important; }
+}
+
+/* ── LANDSCAPE MOBILE FIX ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero { padding: 2rem 1rem; min-height: auto; }
+  .vi-camera-wrap { max-height: 180px; }
+  .vi-controls { padding: .5rem 1rem; }
+  .vi-ctrl-btn-ic { width: 36px; height: 36px; }
+  .vi-record-btn .vi-ctrl-btn-ic { width: 48px; height: 48px; }
+}
+
+/* ── ACCESSIBILITY: FOCUS VISIBLE ── */
+*:focus-visible {
+  outline: 2px solid rgba(245,158,11, 0.5);
+  outline-offset: 2px;
+}
+
+/* ── SMOOTH IMAGE/VIDEO HANDLING ── */
+img, video { max-width: 100%; height: auto; }
+
+/* ── TEXT OVERFLOW SAFETY ── */
+.q-text, .vi-q-text, .dc-q, .fb-txt, .qa-q, .qa-ans, .qa-fb,
+.vi-qa-q, .vi-qa-ans, .vi-qa-feedback, .better-txt {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* ── MODAL BACKDROP SCROLL LOCK ── */
+body.modal-open { overflow: hidden; }

@@ -2,93 +2,33 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IQPrep — Sign In</title>
+<title>IQPrep — Sign in</title>
+<meta name="theme-color" content="#08090D">
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<link rel="stylesheet" href="../css/auth.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-.auth-page{min-height:100vh;display:flex;align-items:stretch}
-.auth-left{flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:3.5rem;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--dark-2),var(--dark));border-right:1px solid var(--border)}
-.al-top-line{position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-v)}
-.al-glow{position:absolute;width:380px;height:380px;background:rgba(124,92,252,.06);border-radius:50%;filter:blur(80px);top:-80px;right:-80px;pointer-events:none}
-.auth-right{width:460px;flex-shrink:0;background:var(--dark-2);display:flex;flex-direction:column;justify-content:center;padding:3rem;overflow-y:auto}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.brand-mark{width:40px;height:40px;background:var(--grad-v);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:white;box-shadow:0 0 20px var(--violet-glow)}
-.brand-n{font-family:var(--font-head);font-size:1.2rem;font-weight:900;color:var(--white);letter-spacing:-.02em}
-.hero-block{margin:2.5rem 0}
-.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--violet-dim);border:1px solid var(--border-v);border-radius:var(--r-full);padding:4px 12px;font-size:.65rem;font-weight:700;color:var(--violet-bright);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.1rem}
-.hero-h{font-family:var(--font-head);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;margin-bottom:.85rem}
-.hero-h em{font-style:normal;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-p{color:var(--white-2);font-size:.86rem;line-height:1.8;max-width:340px;margin-bottom:2rem}
-.feats{display:flex;flex-direction:column;gap:.6rem}
-.feat{display:flex;align-items:center;gap:.8rem;font-size:.8rem;color:var(--white-2)}
-.feat-dot{width:27px;height:27px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.68rem;flex-shrink:0}
-.ctrs{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:2.5rem}
-.ctr{background:var(--white-5);border:1px solid var(--border);border-radius:var(--r-md);padding:.8rem;text-align:center}
-.ctr-n{font-family:var(--font-mono);font-size:1.35rem;font-weight:500;background:var(--grad-v);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.ctr-l{font-size:.62rem;color:var(--white-3);margin-top:3px;text-transform:uppercase;letter-spacing:.07em}
-.fh{margin-bottom:1.5rem}
-.fh h2{font-family:var(--font-head);font-size:1.6rem;font-weight:900;letter-spacing:-.025em;margin-bottom:.2rem}
-.fh p{color:var(--white-3);font-size:.82rem}
-.btn-auth{width:100%;padding:12px;border-radius:var(--r-md);background:var(--grad-v);color:white;font-family:var(--font-body);font-size:.9rem;font-weight:700;border:none;cursor:pointer;transition:var(--t) var(--spring);box-shadow:var(--shadow-v);letter-spacing:.01em;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-auth:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,92,252,.45)}
-.btn-auth:active{transform:scale(.98)}
-.btn-auth:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.sep{display:flex;align-items:center;gap:.75rem;margin:.9rem 0;color:var(--white-3);font-size:.7rem}
-.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--border)}
-.socials{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.6rem}
-.btn-soc{background:var(--white-5);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px;color:var(--white-3);font-family:var(--font-body);font-size:.77rem;font-weight:500;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:var(--t);width:100%}
-.btn-soc:hover{background:var(--white-4);border-color:rgba(255,255,255,.12);color:var(--white)}
-.btn-soc.google:hover{border-color:rgba(234,67,53,.4);color:#ea4335}
-.btn-soc.github:hover{border-color:rgba(255,255,255,.3);color:white}
-.btn-soc:disabled{opacity:.5;cursor:not-allowed}
-.switch-link{text-align:center;margin-top:1.1rem;font-size:.78rem;color:var(--white-3)}
-.switch-link a{color:var(--violet-bright);text-decoration:none;font-weight:600}
-.tabs{display:flex;gap:.4rem;margin-bottom:1.2rem;background:var(--dark-3);border-radius:var(--r-md);padding:4px}
-.tab{flex:1;padding:7px;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;background:none;border:none;color:var(--white-3);font-family:var(--font-body);transition:var(--t)}
-.tab.on{background:var(--grad-v);color:white;box-shadow:0 2px 12px rgba(124,92,252,.3)}
-.otp-inputs{display:flex;gap:.5rem;justify-content:center;margin:.75rem 0}
-.otp-input{width:48px;height:52px;background:var(--dark-3);border:2px solid var(--border);border-radius:var(--r-md);text-align:center;font-family:var(--font-mono);font-size:1.3rem;font-weight:700;color:var(--white);outline:none;transition:var(--t)}
-.otp-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,92,252,.1)}
-.otp-input.filled{border-color:var(--violet);background:var(--violet-dim)}
-.forgot{font-size:.73rem;color:var(--white-3);text-decoration:none;float:right;margin-top:-6px;margin-bottom:.85rem;display:block;transition:var(--t)}
-.forgot:hover{color:var(--violet-bright)}
-.provider-badge{display:inline-flex;align-items:center;gap:5px;font-size:.65rem;padding:2px 8px;border-radius:20px;font-weight:600}
-.provider-badge.google{background:rgba(234,67,53,.1);color:#ea4335;border:1px solid rgba(234,67,53,.2)}
-.provider-badge.github{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15)}
-@media(max-width:860px){.auth-left{display:none}.auth-right{width:100%}}
-</style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M0%200h32v22l-10%2010H0z%22%20fill%3D%22%23F59E0B%22/%3E%3Crect%20x%3D%226%22%20y%3D%2217%22%20width%3D%224.4%22%20height%3D%229%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2213.8%22%20y%3D%2210%22%20width%3D%224.4%22%20height%3D%2216%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%2221%22%20fill%3D%22%2308090D%22/%3E%3Crect%20x%3D%2221.6%22%20y%3D%225%22%20width%3D%224.4%22%20height%3D%224.4%22%20fill%3D%22%2300F0FF%22/%3E%3C/svg%3E">
 </head>
-<body>
-<div class="bg"><div class="bg-blob bb1"></div><div class="bg-blob bb2"></div><div class="bg-grid"></div></div>
+<body data-motion="lite">
+<div class="cur"></div><div class="cur-ring"></div>
 <div class="auth-page">
-  <div class="auth-left">
-    <div class="al-top-line"></div><div class="al-glow"></div>
-    <a href="../index.html" class="brand"><div class="brand-mark"><i class="fa-solid fa-brain"></i></div><div class="brand-n">IQPrep</div></a>
-    <div class="hero-block stag">
-      <div class="hero-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Interview Platform</div>
-      <div class="hero-h">Master every<br><em>interview</em><br>with AI.</div>
-      <p class="hero-p">Practice real questions, get honest AI feedback and land your dream role with complete confidence.</p>
-      <div class="feats">
-        <div class="feat"><div class="feat-dot" style="background:var(--violet-dim);color:var(--violet-bright)"><i class="fa-solid fa-robot"></i></div>Real-time AI scoring & feedback</div>
-        <div class="feat"><div class="feat-dot" style="background:var(--teal-dim);color:var(--teal)"><i class="fa-solid fa-microphone"></i></div>Voice + video interview modes</div>
-        <div class="feat"><div class="feat-dot" style="background:var(--green-dim);color:var(--green)"><i class="fa-solid fa-chart-line"></i></div>Progress tracking & analytics</div>
-        <div class="feat"><div class="feat-dot" style="background:var(--amber-dim);color:var(--amber)"><i class="fa-solid fa-fire"></i></div>Daily streaks & achievements</div>
-      </div>
+  <aside class="auth-art">
+    <canvas id="arena" data-mode="auth" aria-hidden="true"></canvas>
+    <a href="../index.html" class="brand"><span class="brand-mark"><svg class="logo-svg" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><rect x="6" y="17" width="4.4" height="9" fill="#08090D"/><rect x="13.8" y="10" width="4.4" height="16" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="21" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="4.4" fill="#00F0FF"/></svg></span>IQPrep</a>
+    <div>
+      <div class="art-title">Back for<br><em>round two.</em></div>
+      <ul class="art-list"><li>Scored answers</li><li>Voice and video rounds</li><li>Your history, saved</li></ul>
     </div>
-    <div class="ctrs stag">
-      <div class="ctr"><div class="ctr-n">50K+</div><div class="ctr-l">Questions</div></div>
-      <div class="ctr"><div class="ctr-n">98%</div><div class="ctr-l">Satisfied</div></div>
-      <div class="ctr"><div class="ctr-n">4.9★</div><div class="ctr-l">Rating</div></div>
-    </div>
-  </div>
-
-  <div class="auth-right">
-    <div class="fh"><h2>Welcome back.</h2><p>Sign in to continue your journey</p></div>
+  </aside>
+  <main class="auth-form stag">
+    <a href="../index.html" class="brand m-brand"><span class="brand-mark"><svg class="logo-svg" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><rect x="6" y="17" width="4.4" height="9" fill="#08090D"/><rect x="13.8" y="10" width="4.4" height="16" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="21" fill="#08090D"/><rect x="21.6" y="5" width="4.4" height="4.4" fill="#00F0FF"/></svg></span>IQPrep</a>
+    <div class="fh"><h2>Welcome back.</h2><p>Sign in and pick up where you left off.</p></div>
 
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab on" onclick="switchTab('password',this)">🔑 Password</button>
-      <button class="tab" onclick="switchTab('otp',this)">📱 OTP Login</button>
+      <button class="tab on" onclick="switchTab('password',this)">Password</button>
+      <button class="tab" onclick="switchTab('otp',this)">One-time code</button>
     </div>
 
     <!-- ══ PASSWORD LOGIN ══ -->
@@ -106,7 +46,7 @@
       </div>
       <a href="#" class="forgot" onclick="showForgotPassword(event)">Forgot password?</a>
       <button class="btn-auth" id="login-btn" onclick="login()">
-        <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+        Sign in
       </button>
       <div class="sep">or continue with</div>
       <div class="socials">
@@ -132,15 +72,15 @@
           </div>
         </div>
         <button class="btn-auth" id="otp-send-btn" onclick="sendOTP()">
-          <i class="fa-solid fa-paper-plane"></i> Send OTP
+          Send code
         </button>
       </div>
 
       <!-- Step 2: Enter OTP -->
       <div id="otp-step-2" style="display:none">
         <div style="text-align:center;margin-bottom:1rem">
-          <div style="font-size:.82rem;color:var(--white-3)">OTP sent to <span id="otp-sent-to" style="color:var(--violet-bright);font-weight:600"></span></div>
-          <div style="font-size:.72rem;color:var(--white-3);margin-top:.3rem">Enter the 6-digit code below</div>
+          <div style="font-size:.82rem;color:var(--white-3)">Code sent to <span id="otp-sent-to" style="color:var(--violet-bright);font-weight:600"></span></div>
+          <div style="font-size:.72rem;color:var(--white-3);margin-top:.3rem">Enter the 6-digit code</div>
           <div style="font-size:.7rem;color:var(--white-3);margin-top:.5rem">
             Expires in: <span id="otp-timer" style="color:var(--amber);font-family:var(--font-mono);font-weight:700">10:00</span>
           </div>
@@ -154,18 +94,18 @@
           <input class="otp-input" type="text" maxlength="1" inputmode="numeric" id="otp6" oninput="otpNext(this,'')" onkeydown="otpBack(event,this,'otp5')">
         </div>
         <button class="btn-auth" id="otp-verify-btn" onclick="verifyOTP()">
-          <i class="fa-solid fa-check"></i> Verify & Sign In
+          Verify and sign in
         </button>
         <div style="text-align:center;margin-top:.75rem;display:flex;align-items:center;justify-content:center;gap:.75rem">
-          <button onclick="resetOTP()" style="background:none;border:none;color:var(--white-3);font-size:.75rem;cursor:pointer;font-family:inherit">← Change</button>
+          <button onclick="resetOTP()" style="background:none;border:none;color:var(--white-3);font-size:.75rem;cursor:pointer;font-family:inherit">Change contact</button>
           <span style="color:var(--border);font-size:.8rem">|</span>
-          <button id="resend-btn" onclick="sendOTP(true)" style="background:none;border:none;color:var(--violet-bright);font-size:.75rem;cursor:pointer;font-family:inherit">Resend OTP</button>
+          <button id="resend-btn" onclick="sendOTP(true)" style="background:none;border:none;color:var(--violet-bright);font-size:.75rem;cursor:pointer;font-family:inherit">Resend code</button>
         </div>
       </div>
     </div>
 
     <div class="switch-link">Don't have an account? <a href="register.html">Create one</a></div>
-  </div>
+  </main>
 </div>
 <div class="tc"></div>
 <script src="../js/utils.js"></script>
@@ -197,16 +137,16 @@ async function login(){
   if(!email||!pass){ toast('Missing fields','Fill in all fields.','w'); return; }
 
   const btn = document.getElementById('login-btn');
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
+  btn.innerHTML = 'Signing in...';
   btn.disabled = true;
 
   try{
     await Auth.login({email, password: pass});
-    toast('Welcome back! 👋','Login successful!','s');
+    toast('Welcome back','Signed in.','s');
     setTimeout(()=>window.location.href='dashboard.html', 900);
   }catch(err){
     toast('Login failed', err.message, 'e');
-    btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In';
+    btn.innerHTML = 'Sign in';
     btn.disabled = false;
   }
 }
@@ -296,7 +236,7 @@ async function sendOTP(isResend = false){
 
   const btn = document.getElementById('otp-send-btn');
   const resendBtn = document.getElementById('resend-btn');
-  if(btn) { btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Sending...'; btn.disabled=true; }
+  if(btn) { btn.innerHTML='Sending...'; btn.disabled=true; }
   if(resendBtn) { resendBtn.textContent='Sending...'; resendBtn.disabled=true; }
 
   try{
@@ -311,9 +251,9 @@ async function sendOTP(isResend = false){
 
     // Show OTP in toast for dev (devOtp comes from backend in dev mode)
     if(data.devOtp){
-      toast('OTP Sent! 📧', `Dev OTP: ${data.devOtp}`, 's', 15000);
+      toast('OTP sent', `Dev OTP: ${data.devOtp}`, 's', 15000);
     }else{
-      toast('OTP Sent! 📧', `Check your ${otpContact.includes('@')?'email':'phone'}`, 's');
+      toast('OTP sent', `Check your ${otpContact.includes('@')?'email':'phone'}`, 's');
     }
 
     startOtpTimer();
@@ -326,8 +266,8 @@ async function sendOTP(isResend = false){
   }catch(err){
     toast('Failed to send OTP', err.message, 'e');
   }finally{
-    if(btn){ btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Send OTP'; btn.disabled=false; }
-    if(resendBtn){ resendBtn.textContent='Resend OTP'; resendBtn.disabled=false; }
+    if(btn){ btn.innerHTML='Send code'; btn.disabled=false; }
+    if(resendBtn){ resendBtn.textContent='Resend code'; resendBtn.disabled=false; }
   }
 }
 
@@ -336,7 +276,7 @@ async function verifyOTP(){
   if(entered.length<6){ toast('Incomplete','Enter all 6 digits.','w'); return; }
 
   const btn = document.getElementById('otp-verify-btn');
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+  btn.innerHTML = 'Verifying...';
   btn.disabled = true;
 
   try{
@@ -359,7 +299,7 @@ async function verifyOTP(){
     });
 
     clearInterval(otpTimerInterval);
-    toast('✅ Verified!','Logging you in...','s');
+    toast('Verified','Logging you in...','s');
     setTimeout(()=>window.location.href='dashboard.html',900);
 
   }catch(err){
@@ -368,7 +308,7 @@ async function verifyOTP(){
       const el=document.getElementById(id);el.value='';el.classList.remove('filled');
     });
     document.getElementById('otp1').focus();
-    btn.innerHTML='<i class="fa-solid fa-check"></i> Verify & Sign In';
+    btn.innerHTML='Verify and sign in';
     btn.disabled=false;
   }
 }
@@ -382,5 +322,7 @@ function showForgotPassword(e){
   toast('Reset link sent!','Check your email for a password reset link (coming soon).','i',5000);
 }
 </script>
+<script src="../js/motion.js"></script>
+<script type="module" src="../js/arena.js"></script>
 </body>
 </html>

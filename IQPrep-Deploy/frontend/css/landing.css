@@ -1,0 +1,105 @@
+/* Landing: "Kinetic Arena". Canvas is fixed behind; sections are transparent acts. */
+.rv{opacity:0;transform:translateY(22px)}
+.rv.in{opacity:1;transform:none;transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.pt{position:fixed;inset:0;background:var(--accent);z-index:100001;transform:translateY(100%);pointer-events:none}
+html:not(.js) .rv{opacity:1;transform:none}
+
+#arena{position:fixed;inset:0;width:100%;height:100vh;z-index:0;display:block;background:var(--black)}
+.vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(8,9,13,.75) 100%)}
+.no-gl #arena{background:radial-gradient(60% 50% at 70% 45%,rgba(245,158,11,.18),transparent 70%),var(--black)}
+main{position:relative;z-index:2}
+.l-nav{position:fixed}
+.l-nav .nav-links{margin-left:auto;margin-right:2rem}
+
+/* HUD + rail */
+.hud{position:fixed;right:5.2rem;top:112px;z-index:5;display:grid;gap:3px;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.1em;pointer-events:none}
+.hud div{display:flex;gap:10px}.hud i{font-style:normal;color:var(--white-3);width:56px}.hud b{font-weight:500;color:var(--cyan)}
+.rail{position:fixed;right:1.6rem;top:22vh;bottom:22vh;width:34px;z-index:5;pointer-events:none;font-family:var(--font-mono);font-size:.62rem;color:var(--white-3)}
+.rail svg{position:absolute;left:0;top:0;width:2px;height:100%;overflow:visible}
+.rail line{stroke-width:2;vector-effect:non-scaling-stroke;fill:none}
+.rail .r0{stroke:var(--white-4)}.rail .r1{stroke:var(--accent);stroke-dasharray:100;stroke-dashoffset:calc(100 - var(--rp,0) * 100)}
+.rail span{position:absolute;left:12px;transform:translateY(-50%)}
+
+/* shared type */
+.act{position:relative;padding:0 clamp(1.2rem,5vw,5rem)}
+.eyebrow{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--white-3);display:flex;gap:14px;align-items:center;margin-bottom:1.4rem}
+.eyebrow span{color:#08090D;background:var(--accent);padding:3px 8px;font-weight:700}
+.h-xl{font-family:var(--font-display);font-weight:600;font-size:clamp(2.4rem,5.4vw,5rem);line-height:1.02;letter-spacing:-.035em}
+.h-lg{font-family:var(--font-display);font-weight:600;font-size:clamp(2rem,4vw,3.6rem);line-height:1.04;letter-spacing:-.03em}
+.h-xl em,.h-lg em{font-style:normal;color:var(--accent)}
+.ln{display:block;overflow:hidden;padding-bottom:.08em}
+.ln>span{display:inline-block}
+.js [data-lines] .ln>span{transform:translateY(110%)}
+.js [data-lines].in .ln>span{transform:none;transition:transform 1s var(--ease)}
+.js [data-lines].in .ln:nth-child(2)>span{transition-delay:.09s}
+.lead{max-width:34rem;color:var(--white-2);font-size:1.02rem;line-height:1.65;margin:1.6rem 0 2rem}
+.ctas{display:flex;gap:.8rem;flex-wrap:wrap}
+.note{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--white-3);margin-top:1.2rem}
+.mk{position:absolute;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.14em;color:var(--white-3);padding:6px 0}
+.mk::before{content:'+';color:var(--accent);margin-right:8px}
+.mk-tl{top:92px;left:clamp(1.2rem,5vw,5rem)}.mk-tr{display:none}
+
+/* Act I */
+.a1{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:110px;padding-bottom:90px}
+.a1-in{max-width:42rem}
+.a1-foot{position:absolute;left:clamp(1.2rem,5vw,5rem);right:clamp(1.2rem,5vw,5rem);bottom:1.4rem;display:flex;justify-content:flex-end;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--white-3)}
+.a1-foot span:first-child{display:none}
+.cue{display:flex;align-items:center;gap:10px;margin-right:60px}
+.cue i{width:40px;height:1px;background:var(--accent);transform-origin:left;animation:cue 1.8s var(--ease) infinite}
+@keyframes cue{0%{transform:scaleX(0)}60%{transform:scaleX(1)}100%{transform:scaleX(1);opacity:0}}
+
+/* Act II: 420vh scroll runway, pinned panel */
+.a2{height:420vh}
+.a2-pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:30rem}
+.a2-steps{position:relative;height:15rem}
+.step{position:absolute;inset:0;opacity:0;transform:translateY(24px);transition:opacity .5s var(--ease),transform .6s var(--ease);pointer-events:none}
+#act2[data-step="0"] .step[data-i="0"],#act2[data-step="1"] .step[data-i="1"],#act2[data-step="2"] .step[data-i="2"]{opacity:1;transform:none}
+.step-k{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;color:var(--white-3);margin-bottom:.9rem;display:flex;align-items:center;gap:10px}
+.sq{width:10px;height:10px;display:inline-block}.sq.amber{background:#F59E0B}.sq.cyan{background:#00F0FF}.sq.ice{background:#38BDF8}
+.step p{margin-top:1rem;color:var(--white-2);line-height:1.65;max-width:26rem}
+.a2-prog{position:relative;display:grid;grid-template-columns:repeat(3,1fr);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.14em;color:var(--white-3);border-top:1px solid var(--white-4);padding-top:10px;margin-top:2rem}
+.a2-prog i{position:absolute;left:0;top:-1px;height:2px;width:calc(var(--p2,0) * 100%);background:var(--accent)}
+
+/* Act III / IV / V */
+.a3,.a4,.a5{min-height:125vh;display:flex;align-items:center}
+.a3{justify-content:flex-end}
+.a3-in{width:min(30rem,100%)}
+.meter{display:grid;gap:14px;margin-top:.4rem;max-width:26rem}
+.meter>div{display:grid;grid-template-columns:136px 1fr 34px;align-items:center;gap:14px;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}
+.meter dt{color:var(--white-3)}.meter b{font-weight:500;color:var(--bone);text-align:right}
+.meter dd{height:6px;background:var(--white-5);position:relative}
+.meter i{position:absolute;inset:0;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform 1.2s var(--ease) .2s}
+.meter.in i{transform:scaleX(var(--v))}
+.a4{align-items:flex-end;padding-bottom:12vh}
+.a4-in{width:100%;max-width:62rem}
+.sig{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:2rem;border-top:1px solid var(--white-4)}
+.sig>div{padding:1.1rem 1.4rem 0 0}.sig>div+div{padding-left:1.4rem;border-left:1px solid var(--white-4)}
+.sig h3{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);font-weight:500;margin-bottom:.6rem}
+.sig p{color:var(--white-2);font-size:.9rem;line-height:1.6}
+.a5{min-height:115vh}
+.a5-in{max-width:34rem}
+.steps-l{list-style:none;margin:1.8rem 0 2rem;display:grid;gap:10px;color:var(--white-2)}
+.steps-l li{display:flex;gap:16px;border-top:1px solid var(--white-4);padding-top:10px;font-size:.95rem}
+.steps-l b{font-family:var(--font-mono);font-weight:500;font-size:.7rem;color:var(--accent);padding-top:4px}
+
+.foot{position:relative;z-index:2;background:var(--black);border-top:1px solid var(--border);padding:1.6rem clamp(1.2rem,5vw,5rem);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--white-3)}
+.foot a{color:var(--bone);text-decoration:none}
+
+/* legibility on top of the scene */
+.a1-in,.a3-in,.a4-in,.a5-in{position:relative}
+.a1-in::before,.a2-pin::before,.a3-in::before,.a4-in::before,.a5-in::before{content:'';position:absolute;inset:-40px -60px;z-index:-1;background:radial-gradient(closest-side,rgba(8,9,13,.62),transparent);pointer-events:none}
+
+@media(max-width:900px){
+  .l-nav .nav-links,.hud,.rail,.mk-tr{display:none}
+  .a3{justify-content:flex-start}
+  .sig{grid-template-columns:1fr}.sig>div,.sig>div+div{padding:1rem 0;border-left:0;border-top:1px solid var(--white-4)}
+  .sig>div:first-child{border-top:0}
+  .a2{height:360vh}.a2-pin{max-width:none}
+  .a2-steps{height:16rem}
+  .a1{padding-top:96px}
+  .meter>div{grid-template-columns:118px 1fr 30px}
+}
+@media(max-width:480px){.ctas .btn{width:100%;justify-content:center}.foot{flex-direction:column;align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){.rv,.js [data-lines] .ln>span{opacity:1;transform:none;transition:none}.meter i{transform:scaleX(var(--v));transition:none}.cue i{animation:none}}
+html,body[data-motion="arena"]{overflow-x:clip!important}
+.nav-mark{font-size:0}.logo-svg{display:block}
